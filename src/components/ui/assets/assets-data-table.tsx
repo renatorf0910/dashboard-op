@@ -97,8 +97,9 @@ export const columns: ColumnDef<Assets>[] = [
 
 interface Props {
     assets: Assets[];
+    selectedRow?: (asset: Assets) => void;
 }
 
-export default function AssetsDataTable({ assets }: Props) {
-    return <DataTable columns={columns} data={assets} />
+export default function AssetsDataTable({ assets, selectedRow }: Props) {
+    return <DataTable columns={columns} data={assets} selectedRow={selectedRow} />
 }

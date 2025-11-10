@@ -17,4 +17,5 @@ export interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   pageSize?: number;
+  selectedRow?: (rowData: TData) => void;
 }

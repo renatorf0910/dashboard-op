@@ -25,6 +25,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   pageSize = 10,
+  selectedRow,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
 
@@ -73,6 +74,8 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="cursor-pointer hover:bg-muted/40"
+                  onClick={() => selectedRow?.(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
