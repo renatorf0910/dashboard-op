@@ -1,23 +1,15 @@
 "use client";
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table"
-import { AssetsProps } from "@/domain/types/assets/AssetsProps";
 import { getAssets } from '@/application/services/api';
 import React, { useEffect, useState } from 'react'
+import AssetsDataTable from "@/components/ui/assets/assets-data-table";
+import { Assets } from "@/domain/types/assets/AssetsProps";
 
 function AssetsPage() {
-  const [assets, setAssets] = useState<AssetsProps[]>([]);
+  const [assets, setAssets] = useState<Assets[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function fetchData() {
+    async function fetchAssets() {
       try {
         const data = await getAssets();
         setAssets(data);
@@ -28,36 +20,13 @@ function AssetsPage() {
       }
     }
 
-    fetchData()
+    fetchAssets()
   }, [])
-  console.log(assets)
+
   if (loading) return <p>Loading...</p>
 
   return (
-    <div>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[100px]">Name</TableHead>
-            <TableHead>Location</TableHead>
-            <TableHead>Risk</TableHead>
-            <TableHead>RiskScore</TableHead>
-            <TableHead>Supplier</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {assets.map((asset) => (
-            <TableRow key={asset.id}>
-              <TableCell>{asset.name}</TableCell>
-              <TableCell>{asset.location}</TableCell>
-              <TableCell>{asset.risk}</TableCell>
-              <TableCell>{asset.riskScore}</TableCell>
-              <TableCell>{asset.supplier}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <AssetsDataTable assets={assets}/>
   )
 }
 

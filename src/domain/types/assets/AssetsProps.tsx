@@ -1,7 +1,7 @@
-export interface AssetsProps {
+export interface Assets {
     id: string,
-    location: string,
     name: string,
+    location: string,
     risk: string,
     riskScore: number,
     supplier: string,

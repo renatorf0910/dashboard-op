@@ -1,4 +1,4 @@
-import { AssetsProps } from "@/domain/types/assets/AssetsProps";
+import { Assets } from "@/domain/types/assets/AssetsProps";
 import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -32,7 +32,7 @@ api.interceptors.response.use(
     }
 );
 
-export async function getAssets(): Promise<AssetsProps[]> {
+export async function getAssets(): Promise<Assets[]> {
     const response = await api.get("/assets")
     return response.data;
 }
