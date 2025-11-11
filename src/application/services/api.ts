@@ -1,4 +1,5 @@
-import { Assets } from "@/domain/types/assets/AssetsProps";
+import { AssetsProps } from "@/domain/types/assets/AssetsProps";
+import { VulnerabilityProps } from "@/domain/types/vulnerability/VulnerabilityProps";
 import axios from "axios";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -32,11 +33,17 @@ api.interceptors.response.use(
     }
 );
 
-export async function getAssets(): Promise<Assets[]> {
+export async function getAssets(): Promise<AssetsProps[]> {
     const response = await api.get("/assets")
     return response.data;
 }
 
+export async function getVulnerabilitiesByAssetId(assetId: string): Promise<VulnerabilityProps[]> {
+    const response = await api.get(`/vulnerabilities`, {
+        params: { assetId },
+    });
+    return response.data;
+}
 
 
 export default api;

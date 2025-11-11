@@ -2,11 +2,11 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { DataTable } from "../data-table";
-import { Assets } from "@/domain/types/assets/AssetsProps";
+import { AssetsProps } from "@/domain/types/assets/AssetsProps";
 import { Button } from "../button";
 import { ArrowUpDown } from "lucide-react";
 
-export const columns: ColumnDef<Assets>[] = [
+export const columns: ColumnDef<AssetsProps>[] = [
     {
         accessorKey: "name",
         header: ({ column }) => {
@@ -96,8 +96,8 @@ export const columns: ColumnDef<Assets>[] = [
 ]
 
 interface Props {
-    assets: Assets[];
-    selectedRow?: (asset: Assets) => void;
+    assets: AssetsProps[];
+    selectedRow?: (asset: AssetsProps) => void;
 }
 
 export default function AssetsDataTable({ assets, selectedRow }: Props) {
