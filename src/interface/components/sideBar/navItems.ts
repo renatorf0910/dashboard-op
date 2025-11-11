@@ -11,4 +11,9 @@ export const navItems = [
         icon: Settings,
         href: "/assets",
     },
+    {
+        label: "Flow",
+        icon: Settings,
+        href: "/diagram",
+    },
 ]

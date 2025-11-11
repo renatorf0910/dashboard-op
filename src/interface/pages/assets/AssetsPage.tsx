@@ -12,7 +12,7 @@ import { TypographyKey } from '@/components/ui/typographyKey';
 import { useAssets } from '@/application/hooks/useAssets';
 import { TableSkeleton } from '@/components/ui/tableSkeleton';
 import { ErrorBoundary } from '@/components/error/errorBoundary';
-import { SearchFormDrawer } from '@/components/forms/SearchFormDrawer';
+import { SearchFormDrawer } from '@/components/forms/searchFormDrawer';
 import { SearchFormFields } from '@/domain/types/form/SearchFormProps';
 import { ListFilterPlus } from 'lucide-react';
 import { useVulnerabilities } from '@/application/hooks/useVulnerabilities';

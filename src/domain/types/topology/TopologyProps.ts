@@ -12,3 +12,8 @@ export interface TopologyEdge {
   target: string;
 }
 
+
+export interface DiagramProps {
+  assetId: string;
+}
+
