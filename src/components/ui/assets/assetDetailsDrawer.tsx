@@ -13,7 +13,6 @@ import { AlertTriangle, Info } from "lucide-react";
 import { TypographyKey } from "@/components/ui/typographyKey";
 import { ErrorBoundary } from "@/components/error/errorBoundary";
 import { AssetDetailsDrawerProps } from "@/domain/types/assets/AssetsProps";
-import { Diagram } from "@/components/diagram/diagram";
 
 export function AssetDetailsDrawer({
   open,
@@ -41,19 +40,6 @@ export function AssetDetailsDrawer({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent>
         <ErrorBoundary fallback={"Error to render content"}>
-          <div className="grid grid-cols-[2fr_1fr] h-full">
-            <div className="border-r border-gray-200 p-4 overflow-hidden">
-              {asset ? (
-                <div className="w-full h-[calc(100%-2rem)] border rounded-lg overflow-hidden">
-                  <Diagram assetId={asset.id} />
-                </div>
-              ) : (
-                <p className="text-sm text-muted-foreground">
-                  No asset selected.
-                </p>
-              )}
-            </div>
-
             <div className="p-4 overflow-y-auto space-y-6">
               {asset ? (
                 <>
@@ -137,7 +123,6 @@ export function AssetDetailsDrawer({
                 )}
               </div>
             </div>
-          </div>
         </ErrorBoundary>
         <div className="flex justify-end p-4 border-t bg-background">
           <DrawerClose asChild>

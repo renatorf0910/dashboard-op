@@ -45,45 +45,29 @@ export async function getVulnerabilitiesByAssetId(assetId: string): Promise<Vuln
     return response.data;
 }
 
-// TODO: EU NAO ESQUECER DE TIPAR HIEIN topology
-export async function getTopology(assetId: string) {
+
+// TODO: TIPAR getTopology getGateways getDevices AND FIXED ON DIAGRAM, DON'T FORGET
+export async function getTopology() {
   const response = await api.get("/topology");
   const topology = response.data;
 
-  if (!topology?.nodes || !topology?.edges) {
-    throw new Error("Invalid topology data");
-  }
-
-  const { nodes, edges } = topology;
-
-  const siteNode = nodes.find((n) => n.id === assetId && n.nodeType === "site");
-  if (!siteNode) {
-    throw new Error(`Site ${assetId} not found`);
-  }
-
-  const gateways = nodes.filter(
-    (n) => n.nodeType === "gateway" && n.parentId === siteNode.id
-  );
-
-  const devices = nodes.filter(
-    (n) =>
-      n.nodeType === "device" &&
-      gateways.some((g) => g.id === n.parentId)
-  );
-
-  const filteredNodes = [siteNode, ...gateways, ...devices];
-
-  const nodeIds = filteredNodes.map((n) => n.id);
-  const filteredEdges = edges.filter(
-    (e) => nodeIds.includes(e.source) && nodeIds.includes(e.target)
-  );
-
-  return {
-    nodes: filteredNodes,
-    edges: filteredEdges,
-  };
+  return topology;
 }
 
+export async function getGateways() {
+  const response = await api.get("/gateways");
+  const gateways = response.data;
+
+  return gateways;
+}
+
+
+export async function getDevices() {
+  const  response = await api.get("/devices");
+  const gateways = response.data;
+
+  return gateways;
+}
 
 
 export default api;

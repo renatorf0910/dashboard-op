@@ -1,9 +1,9 @@
+export type NodeType = "site" | "gateway" | "device";
+
 export interface TopologyNode {
   id: string;
-  nodeType: "site" | "gateway" | "device";
-  name: string;
-  assetId?: string;
-  gatewayId?: string;
+  label: string;
+  nodeType: NodeType;
 }
 
 export interface TopologyEdge {
@@ -12,8 +12,13 @@ export interface TopologyEdge {
   target: string;
 }
 
-
-export interface DiagramProps {
-  assetId: string;
+export interface TopologyData {
+  nodes: TopologyNode[];
+  topologyEdges: TopologyEdge[];
 }
 
+export interface UseTopologyResult {
+  data: TopologyData | null;
+  isLoading: boolean;
+  isError: boolean;
+}
