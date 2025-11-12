@@ -1,21 +1,8 @@
 "use client";
 
-import React from "react";
-import * as Yup from "yup";
-import { FormikHelpers } from "formik";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { SearchForm } from "@/components/forms/searchForm";
-import { SearchFormFields } from "@/domain/types/form/SearchFormProps";
-
-interface SearchFormDrawerProps<T extends object> {
-  title?: string;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  fields: SearchFormFields<T>[];
-  initialValues: T;
-  validation?: Yup.ObjectSchema<Partial<T>>;
-  onSubmit: (values: T, helpers: FormikHelpers<T>) => void | Promise<void>;
-}
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { SearchFormDrawerProps } from "@/domain/types/form/SearchFormProps";
 
 export function SearchFormDrawer<T extends object>({
   title = "Filters",
@@ -25,6 +12,7 @@ export function SearchFormDrawer<T extends object>({
   initialValues,
   validation,
   onSubmit,
+  onClear,
 }: SearchFormDrawerProps<T>) {
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
@@ -44,6 +32,7 @@ export function SearchFormDrawer<T extends object>({
               await onSubmit(values, helpers);
               onOpenChange(false);
             }}
+            onClear={onClear}
           />
         </div>
       </DrawerContent>

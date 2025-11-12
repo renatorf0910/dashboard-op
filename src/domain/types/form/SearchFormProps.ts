@@ -21,9 +21,22 @@ export interface SearchFormFields<T extends object> {
 
 }
 
+export interface SearchFormDrawerProps<T extends object> {
+  title?: string;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  fields: SearchFormFields<T>[];
+  initialValues: T;
+  validation?: Yup.ObjectSchema<Partial<T>>;
+  onSubmit: (values: T, helpers: FormikHelpers<T>) => void | Promise<void>;
+  onClear?: () => void;
+}
+
+
 export interface SearchFormProps<T extends object> {
   fields: SearchFormFields<T>[];
   initialValues: T;
   validation?: Yup.ObjectSchema<Partial<T>>;
   onSubmit: (values: T, helpers: FormikHelpers<T>) => void | Promise<void>;
+  onClear?: () => void;
 }

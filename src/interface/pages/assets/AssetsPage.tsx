@@ -44,7 +44,9 @@ function AssetsPage() {
     );
   }, [assets, filters]);
 
-
+  const clearFilters = () => {
+    setFilters(initialValue);
+  };
 
   const searchFields: SearchFormFields<AssetsForm>[] = useMemo(() => {
     if (!assets) return [
@@ -92,6 +94,7 @@ function AssetsPage() {
           setFilters(values);
           setOpenSearchDrawer(false);
         }}
+        onClear={clearFilters}
       />
       <ErrorBoundary fallback={"Error to loading table"}>
         <AssetsDataTable assets={filteredAssets} selectedRow={handleRowClick} />

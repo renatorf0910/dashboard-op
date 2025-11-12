@@ -7,11 +7,13 @@ export function SearchForm<T extends object>({
   initialValues,
   validation,
   onSubmit,
+  onClear,
 }: SearchFormProps<T>) {
   return (
     <Formik<T>
       initialValues={initialValues}
       validationSchema={validation}
+      enableReinitialize
       onSubmit={async (values, helpers) => {
         await onSubmit(values, helpers);
         helpers.setSubmitting(false);
@@ -80,10 +82,13 @@ export function SearchForm<T extends object>({
 
             <button
               type="button"
-              onClick={() => resetForm()}
+              onClick={() => {
+                resetForm();
+                onClear?.();
+              }}
               className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-lg transition-all duration-200"
             >
-              Clear Filters
+              Reset Filters
             </button>
           </div>
         </Form>
