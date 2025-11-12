@@ -75,11 +75,13 @@ function AssetsPage() {
 
   return (
     <>
-      <button className='justify-items-end'
-        onClick={() => setOpenSearchDrawer(true)}
-      >
-        <ListFilterPlus />
-      </button>
+      <div className="flex mb-4">
+        <button className='ml-auto'
+          onClick={() => setOpenSearchDrawer(true)}
+        >
+          <ListFilterPlus />
+        </button>
+      </div>
       <SearchFormDrawer
         title="Filter Assets"
         open={openSearchDrawer}

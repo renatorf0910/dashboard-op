@@ -124,7 +124,7 @@ export async function getDiagram(): Promise<DiagramData> {
     }
   }
 
-  return { nodes, topologyEdges: edges };
+  return { nodes, topologyEdges };
 }
 
 export function useTopology(): UseQueryResult<DiagramData, Error> {
