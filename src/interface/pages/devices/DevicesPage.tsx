@@ -1,14 +1,71 @@
 "use client";
 
-function DevicesPage() {
- 
-  return (
-    <>
-      <div className="flex mb-4">
-            renato
-      </div>
-    </>
-  )
-}
+import { useState } from "react";
+import { useDevices } from "@/application/hooks/useDevices";
 
-export default DevicesPage;
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Loader2 } from "lucide-react";
+import { motion } from "framer-motion";
+import { DeviceInfo } from "@/components/ui/devices/DeviceInfo";
+import { DeviceMap } from "@/components/ui/devices/DeviceMap";
+
+export default function DevicesPage() {
+  const { data, isLoading } = useDevices();
+  const [selectedDeviceId, setSelectedDeviceId] = useState<string | undefined>();
+
+  const selectedDevice = data?.find((d) => d.id === selectedDeviceId);
+
+  return (
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+        <Select
+          onValueChange={(value) => setSelectedDeviceId(value)}
+          value={selectedDeviceId}
+        >
+          <SelectTrigger className="w-[260px]">
+            <SelectValue placeholder="Select a device" />
+          </SelectTrigger>
+          <SelectContent>
+            {data?.map((device) => (
+              <SelectItem key={device.id} value={device.id}>
+                {device.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      {isLoading ? (
+        <div className="flex flex-1 items-center justify-center">
+          <Loader2 className="animate-spin w-6 h-6 mr-2" />
+          <span>Loading...</span>
+        </div>
+      ) : (
+        <motion.div
+          className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.3 }}
+        >
+          <div className="lg:col-span-2">
+            <DeviceInfo device={selectedDevice} />
+          </div>
+          <div className="lg:col-span-10">
+            {selectedDevice ? (
+              <DeviceMap />
+            ) : (
+              <div className="flex items-center justify-center h-full text-muted-foreground border rounded-lg">
+                <p>Select a device to view on map</p>
+              </div>
+            )}
+          </div>
+        </motion.div>
+      )}
+    </div>
+  );
+}

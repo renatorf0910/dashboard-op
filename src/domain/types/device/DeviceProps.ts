@@ -1,6 +1,7 @@
-export interface Device {
+export interface DeviceProps {
   id: string;
-  name: string;
   assetId: string;
   gatewayId: string;
-}
+  name: string;
+  type: string;
+};
