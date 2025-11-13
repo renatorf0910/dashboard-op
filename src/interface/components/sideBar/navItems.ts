@@ -16,4 +16,9 @@ export const navItems = [
         icon: Settings,
         href: "/diagram",
     },
+    {
+        label: "Devices",
+        icon: Settings,
+        href: "/devices",
+    },
 ]
