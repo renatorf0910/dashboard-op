@@ -7,7 +7,7 @@ export function ErrorState({
 }: {
   message: string;
   onRetry: () => void;
-  details?: unknown;
+  details?: string;
 }) {
   return (
     <div className="p-6 text-center">
