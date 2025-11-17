@@ -22,3 +22,16 @@ export interface UseTopologyResult {
   isLoading: boolean;
   isError: boolean;
 }
+
+export interface BaseEntity {
+  id: string;
+  name?: string;
+  label?: string;
+}
+
+export interface TopologyResponse {
+  nodes: BaseEntity[];
+  edges: { id: string; source: string; target: string }[];
+}
+
+

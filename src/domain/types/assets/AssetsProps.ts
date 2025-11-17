@@ -23,3 +23,19 @@ export interface AssetDetailsDrawerProps {
   vulnerabilities?: VulnerabilityProps[];
   isLoading?: boolean;
 }
+
+export interface AssetsQueryParams {
+  page: number;
+  pageSize: number;
+  filters: {
+    name?: string;
+    risk?: string;
+    supplier?: string;
+    location?: string;
+  };
+}
+
+export interface PaginatedAssetsResponse {
+  items: AssetsProps[];
+  total: number;
+}

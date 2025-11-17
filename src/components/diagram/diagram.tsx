@@ -136,11 +136,11 @@ export function Diagram({ selectedNodeId }: { selectedNodeId?: string }) {
   }, [selectedNodeId, nodes, setCenter]);
 
   if (isLoading) {
-    return <div className="flex items-center justify-center h-full">Carregando topologia...</div>;
+    return <div className="flex items-center justify-center h-full">Loading...</div>;
   }
 
   if (isError) {
-    return <div className="flex items-center justify-center h-full text-red-500">Erro ao carregar topologia.</div>;
+    return <div className="flex items-center justify-center h-full text-red-500">Err topology.</div>;
   }
 
   if (!data?.nodes?.length) {

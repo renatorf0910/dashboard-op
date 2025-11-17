@@ -1,52 +1,13 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
 import { getDevices, getGateways, getTopology } from "../services/api";
-// TODO: TESTING WITH THIS TYPES, FIXED AND MOUNT THE RIGHT TYPE, DON'T FOTGOT
-export type NodeType = "site" | "gateway" | "device";
+import { TopologyResponse } from "@/domain/types/topology/TopologyProps";
+import { Gateway } from "@/domain/types/gateway/GatewayProps";
+import { Device } from "@/domain/types/device/DeviceProps";
+import { DiagramData, DiagramEdge, DiagramNode } from "@/domain/types/diagram/DiagramProps";
 
-export interface BaseEntity {
-  id: string;
-  name?: string;
-  label?: string;
-}
 
-export interface TopologyResponse {
-  nodes: BaseEntity[];
-  edges: { id: string; source: string; target: string }[];
-}
-
-export interface Gateway extends BaseEntity {
-  siteId?: string;
-}
-
-export interface Device extends BaseEntity {
-  gatewayId: string;
-}
-
-export interface DiagramNode {
-  id: string;
-  label: string;
-  nodeType: NodeType;
-  position: { x: number; y: number };
-}
-
-export interface DiagramEdge {
-  id: string;
-  source: string;
-  target: string;
-}
-
-export interface DiagramData {
-  nodes: DiagramNode[];
-  topologyEdges: DiagramEdge[];
-}
-
-// TODO: TESTING PROMISE ---- MOVE THIS PROMISE TO THR RIGHYT PLACE
 export async function getDiagram(): Promise<DiagramData> {
-  const [topology, gateways, devices]: [
-    TopologyResponse,
-    Gateway[],
-    Device[]
-  ] = await Promise.all([
+  const [topology, gateways, devices]: [ TopologyResponse, Gateway[], Device[]] = await Promise.all([
     getTopology(),
     getGateways(),
     getDevices(),

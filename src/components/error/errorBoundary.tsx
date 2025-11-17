@@ -30,7 +30,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     if (this.state.hasError) {
       return this.props.fallback || (
         <div className="p-4 bg-red-100 text-red-700 rounded">
-          <h2>Ocorreu um erro!</h2>
+          <h2>Err!</h2>
           <pre>{this.state.error?.message}</pre>
         </div>
       );

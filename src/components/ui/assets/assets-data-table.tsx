@@ -95,11 +95,16 @@ export const columns: ColumnDef<AssetsProps>[] = [
     },
 ]
 
-interface Props {
-    assets: AssetsProps[];
-    selectedRow?: (asset: AssetsProps) => void;
+interface AssetsDataTableProps {
+  assets: AssetsProps[];
+  total: number;
+  page: number;
+  pageSize: number;
+  onPageChange: (page: number) => void;
+  selectedRow: (asset: AssetsProps) => void;
 }
 
-export default function AssetsDataTable({ assets, selectedRow }: Props) {
+
+export default function AssetsDataTable({ assets, selectedRow }: AssetsDataTableProps) {
     return <DataTable columns={columns} data={assets} selectedRow={selectedRow} />
 }

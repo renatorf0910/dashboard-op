@@ -102,7 +102,7 @@ export function AssetDetailsDrawer({
               </h4>
 
               {isLoading && (
-                <p className="text-sm text-muted-foreground">Loading vulnerabilities...</p>
+                <p className="text-sm text-muted-foreground">Loading...</p>
               )}
 
               {!isLoading && vulnerabilities.length === 0 && (

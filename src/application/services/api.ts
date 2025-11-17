@@ -1,4 +1,4 @@
-import { AssetsProps } from "@/domain/types/assets/AssetsProps";
+import { AssetsProps, AssetsQueryParams, PaginatedAssetsResponse } from "@/domain/types/assets/AssetsProps";
 import { VulnerabilityProps } from "@/domain/types/vulnerability/VulnerabilityProps";
 import axios from "axios";
 
@@ -33,9 +33,26 @@ api.interceptors.response.use(
     }
 );
 
-export async function getAssets(): Promise<AssetsProps[]> {
-    const response = await api.get("/assets")
-    return response.data;
+export async function getAssets(params: AssetsQueryParams): Promise<PaginatedAssetsResponse> {
+  const { page, pageSize, filters } = params;
+
+  const response = await api.get(`/assets`);
+  const data: AssetsProps[] = await response.data;
+
+  const filtered = data.filter((asset: AssetsProps) =>
+    (!filters.name || asset.name.toLowerCase().includes(filters.name.toLowerCase())) &&
+    (!filters.location || asset.location === filters.location) &&
+    (!filters.risk || asset.risk === filters.risk) &&
+    (!filters.supplier || asset.supplier.toLowerCase().includes(filters.supplier.toLowerCase()))
+  );
+
+  const start = (page - 1) * pageSize;
+  const sliced = filtered.slice(start, start + pageSize);
+
+  return {
+    items: sliced,
+    total: filtered.length,
+  };
 }
 
 export async function getVulnerabilitiesByAssetId(assetId: string): Promise<VulnerabilityProps[]> {
@@ -45,8 +62,6 @@ export async function getVulnerabilitiesByAssetId(assetId: string): Promise<Vuln
     return response.data;
 }
 
-
-// TODO: TIPAR getTopology getGateways getDevices AND FIXED ON DIAGRAM, DON'T FORGET
 export async function getTopology() {
   const response = await api.get("/topology");
   const topology = response.data;
