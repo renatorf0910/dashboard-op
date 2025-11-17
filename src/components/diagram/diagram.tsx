@@ -8,26 +8,24 @@ import {
   Background,
   applyNodeChanges,
   applyEdgeChanges,
+  useReactFlow,
   type Node,
   type Edge,
   type NodeChange,
   type EdgeChange,
-  useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { useTopology } from "@/application/hooks/useTopology";
-import {
-  NodeType,
-  UseTopologyResult,
-} from "@/domain/types/topology/TopologyProps";
 import dagre from "dagre";
+import { useTopology } from "@/application/hooks/useTopology";
+import { NodeType, UseTopologyResult } from "@/domain/types/topology/TopologyProps";
 
-export function Diagram() {
+export function Diagram({ selectedNodeId }: { selectedNodeId?: string }) {
   const { data, isLoading, isError } = useTopology() as UseTopologyResult;
 
   const [nodes, setNodes] = useState<Node<{ label: string; nodeType: NodeType }>[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
   const [selectedNode, setSelectedNode] = useState<Node<{ label: string; nodeType: NodeType }> | null>(null);
+  const { fitView, setCenter } = useReactFlow();
 
   const nodeWidth = 180;
   const nodeHeight = 60;
@@ -125,34 +123,28 @@ export function Diagram() {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (selectedNodeId && nodes.length > 0) {
+      const node = nodes.find((n) => n.id === selectedNodeId);
+      if (node) {
+        setCenter(node.position.x + nodeWidth / 2, node.position.y + nodeHeight / 2, {
+          zoom: 2,
+          duration: 1000,
+        });
+      }
+    }
+  }, [selectedNodeId, nodes, setCenter]);
+
   if (isLoading) {
-    return (
-      <div className="flex items-center justify-center h-full text-lg text-gray-600">
-        Carregando topologia...
-      </div>
-    );
+    return <div className="flex items-center justify-center h-full">Carregando topologia...</div>;
   }
 
   if (isError) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full text-red-500">
-        <p>Erro ao carregar topologia.</p>
-        <button
-          onClick={() => window.location.reload()}
-          className="mt-2 px-4 py-2 bg-red-500 text-white rounded"
-        >
-          Tentar novamente
-        </button>
-      </div>
-    );
+    return <div className="flex items-center justify-center h-full text-red-500">Erro ao carregar topologia.</div>;
   }
 
   if (!data?.nodes?.length) {
-    return (
-      <div className="flex items-center justify-center h-full text-gray-500">
-        No topology available.
-      </div>
-    );
+    return <div className="flex items-center justify-center h-full text-gray-500">No topology available.</div>;
   }
 
   return (
@@ -170,34 +162,6 @@ export function Diagram() {
         <Controls />
         <Background />
       </ReactFlow>
-
-      {selectedNode && (
-        <div className="absolute top-0 right-0 w-64 bg-white shadow-lg p-4 border-l z-10">
-          <h2 className="font-bold mb-2">Node Details</h2>
-          <p>
-            <strong>Name:</strong> {selectedNode.data.label}
-          </p>
-          <p>
-            <strong>Type:</strong> {selectedNode.data.nodeType}
-          </p>
-
-          {selectedNode.data.nodeType === "device" && (
-            <button
-              onClick={() => alert(`Alert ${selectedNode.data.label}`)}
-              className="mt-3 px-3 py-1 bg-blue-500 text-white rounded"
-            >
-              Open Asset Drawer
-            </button>
-          )}
-
-          <button
-            onClick={() => setSelectedNode(null)}
-            className="mt-3 text-sm text-gray-500 underline"
-          >
-            Fechar
-          </button>
-        </div>
-      )}
     </div>
   );
 }

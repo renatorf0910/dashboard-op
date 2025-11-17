@@ -1,4 +1,4 @@
-import { Home, Settings } from "lucide-react";
+import { Home, Settings, StretchHorizontal, TabletSmartphone, Workflow } from "lucide-react";
 
 export const navItems = [
     {
@@ -8,17 +8,12 @@ export const navItems = [
     },
     {
         label: "Assets",
-        icon: Settings,
+        icon: StretchHorizontal,
         href: "/assets",
     },
     {
-        label: "Flow",
-        icon: Settings,
-        href: "/diagram",
-    },
-    {
         label: "Devices",
-        icon: Settings,
+        icon: TabletSmartphone,
         href: "/devices",
     },
 ]

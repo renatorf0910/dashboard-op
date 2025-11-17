@@ -57,7 +57,7 @@ export default function DevicesPage() {
           </div>
           <div className="lg:col-span-10">
             {selectedDevice ? (
-              <DeviceMap />
+              <DeviceMap selectedDeviceId={selectedDevice.gatewayId} />
             ) : (
               <div className="flex items-center justify-center h-full text-muted-foreground border rounded-lg">
                 <p>Select a device to view on map</p>
