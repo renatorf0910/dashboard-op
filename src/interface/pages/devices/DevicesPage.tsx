@@ -6,7 +6,7 @@ import { useDevices } from "@/application/hooks/useDevices";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
-import { DeviceProps } from "@/domain/types/device/DeviceProps";
+import { Device, DeviceProps } from "@/domain/types/device/DeviceProps";
 import { DeviceInfo } from "@/components/ui/devices/deviceInfo";
 import { DeviceMap } from "@/components/ui/devices/deviceMap";
 
@@ -27,11 +27,11 @@ export default function DevicesPage() {
             <SelectValue placeholder="Select a device" />
           </SelectTrigger>
           <SelectContent>
-            {data?.map((device) => (
+            {data ? data.map((device: Device) => (
               <SelectItem key={device.id} value={device.id}>
                 {device.name}
               </SelectItem>
-            ))}
+            )): <></>}
           </SelectContent>
         </Select>
       </div>

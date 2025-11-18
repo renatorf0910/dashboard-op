@@ -8,7 +8,6 @@ export interface DeviceProps {
   type: string;
 };
 
-
 export interface Device extends BaseEntity {
   gatewayId: string;
 }

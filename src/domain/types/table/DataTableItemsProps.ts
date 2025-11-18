@@ -1,16 +1,13 @@
-import {
-  ColumnDef,
-} from "@tanstack/react-table"
-
+import { ColumnDef } from "@tanstack/react-table"
 
 export interface Column<T> {
-    key: keyof T;
-    label: string;
+  key: keyof T;
+  label: string;
 }
 
 export interface TableProps<T> {
-    data: T[];
-    columns: Column<T>[];
+  data: T[];
+  columns: Column<T>[];
 }
 
 export interface DataTableProps<TData, TValue> {

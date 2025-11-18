@@ -1,4 +1,7 @@
 import { AssetsProps, AssetsQueryParams, PaginatedAssetsResponse } from "@/domain/types/assets/AssetsProps";
+import { Device, DeviceProps } from "@/domain/types/device/DeviceProps";
+import { Gateway } from "@/domain/types/gateway/GatewayProps";
+import { TopologyResponse } from "@/domain/types/topology/TopologyProps";
 import { VulnerabilityProps } from "@/domain/types/vulnerability/VulnerabilityProps";
 import axios from "axios";
 
@@ -62,14 +65,14 @@ export async function getVulnerabilitiesByAssetId(assetId: string): Promise<Vuln
     return response.data;
 }
 
-export async function getTopology() {
+export async function getTopology(): Promise<TopologyResponse> {
   const response = await api.get("/topology");
   const topology = response.data;
 
   return topology;
 }
 
-export async function getGateways() {
+export async function getGateways(): Promise<Gateway[]> {
   const response = await api.get("/gateways");
   const gateways = response.data;
 
@@ -77,7 +80,14 @@ export async function getGateways() {
 }
 
 
-export async function getDevices() {
+export async function getDevice(): Promise<Device[]> {
+  const  response = await api.get("/devices");
+  const devices = response.data;
+
+  return devices;
+}
+
+export async function getDevices(): Promise<DeviceProps[]> {
   const  response = await api.get("/devices");
   const devices = response.data;
 

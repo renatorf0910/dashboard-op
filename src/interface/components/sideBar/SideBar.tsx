@@ -3,7 +3,6 @@
 import { navItems } from "./navItems";
 import { SideBarItem } from "./SideBarItem";
 
-
 export function SideBar() {
     return (
         <aside className="hidden md:flex flex-col w-64 bh-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4">

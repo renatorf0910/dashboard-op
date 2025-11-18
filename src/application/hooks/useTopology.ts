@@ -1,5 +1,5 @@
 import { useQuery, UseQueryResult } from "@tanstack/react-query";
-import { getDevices, getGateways, getTopology } from "../services/api";
+import { getDevice, getGateways, getTopology } from "../services/api";
 import { TopologyResponse } from "@/domain/types/topology/TopologyProps";
 import { Gateway } from "@/domain/types/gateway/GatewayProps";
 import { Device } from "@/domain/types/device/DeviceProps";
@@ -10,7 +10,7 @@ export async function getDiagram(): Promise<DiagramData> {
   const [topology, gateways, devices]: [ TopologyResponse, Gateway[], Device[]] = await Promise.all([
     getTopology(),
     getGateways(),
-    getDevices(),
+    getDevice(),
   ]);
 
   const sites = topology.nodes ?? [];

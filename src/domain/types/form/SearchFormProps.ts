@@ -4,7 +4,6 @@ import * as Yup from "yup";
 
 export type OptionsTypes = "text" | "number" | "select" | "date";
 
-
 export interface SearchOption {
   label: string;
   value: string | number;
@@ -31,7 +30,6 @@ export interface SearchFormDrawerProps<T extends object> {
   onSubmit: (values: T, helpers: FormikHelpers<T>) => void | Promise<void>;
   onClear?: () => void;
 }
-
 
 export interface SearchFormProps<T extends object> {
   fields: SearchFormFields<T>[];

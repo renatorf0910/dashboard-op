@@ -6,7 +6,6 @@ export interface Gateway {
   assetId: string;
 }
 
-
 export interface Gateway extends BaseEntity {
   siteId?: string;
 }

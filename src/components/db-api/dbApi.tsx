@@ -75,7 +75,7 @@ export function DbApi({ assetId }: { assetId: string }) {
       </div>
 
       <div className="space-y-2">
-        <h4 className="font-medium text-gray-700">Recent Notes</h4>
+        <h4 className="font-medium text-gray-700">Notes</h4>
 
         {isLoading && <p>Loading notes...</p>}
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getDevices } from "../services/api";
+import { getDevice, getDevices } from "../services/api";
 import { DeviceProps } from "@/domain/types/device/DeviceProps";
 
 export function useDevices() {

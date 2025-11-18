@@ -4,7 +4,7 @@ import { SideBarItemsProps } from "@/domain/types/sideBar/SideBarItemsProps";
 import Link from "next/link"
 import { usePathname } from "next/navigation";
 
-export function SideBarItem({label, href, icon: Icon}: SideBarItemsProps) {
+export function SideBarItem({ label, href, icon: Icon }: SideBarItemsProps) {
     const pathname = usePathname();
     const active = pathname === href;
 
