@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  nextapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: next-prod
+    ports:
+      - "3000:3000"
+    depends_on:
+      - jsonserver
+
+  jsonserver:
+    image: node:18-alpine
+    container_name: json-server
+    working_dir: /data
+    volumes:
+      - ./db.json:/data/db.json
+    command: ["npx", "json-server", "--host", "0.0.0.0", "--port", "8000", "--watch", "db.json"]
+    ports:
+      - "8000:8000"
