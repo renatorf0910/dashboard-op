@@ -5,7 +5,7 @@ import { useVulnerabilities } from "@/application/hooks/useVulnerabilities";
 import { ErrorBoundary } from "@/components/error/errorBoundary";
 import { SearchFormDrawer } from "@/components/forms/searchFormDrawer";
 import { AssetDetailsDrawer } from "@/components/ui/assets/assetDetailsDrawer";
-import AssetsDataTable from "@/components/ui/assets/assets-data-table";
+import AssetsDataTable from "@/components/ui/assets/assetsDataTable";
 import { TableSkeleton } from "@/components/ui/tableSkeleton";
 import { AssetsForm, AssetsProps, AssetsQueryParams } from "@/domain/types/assets/AssetsProps";
 import { SearchFormFields } from "@/domain/types/form/SearchFormProps";

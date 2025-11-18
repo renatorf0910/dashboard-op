@@ -6,9 +6,9 @@ import { useDevices } from "@/application/hooks/useDevices";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
-import { DeviceInfo } from "@/components/ui/devices/DeviceInfo";
-import { DeviceMap } from "@/components/ui/devices/DeviceMap";
 import { DeviceProps } from "@/domain/types/device/DeviceProps";
+import { DeviceInfo } from "@/components/ui/devices/deviceInfo";
+import { DeviceMap } from "@/components/ui/devices/deviceMap";
 
 export default function DevicesPage() {
   const { data, isLoading } = useDevices();
