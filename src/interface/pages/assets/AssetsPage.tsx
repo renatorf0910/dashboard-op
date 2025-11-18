@@ -2,6 +2,7 @@
 
 import { useAssets } from "@/application/hooks/useAssets";
 import { useVulnerabilities } from "@/application/hooks/useVulnerabilities";
+import { DbApi } from "@/components/db-api/dbApi";
 import { ErrorBoundary } from "@/components/error/errorBoundary";
 import { SearchFormDrawer } from "@/components/forms/searchFormDrawer";
 import { AssetDetailsDrawer } from "@/components/ui/assets/assetDetailsDrawer";
@@ -10,7 +11,7 @@ import { TableSkeleton } from "@/components/ui/tableSkeleton";
 import { AssetsForm, AssetsProps, AssetsQueryParams } from "@/domain/types/assets/AssetsProps";
 import { SearchFormFields } from "@/domain/types/form/SearchFormProps";
 import { ListFilterPlus } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 function AssetsPage() {
   const initialFilters: AssetsForm = {
@@ -25,7 +26,7 @@ function AssetsPage() {
   const [openSearchDrawer, setOpenSearchDrawer] = useState(false);
 
   const [filters, setFilters] = useState<AssetsForm>(initialFilters);
-
+  const allAssetsRef = useRef<AssetsProps[] | null>(null);
   const [page, setPage] = useState<number>(1);
   const pageSize = 40;
 
@@ -46,18 +47,11 @@ function AssetsPage() {
   const assets = data?.items ?? [];
   const total = data?.total ?? 0;
 
-  const searchFields: SearchFormFields<AssetsForm>[] = useMemo(() => {
-    if (!data) {
-      return [
-        { name: "name", label: "Name", type: "text" },
-        { name: "location", label: "Location", type: "select", options: [] },
-        { name: "risk", label: "Risk", type: "select", options: [] },
-        { name: "supplier", label: "Supplier", type: "text" },
-      ];
-    }
+  const sourceForOptions = allAssetsRef.current ?? assets;
 
+  const searchFields: SearchFormFields<AssetsForm>[] = useMemo(() => {
     const getUnique = (key: keyof AssetsProps) =>
-      Array.from(new Set(assets.map((a) => a[key] as string)))
+      Array.from(new Set(sourceForOptions.map((a) => a[key] as string)))
         .filter(Boolean)
         .map((v) => ({ label: v, value: v }));
 
@@ -67,7 +61,15 @@ function AssetsPage() {
       { name: "risk", label: "Risk", type: "select", options: getUnique("risk") },
       { name: "supplier", label: "Supplier", type: "text" },
     ];
-  }, [data, assets]);
+  }, [sourceForOptions]);
+
+
+  useEffect(() => {
+    if (!allAssetsRef.current && data?.items) {
+      allAssetsRef.current = data.items;
+    }
+  }, [data]);
+
 
   const handleRowClick = (asset: AssetsProps) => {
     setSelectedAsset(asset);
@@ -124,8 +126,9 @@ function AssetsPage() {
           onOpenChange={setOpenInfos}
           asset={selectedAsset}
           vulnerabilities={vulnerabilities}
-          isLoading={loadingVulns}
-        />
+          isLoading={loadingVulns}>
+          {selectedAsset && <DbApi assetId={selectedAsset.id} />}
+        </AssetDetailsDrawer>
       </ErrorBoundary>
     </>
   );

@@ -58,7 +58,7 @@ function DrawerContent({
         className={cn(
           "group/drawer-content bg-background fixed z-50 flex flex-col",
           "h-[100vh] overflow-hidden",
-          "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-1/5 data-[vaul-drawer-direction=right]:border-l data-[vaul-drawer-direction=right]:sm:max-w-1/5",
+          "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-1/5 data-[vaul-drawer-direction=right]:border-l data-[vaul-drawer-direction=right]:sm:max-w-2/5",
           className
         )}
         {...props}
@@ -135,7 +135,7 @@ function DrawerDescription({
             return (
               <div
                 className="flex flex-col rounded-xl border border-border bg-muted/30 
-                           p-4 hover:bg-muted/50 transition-all duration-200 
+                           p-4 hover:bg-muted/50 transition-all duration-800 
                            hover:scale-[1.03] hover:shadow-md"
               >
                 {child}
@@ -145,7 +145,7 @@ function DrawerDescription({
           return (
             <div
               className="rounded-xl border border-border bg-muted/30 
-                         p-4 transition-all duration-200 
+                         p-4 transition-all duration-800 
                          hover:bg-muted/50 hover:scale-[1.03] hover:shadow-md"
             >
               <span>{String(child)}</span>

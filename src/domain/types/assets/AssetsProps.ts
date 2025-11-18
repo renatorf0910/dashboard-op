@@ -1,3 +1,4 @@
+import { ReactNode } from "react";
 import { VulnerabilityProps } from "../vulnerability/VulnerabilityProps";
 
 export interface AssetsProps {
@@ -22,6 +23,7 @@ export interface AssetDetailsDrawerProps {
   asset: AssetsProps | null;
   vulnerabilities?: VulnerabilityProps[];
   isLoading?: boolean;
+  children: ReactNode;
 }
 
 export interface AssetsQueryParams {

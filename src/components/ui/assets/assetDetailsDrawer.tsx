@@ -22,6 +22,7 @@ export function AssetDetailsDrawer({
   asset,
   vulnerabilities = [],
   isLoading = false,
+  children,
 }: AssetDetailsDrawerProps) {
   const getSeverityBadge = (severity: string) => {
     switch (severity.toLowerCase()) {
@@ -142,7 +143,7 @@ export function AssetDetailsDrawer({
                       </CardHeader>
 
                       <CardContent className="text-sm text-gray-600 grid gap-1">
-                        <TypographyBlurred field={`Scope: ${vuln.scope}`} />  
+                        <TypographyBlurred field={`Scope: ${vuln.scope}`} />
                         <TypographyBlurred field={`Ref ID: ${vuln.refId}`} />
                         <TypographyBlurred field={`CVSS: ${vuln.cvss}`} />
                         <TypographyBlurred field={`Acknowledged: ${vuln.acknowledged ? "✅" : "❌"}`} />
@@ -152,6 +153,9 @@ export function AssetDetailsDrawer({
                   ))}
                 </motion.div>
               )}
+            </div>
+            <div className="mt-6">
+              {children}
             </div>
           </div>
         </ErrorBoundary>
