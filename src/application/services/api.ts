@@ -2,7 +2,7 @@ import { AssetsProps, AssetsQueryParams, PaginatedAssetsResponse } from "@/domai
 import { VulnerabilityProps } from "@/domain/types/vulnerability/VulnerabilityProps";
 import axios from "axios";
 
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL;
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 const api = axios.create({
     baseURL: BASE_URL,
@@ -35,8 +35,8 @@ api.interceptors.response.use(
 
 export async function getAssets(params: AssetsQueryParams): Promise<PaginatedAssetsResponse> {
   const { page, pageSize, filters } = params;
-
   const response = await api.get(`/assets`);
+  console.log('response: ', response.data)
   const data: AssetsProps[] = await response.data;
 
   const filtered = data.filter((asset: AssetsProps) =>
@@ -79,9 +79,9 @@ export async function getGateways() {
 
 export async function getDevices() {
   const  response = await api.get("/devices");
-  const gateways = response.data;
+  const devices = response.data;
 
-  return gateways;
+  return devices;
 }
 
 
