@@ -1,16 +1,7 @@
 "use client";
 
-import React, { Component, ReactNode } from "react";
-
-interface ErrorBoundaryProps {
-  children: ReactNode;
-  fallback?: ReactNode;
-}
-
-interface ErrorBoundaryState {
-  hasError: boolean;
-  error?: Error;
-}
+import { ErrorBoundaryProps, ErrorBoundaryState } from "@/domain/types/error/ErrorBoundary";
+import { Component } from "react";
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   constructor(props: ErrorBoundaryProps) {
