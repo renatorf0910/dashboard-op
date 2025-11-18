@@ -2,9 +2,10 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { getDevices } from "../services/api";
+import { DeviceProps } from "@/domain/types/device/DeviceProps";
 
 export function useDevices() {
-  return useQuery({
+  return useQuery<DeviceProps[]>({
     queryKey: ["devices"],
     queryFn: getDevices,
     staleTime: 1000 * 60 * 5,

@@ -3,23 +3,18 @@
 import { useState } from "react";
 import { useDevices } from "@/application/hooks/useDevices";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Loader2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { DeviceInfo } from "@/components/ui/devices/DeviceInfo";
 import { DeviceMap } from "@/components/ui/devices/DeviceMap";
+import { DeviceProps } from "@/domain/types/device/DeviceProps";
 
 export default function DevicesPage() {
   const { data, isLoading } = useDevices();
   const [selectedDeviceId, setSelectedDeviceId] = useState<string | undefined>();
 
-  const selectedDevice = data?.find((d) => d.id === selectedDeviceId);
+  const selectedDevice = data?.find((d: DeviceProps) => d.id === selectedDeviceId);
 
   return (
     <div className="flex flex-col gap-6">
@@ -53,7 +48,7 @@ export default function DevicesPage() {
           transition={{ duration: 0.3 }}
         >
           <div className="lg:col-span-2">
-            <DeviceInfo device={selectedDevice} />
+            {selectedDevice && <DeviceInfo device={selectedDevice} />}
           </div>
           <div className="lg:col-span-10">
             {selectedDevice ? (
