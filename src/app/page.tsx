@@ -1,6 +1,5 @@
-import HomePage from "@/interface/pages/home/HomePage";
-
+import AssetsPage from "@/interface/pages/assets/AssetsPage";
 
 export default function Page() {
-    return <HomePage />
+    return <AssetsPage />
 }

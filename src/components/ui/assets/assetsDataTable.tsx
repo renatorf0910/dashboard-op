@@ -1,10 +1,13 @@
 "use client"
 
-import { ColumnDef } from "@tanstack/react-table"
-import { DataTable } from "../data-table";
-import { AssetsProps } from "@/domain/types/assets/AssetsProps";
-import { Button } from "../button";
+import { useAssetDrawerStore } from "@/application/store/useAssetDrawerStore";
+import { AssetsDataTableProps, AssetsProps } from "@/domain/types/assets/AssetsProps";
+import { ColumnDef } from "@tanstack/react-table";
 import { ArrowUpDown } from "lucide-react";
+import { RiskBadge } from "../badge-risk";
+import { Button } from "../button";
+import { DataTable } from "../data-table";
+import { LocationBadge } from "../location-badge";
 
 export const columns: ColumnDef<AssetsProps>[] = [
     {
@@ -12,7 +15,7 @@ export const columns: ColumnDef<AssetsProps>[] = [
         header: ({ column }) => {
             return (
                 <Button
-                    variant="ghost"
+                    variant="flush"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Name
@@ -21,7 +24,7 @@ export const columns: ColumnDef<AssetsProps>[] = [
             )
         },
         cell: ({ row }) => {
-            return <div>{row.getValue("name")}</div>;
+            return <div className="px-3">{row.getValue("name")}</div>;
         },
     },
     {
@@ -29,7 +32,7 @@ export const columns: ColumnDef<AssetsProps>[] = [
         header: ({ column }) => {
             return (
                 <Button
-                    variant="ghost"
+                    variant="flush"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Location
@@ -38,15 +41,21 @@ export const columns: ColumnDef<AssetsProps>[] = [
             )
         },
         cell: ({ row }) => {
-            return <div>{row.getValue("location")}</div>;
+            const code = row.getValue("location") as string;
+            return (
+                <div className="px-3">
+                    <LocationBadge code={code} />
+                </div>
+            );
         },
+
     },
     {
         accessorKey: "risk",
         header: ({ column }) => {
             return (
                 <Button
-                    variant="ghost"
+                    variant="flush"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Risk
@@ -55,15 +64,21 @@ export const columns: ColumnDef<AssetsProps>[] = [
             )
         },
         cell: ({ row }) => {
-            return <div>{row.getValue("risk")}</div>;
+            const risk = row.getValue("risk") as string;
+            return (
+                <div className="px-3">
+                    <RiskBadge risk={risk} />
+                </div>
+            );
         },
+
     },
     {
         accessorKey: "riskScore",
         header: ({ column }) => {
             return (
                 <Button
-                    variant="ghost"
+                    variant="flush"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Risk Score
@@ -73,7 +88,7 @@ export const columns: ColumnDef<AssetsProps>[] = [
         },
         cell: ({ row }) => {
             const value = row.getValue("riskScore") as number
-            return <div>{value?.toFixed(2)}</div>;
+            return <div className="px-3">{value?.toFixed(2)}</div>;
         },
     },
     {
@@ -81,7 +96,8 @@ export const columns: ColumnDef<AssetsProps>[] = [
         header: ({ column }) => {
             return (
                 <Button
-                    variant="ghost"
+                    variant="flush"
+                    size="none"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Supplier
@@ -90,19 +106,39 @@ export const columns: ColumnDef<AssetsProps>[] = [
             )
         },
         cell: ({ row }) => {
-            return <div>{row.getValue("supplier")}</div>;
+            return <div className="px-3">{row.getValue("supplier")}</div>;
         },
     },
-]
+    {
+        id: "actions",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="flush"
+                >
+                    Details
+                </Button>
+            )
+        },
+        cell: ({ row }) => {
+            const asset = row.original;
+            const { openDrawer } = useAssetDrawerStore();
+            return (
+                <Button
+                    size="default"
+                    variant="flush"
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        openDrawer(asset);
+                    }}
+                >
+                    Details
+                </Button>
+            );
+        },
+    },
 
-interface AssetsDataTableProps {
-  assets: AssetsProps[];
-  total: number;
-  page: number;
-  pageSize: number;
-  onPageChange: (page: number) => void;
-  selectedRow: (asset: AssetsProps) => void;
-}
+]
 
 
 export default function AssetsDataTable({ assets, selectedRow }: AssetsDataTableProps) {

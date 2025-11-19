@@ -1,11 +1,19 @@
-import { VulnerabilityProps } from "@/domain/types/vulnerability/VulnerabilityProps";
+import { VulnerabilitiesStoreProps, VulnerabilityProps } from "@/domain/types/vulnerability/VulnerabilityProps";
 import { useQuery } from "@tanstack/react-query";
 import { getVulnerabilitiesByAssetId } from "../services/api";
 
-export function useVulnerabilities(assetId?: string) {
-  return useQuery<VulnerabilityProps[]>({
+export function useVulnerabilities(assetId: string | null): VulnerabilitiesStoreProps {
+  const query = useQuery<VulnerabilityProps[]>({
     queryKey: ["vulnerabilities", assetId],
-    queryFn: () => getVulnerabilitiesByAssetId(assetId!),
+    queryFn: () => {
+      if (!assetId) return Promise.resolve([]);
+      return getVulnerabilitiesByAssetId(assetId);
+    },
     enabled: !!assetId,
   });
+  return {
+    vulnerabilities: query.data,
+    loadingVulnerabilities: query.isLoading,
+    errorVulnerabilities: query.isError,
+  };
 }

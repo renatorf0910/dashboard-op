@@ -2,6 +2,8 @@
 
 import { useAssets } from "@/application/hooks/useAssets";
 import { useVulnerabilities } from "@/application/hooks/useVulnerabilities";
+import { useAssetDrawerStore } from "@/application/store/useAssetDrawerStore";
+import { useSelectedAssetStore } from "@/application/store/useSelectedAssetStore";
 import { DbApi } from "@/components/db-api/dbApi";
 import { ErrorBoundary } from "@/components/error/errorBoundary";
 import { SearchFormDrawer } from "@/components/forms/searchFormDrawer";
@@ -20,15 +22,11 @@ function AssetsPage() {
     risk: null,
     supplier: null,
   };
+  const pageSize = 20;
 
-  const [selectedAsset, setSelectedAsset] = useState<AssetsProps | null>(null);
-  const [openInfos, setOpenInfos] = useState(false);
   const [openSearchDrawer, setOpenSearchDrawer] = useState(false);
-
   const [filters, setFilters] = useState<AssetsForm>(initialFilters);
-  const allAssetsRef = useRef<AssetsProps[] | null>(null);
   const [page, setPage] = useState<number>(1);
-  const pageSize = 40;
 
   const queryParams: AssetsQueryParams = {
     page,
@@ -40,13 +38,16 @@ function AssetsPage() {
       supplier: filters.supplier ?? undefined,
     },
   };
-
   const { data, isLoading } = useAssets(queryParams);
-  const { data: vulnerabilities, isLoading: loadingVulns } = useVulnerabilities(selectedAsset?.id);
+  const { selectedAsset, selectedId, setSelectedAsset } = useSelectedAssetStore();
+  const { vulnerabilities, loadingVulnerabilities } = useVulnerabilities(selectedId);
+  const { asset, isOpen, openDrawer, closeDrawer, setVulnerabilities, setIsLoadingVulns } = useAssetDrawerStore();
+
 
   const assets = data?.items ?? [];
   const total = data?.total ?? 0;
 
+  const allAssetsRef = useRef<AssetsProps[] | null>(null);
   const sourceForOptions = allAssetsRef.current ?? assets;
 
   const searchFields: SearchFormFields<AssetsForm>[] = useMemo(() => {
@@ -70,10 +71,21 @@ function AssetsPage() {
     }
   }, [data]);
 
+  useEffect(() => {
+    if (!asset) return;
+    setIsLoadingVulns(true);
+
+    if (selectedId) {
+      setIsLoadingVulns(loadingVulnerabilities);
+      setVulnerabilities(vulnerabilities ?? []);
+    }
+  }, [asset, selectedId, vulnerabilities, loadingVulnerabilities]);
+
+
 
   const handleRowClick = (asset: AssetsProps) => {
     setSelectedAsset(asset);
-    setOpenInfos(true);
+    openDrawer(asset);
   };
 
   const clearFilters = () => {
@@ -84,7 +96,8 @@ function AssetsPage() {
   if (isLoading) return <TableSkeleton />;
 
   return (
-    <>
+    <div className="h-[calc(100vh-var(--header-height))] flex flex-col">
+
       <div className="flex mb-4">
         <button
           className="ml-auto"
@@ -95,42 +108,46 @@ function AssetsPage() {
         </button>
       </div>
 
-      <SearchFormDrawer
-        title="Filter Assets"
-        open={openSearchDrawer}
-        onOpenChange={setOpenSearchDrawer}
-        fields={searchFields}
-        initialValues={filters}
-        onSubmit={(values) => {
-          setFilters(values);
-          setPage(1);
-          setOpenSearchDrawer(false);
-        }}
-        onClear={clearFilters}
-      />
-
-      <ErrorBoundary fallback="Error loading table">
-        <AssetsDataTable
-          assets={assets}
-          selectedRow={handleRowClick}
-          total={total}
-          page={page}
-          pageSize={pageSize}
-          onPageChange={setPage}
+      <ErrorBoundary fallback="Error loading Filter">
+        <SearchFormDrawer
+          title="Filter Assets"
+          open={openSearchDrawer}
+          onOpenChange={setOpenSearchDrawer}
+          fields={searchFields}
+          initialValues={filters}
+          onSubmit={(values) => {
+            setFilters(values);
+            setPage(1);
+            setOpenSearchDrawer(false);
+          }}
+          onClear={clearFilters}
         />
       </ErrorBoundary>
 
-      <ErrorBoundary fallback="Error loading details">
+      <ErrorBoundary fallback="Error loading Table">
+        <div className="h-[calc(100vh-var(--header-height))] flex flex-col">
+          <AssetsDataTable
+            assets={assets}
+            selectedRow={handleRowClick}
+            total={total}
+            page={page}
+            onPageChange={setPage}
+          />
+        </div>
+      </ErrorBoundary>
+
+
+      <ErrorBoundary fallback="Error loading Details">
         <AssetDetailsDrawer
-          open={openInfos}
-          onOpenChange={setOpenInfos}
-          asset={selectedAsset}
+          open={isOpen}
+          onOpenChange={(o) => (o ? openDrawer(asset!) : closeDrawer())}
+          asset={asset}
           vulnerabilities={vulnerabilities}
-          isLoading={loadingVulns}>
+          isLoading={loadingVulnerabilities}>
           {selectedAsset && <DbApi assetId={selectedAsset.id} />}
         </AssetDetailsDrawer>
       </ErrorBoundary>
-    </>
+    </div>
   );
 }
 

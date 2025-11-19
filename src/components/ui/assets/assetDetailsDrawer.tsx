@@ -16,14 +16,8 @@ import { AssetDetailsDrawerProps } from "@/domain/types/assets/AssetsProps";
 import { motion } from "framer-motion";
 import { TypographyBlurred } from "../typographyBlurred";
 
-export function AssetDetailsDrawer({
-  open,
-  onOpenChange,
-  asset,
-  vulnerabilities = [],
-  isLoading = false,
-  children,
-}: AssetDetailsDrawerProps) {
+export function AssetDetailsDrawer({ open, onOpenChange, asset, vulnerabilities = [], isLoading = false, children }: AssetDetailsDrawerProps) {
+  
   const getSeverityBadge = (severity: string) => {
     switch (severity.toLowerCase()) {
       case "critical":
@@ -56,7 +50,7 @@ export function AssetDetailsDrawer({
     <Drawer open={open} onOpenChange={onOpenChange}>
       <DrawerContent>
         <ErrorBoundary fallback={"Error to render content"}>
-          <div className="p-6 overflow-y-auto space-y-8 max-h-[100vh] bg-gradient-to-b from-gray-50 to-white">
+          <div className="p-6 overflow-y-auto space-y-8 max-h-screen bg-linear-to-b from-gray-50 to-white">
             {asset ? (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}

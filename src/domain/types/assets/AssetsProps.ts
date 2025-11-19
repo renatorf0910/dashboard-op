@@ -10,6 +10,14 @@ export interface AssetsProps {
     supplier: string,
 }
 
+export interface AssetsDataTableProps {
+    assets: AssetsProps[];
+    total: number;
+    page: number;
+    onPageChange: (page: number) => void;
+    selectedRow: (asset: AssetsProps) => void;
+}
+
 export interface AssetsForm {
   name: string | null;
   location: string | null;
@@ -24,6 +32,14 @@ export interface AssetDetailsDrawerProps {
   vulnerabilities?: VulnerabilityProps[];
   isLoading?: boolean;
   children: ReactNode;
+}
+
+export interface AssetSelectedStore {
+  selectedId: string | null
+  selectedAsset: AssetsProps | null
+
+  setSelectedAsset: (asset: AssetsProps | null) => void
+  clear: () => void
 }
 
 export interface AssetsQueryParams {
