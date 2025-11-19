@@ -41,8 +41,8 @@ function AssetsPage() {
   const { data, isLoading } = useAssets(queryParams);
   const { selectedAsset, selectedId, setSelectedAsset } = useSelectedAssetStore();
   const { vulnerabilities, loadingVulnerabilities } = useVulnerabilities(selectedId);
-  const { asset, isOpen, openDrawer, closeDrawer, setVulnerabilities, setIsLoadingVulns } = useAssetDrawerStore();
-
+  const { asset, isOpen, openDrawer, closeDrawer, setVulnerabilities, setIsLoadingVulns } = 
+useAssetDrawerStore();
 
   const assets = data?.items ?? [];
   const total = data?.total ?? 0;
@@ -64,7 +64,6 @@ function AssetsPage() {
     ];
   }, [sourceForOptions]);
 
-
   useEffect(() => {
     if (!allAssetsRef.current && data?.items) {
       allAssetsRef.current = data.items;
@@ -80,8 +79,6 @@ function AssetsPage() {
       setVulnerabilities(vulnerabilities ?? []);
     }
   }, [asset, selectedId, vulnerabilities, loadingVulnerabilities]);
-
-
 
   const handleRowClick = (asset: AssetsProps) => {
     setSelectedAsset(asset);
@@ -125,18 +122,18 @@ function AssetsPage() {
       </ErrorBoundary>
 
       <ErrorBoundary fallback="Error loading Table">
-        <div className="h-[calc(100vh-var(--header-height))] flex flex-col">
-          <AssetsDataTable
-            assets={assets}
-            selectedRow={handleRowClick}
-            total={total}
-            page={page}
-            onPageChange={setPage}
-          />
+        <div className="flex flex-col flex-1 min-h-0">
+          <div className="flex-1 min-h-0 overflow-auto">
+            <AssetsDataTable
+              assets={assets}
+              selectedRow={handleRowClick}
+              total={total}
+              page={page}
+              onPageChange={setPage}
+            />
+          </div>
         </div>
       </ErrorBoundary>
-
-
       <ErrorBoundary fallback="Error loading Details">
         <AssetDetailsDrawer
           open={isOpen}

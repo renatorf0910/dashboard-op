@@ -11,3 +11,16 @@ export interface DeviceProps {
 export interface Device extends BaseEntity {
   gatewayId: string;
 }
+
+export interface DeviceStore {
+  selectedDeviceId?: string;
+  setSelectedDeviceId: (id?: string) => void;
+  clearSelectedDevice: () => void;
+};
+
+export type DeviceDrawerStore = {
+  device: DeviceProps | null;
+  isOpen: boolean;
+  openDrawer: (device: DeviceProps) => void;
+  closeDrawer: () => void;
+};

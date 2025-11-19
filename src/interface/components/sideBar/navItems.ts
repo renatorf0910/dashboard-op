@@ -1,14 +1,14 @@
-import { Home, Settings, StretchHorizontal, TabletSmartphone, Workflow } from "lucide-react";
+import { TabletSmartphone, Server } from "lucide-react";
 
 export const navItems = [
     {
         label: "Assets",
-        icon: StretchHorizontal,
         href: "/assets",
+        icon: Server
     },
     {
         label: "Devices",
-        icon: TabletSmartphone,
         href: "/devices",
+        icon: TabletSmartphone
     },
-]
+];
