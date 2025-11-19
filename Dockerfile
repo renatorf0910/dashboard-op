@@ -1,4 +1,4 @@
-FROM node:22-alpine
+FROM node:22-alpine AS builder
 
 WORKDIR /app
 
@@ -9,8 +9,16 @@ COPY . .
 
 RUN npm run build
 
-RUN npm install -g json-server
+FROM node:22-alpine AS runner
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install --omit=dev
+
+COPY --from=builder /app/.next ./.next
+COPY --from=builder /app/public ./public
 
 EXPOSE 3000
 
-CMD sh -c "json-server --host 0.0.0.0 --port 8000 --watch db.json & npm start"
+CMD ["npm", "start"]
