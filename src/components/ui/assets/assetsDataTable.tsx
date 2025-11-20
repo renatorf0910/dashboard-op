@@ -8,38 +8,19 @@ import { RiskBadge } from "../badge-risk";
 import { Button } from "../button";
 import { DataTable } from "../data-table";
 import { LocationBadge } from "../location-badge";
+import { HeaderDataTable } from "../headerDataTable";
 
 export const columns: ColumnDef<AssetsProps>[] = [
     {
         accessorKey: "name",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="flush"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Name
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
+        header: HeaderDataTable<AssetsProps>("Name"),
         cell: ({ row }) => {
             return <div className="px-3">{row.getValue("name")}</div>;
         },
     },
     {
         accessorKey: "location",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="flush"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Location
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
+        header: HeaderDataTable<AssetsProps>("Location"),
         cell: ({ row }) => {
             const code = row.getValue("location") as string;
             return (
@@ -52,17 +33,7 @@ export const columns: ColumnDef<AssetsProps>[] = [
     },
     {
         accessorKey: "risk",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="flush"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Risk
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
+        header: HeaderDataTable<AssetsProps>("Risk"),
         cell: ({ row }) => {
             const risk = row.getValue("risk") as string;
             return (
@@ -75,17 +46,7 @@ export const columns: ColumnDef<AssetsProps>[] = [
     },
     {
         accessorKey: "riskScore",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="flush"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Risk Score
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
+        header: HeaderDataTable<AssetsProps>("Risk Score"),
         cell: ({ row }) => {
             const value = row.getValue("riskScore") as number
             return <div className="px-3">{value?.toFixed(2)}</div>;
@@ -93,18 +54,7 @@ export const columns: ColumnDef<AssetsProps>[] = [
     },
     {
         accessorKey: "supplier",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="flush"
-                    size="none"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-                >
-                    Supplier
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            )
-        },
+        header: HeaderDataTable<AssetsProps>("Supplier"),
         cell: ({ row }) => {
             return <div className="px-3">{row.getValue("supplier")}</div>;
         },

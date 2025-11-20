@@ -3,69 +3,37 @@
 import { DeviceProps } from "@/domain/types/device/DeviceProps";
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { ArrowUpDown } from "lucide-react";
 import { DataTable } from "@/components/ui/data-table";
 import { useDeviceStore } from "@/application/store/useDeviceStore";
+import { HeaderDataTable } from "../headerDataTable";
 
 export const deviceColumns: ColumnDef<DeviceProps>[] = [
     {
         accessorKey: "name",
-        header: ({ column }) => (
-            <Button
-                variant="flush"
-                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            >
-                Name <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
+        header: HeaderDataTable<DeviceProps>("Name"),
         cell: ({ row }) => <div className="px-3">{row.getValue("name")}</div>,
     },
     {
         accessorKey: "assetId",
-        header: ({ column }) => (
-            <Button
-                variant="flush"
-                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            >
-                Asset Reference <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
+        header: HeaderDataTable<DeviceProps>("Asset Reference"),
         cell: ({ row }) => <div className="px-3">{row.getValue("assetId")}</div>,
     },
     {
         accessorKey: "gatewayId",
-        header: ({ column }) => (
-            <Button
-                variant="flush"
-                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            >
-                Gateway Reference <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
+        header: HeaderDataTable<DeviceProps>("Gateway Reference"),
         cell: ({ row }) => <div className="px-3">{row.getValue("gatewayId")}</div>,
     },
     {
         accessorKey: "type",
-        header: ({ column }) => (
-            <Button
-                variant="flush"
-                onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-            >
-                Type <ArrowUpDown className="ml-2 h-4 w-4" />
-            </Button>
-        ),
+        header: HeaderDataTable<DeviceProps>("Type"),
         cell: ({ row }) => (
             <div className="px-3 text-muted-foreground">{row.getValue("type")}</div>
         ),
     },
     {
         id: "actions",
-        header: ({ column }) => (
-            <Button
-                variant="flush"
-            >
-                Details
-            </Button>
+        header: () => (
+            <button className="px-3 text-sm font-medium">Details</button>
         ),
         cell: ({ row }) => {
             const device = row.original;
