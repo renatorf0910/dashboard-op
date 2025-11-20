@@ -25,9 +25,15 @@ export interface DeviceStore {
   clearSelectedDevice: () => void;
 };
 
-export type DeviceDrawerStore = {
-  device: DeviceProps | null;
+export interface DeviceDrawerStore {
+  device: (DeviceProps & {
+    asset?: AssetsProps | null;
+    gateway?: GatewayProps | null;
+  }) | null;
   isOpen: boolean;
-  openDrawer: (device: DeviceProps) => void;
+  openDrawer: (device: DeviceProps & {
+    asset?: AssetsProps | null;
+    gateway?: GatewayProps | null;
+  }) => void;
   closeDrawer: () => void;
-};
+}

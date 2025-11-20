@@ -34,7 +34,7 @@ export function DeviceDetailsDialog() {
                         <InfoItem label="Asset ID" value={device?.asset?.id} />
                         <InfoItem label="Location" value={device?.asset?.location} />
                         <InfoItem label="Risk Level" value={device?.asset?.risk} />
-                        <InfoItem value={ <AssetButton assetId={device?.assetId!} /> }
+                        <InfoItem label="" value={ <AssetButton assetId={device?.assetId!} /> }
                         />
                     </InfoGrid>
                 </Section>
