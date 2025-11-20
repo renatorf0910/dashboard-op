@@ -7,8 +7,13 @@ export const metadata: Metadata = {
     default: 'Dashboard',
     template: '%s',
   },
-  description: '',
+  icons: {
+    icon: [
+      { url: '/images/favicon.png', sizes: '32x32', type: 'image/png' },
+    ],
+  }
 };
+
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (

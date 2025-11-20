@@ -37,18 +37,17 @@ function SelectTrigger({
       data-slot="select-trigger"
       data-size={size}
       className={cn(
-        "flex h-9 items-center justify-between gap-2 rounded-lg border border-border bg-card px-3 py-2 text-sm shadow-sm transition-all",
-        "hover:border-primary/40 hover:bg-accent/40",
-        "focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/30 outline-none",
+        "select-trigger",
+        "flex h-9 w-30 items-center justify-between gap-2 rounded-lg border bg-card px-3 py-2 text-sm shadow-sm transition-all",
         "disabled:opacity-50 disabled:cursor-not-allowed",
-        "[&_svg]:text-muted-foreground cursor-pointer",
+        "[&_svg]:text-white", 
         className
       )}
       {...props}
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-60" />
+        <ChevronDownIcon className="size-4" />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   )

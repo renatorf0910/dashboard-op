@@ -9,7 +9,7 @@ export function SidebarToggle() {
   return (
     <button
       onClick={toggle}
-      className="p-2 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+      className="p-2 rounded-md hover:bg-gray-100 transition"
     >
       {isOpen ? <ChevronLeft size={20} /> : <Menu size={20} />}
     </button>

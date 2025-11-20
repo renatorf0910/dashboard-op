@@ -78,7 +78,7 @@ export function PaginationWithSize({ currentPage, totalPages, pageSize, pageSize
                 value={String(pageSize)}
                 onValueChange={(value) => onPageSizeChange(Number(value))}
             >
-                <SelectTrigger className="w-[180px] h-9 rounded-lg border-muted-foreground/20">
+                <SelectTrigger>
                     <SelectValue />
                 </SelectTrigger>
 

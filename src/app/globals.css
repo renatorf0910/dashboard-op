@@ -1,112 +1,146 @@
 @import "tailwindcss";
 @config "../../tailwind.config.ts";
 
+@font-face {
+  font-family: "Geograph";
+  src: url("/fonts/Geograph-Regular.woff2") format("woff2");
+  font-weight: normal;
+  font-style: normal;
+}
+
 :root {
-  --background: 0 0% 100%;
-  --foreground: 222 47% 11%;
-  --card: 0 0% 100%;
-  --card-foreground: 222 47% 11%;
-  --primary: 207 97% 20%;
-  --primary-side-bar: #000000;
-  --primary-foreground: 210 40% 98%;
-  --secondary: 207 100% 16%;
-  --secondary-foreground: 210 40% 98%;
-  --muted: 220 30% 94%;
-  --muted-foreground: 220 15% 40%;
-  --accent: 198 100% 97%;
-  --accent-foreground: 222 47% 11%;
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 0 0% 98%;
-  --border: 216 28% 88%;
-  --input: 216 28% 88%;
-  --ring: 207 97% 32%;
+  --background: #ffffff;
+  --foreground: #0b0e21;
+
+  --card: #ffffff;
+  --card-foreground: #0b0e21;
+
+  --primary: #002177;
+  --primary-side-bar: #f8f8f8;
+  --primary-foreground: #3CF0FF;
+
+  --secondary: #001a5c;
+  --secondary-foreground: #e6e6e6;
+
+  --muted: #e6e9f2;
+  --muted-foreground: #6b7080;
+
+  --accent: #e6f7ff;
+  --accent-foreground: #0b0e21;
+
+  --destructive: #cc3232;
+  --destructive-foreground: #fafafa;
+
+  --border: #d0d5e0;
+  --input: #d0d5e0;
+  --ring: #003399;
+
   --radius: 0.6rem;
   --header-height: 72px;
 
-}
-
-.dark {
-  --background: 207 100% 16%;
-  --foreground: 0 0% 98%;
-
-  --card: 207 100% 16%;
-  --card-foreground: 0 0% 98%;
-
-  --primary: 207 97% 32%;
-  --primary-foreground: 0 0% 100%;
-
-  --secondary: 207 90% 12%;
-  --secondary-foreground: 0 0% 98%;
-
-  --muted: 207 60% 20%;
-  --muted-foreground: 210 10% 70%;
-
-  --accent: 207 50% 22%;
-  --accent-foreground: 0 0% 98%;
-
-  --border: 207 30% 28%;
-  --input: 207 30% 28%;
-  --ring: 207 97% 32%;
+  --font-primary: "Geograph", sans-serif;
 }
 
 @layer base {
   * {
     @apply border-border;
+    font-family: var(--font-primary);
   }
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: var(--font-primary);
   }
 }
 
 body {
-  background-color: hsl(var(--background));
-  color: hsl(var(--foreground));
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-primary);
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: hsl(var(--foreground));
+  color: var(--foreground);
+  font-family: var(--font-primary);
 }
 
 a, button {
-  color: hsl(var(--primary));
+  color: var(--primary-side-bar);
+  font-family: var(--font-foreground);
+}
+
+.pagination-link {
+  @apply bg-primary text-white border border-primary;
+}
+
+.pagination-link:hover {
+  @apply bg-primary/90;
+}
+
+.pagination-link[data-active="true"] {
+  @apply bg-background text-primary border-primary font-semibold;
+}
+
+.select-trigger {
+  @apply bg-primary text-white border-primary;
+}
+
+.select-trigger:hover {
+  @apply bg-primary/90 border-primary/80;
+}
+
+.select-trigger[data-placeholder] {
+  @apply text-white;
+}
+
+.select-item[data-state="checked"] {
+  @apply bg-primary text-white;
 }
 
 .border-base {
-  border-color: hsl(var(--border));
+  border-color: var(--border);
 }
 
 @layer utilities {
   .table-wrapper {
-    @apply rounded-xl border border-border bg-card shadow-sm overflow-hidden;
+    @apply rounded-xl bg-card shadow-sm overflow-hidden;
+    border: 1px solid rgba(0,0,0,0.05);
   }
+
   .table-premium thead tr {
     background: linear-gradient(to bottom,
       rgba(0,0,0,0.03),
       rgba(0,0,0,0.05)
     );
-    border-bottom: 1px solid hsl(var(--border));
+    border-bottom: 1px solid var(--border);
   }
+
   .table-premium th {
-    @apply text-xs font-semibold tracking-wide uppercase text-muted-foreground py-3 px-4 select-none;
+    @apply text-xs font-semibold tracking-wide uppercase bg-primary py-3 px-4 select-none;
   }
+
   .table-premium td {
     @apply text-sm text-foreground py-3 px-4 align-middle;
   }
+
   .table-premium tbody tr:nth-child(even) {
     background-color: rgba(0, 0, 0, 0.015);
   }
+
   .table-premium tbody tr {
     transition: background-color 0.18s ease, box-shadow 0.18s ease;
   }
+
   .table-premium tbody tr:hover {
-    background-color: rgba(2, 92, 165, 0.09);
+    background-color: rgba(0, 33, 120, 0.09);
     box-shadow: 0 1px 4px rgba(0,0,0,0.08);
     cursor: pointer;
   }
+
   .table-premium tbody tr:not(:last-child) {
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid rgba(0,0,0,0.04);
   }
+
   .table-premium {
     border-radius: 0.75rem;
   }
