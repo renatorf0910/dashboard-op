@@ -61,7 +61,7 @@ export const columns: ColumnDef<AssetsProps>[] = [
     },
     {
         id: "actions",
-        header: ({ column }) => {
+        header: () => {
             return (
                 <Button
                     variant="flush"
@@ -75,8 +75,9 @@ export const columns: ColumnDef<AssetsProps>[] = [
             const { openDrawer } = useAssetDrawerStore();
             return (
                 <Button
+                    style={{ color: "#002177"}}
                     size="default"
-                    variant="flush"
+                    variant="outline"
                     onClick={(e) => {
                         e.stopPropagation();
                         openDrawer(asset);

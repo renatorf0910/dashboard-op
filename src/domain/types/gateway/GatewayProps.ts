@@ -1,6 +1,6 @@
 import { BaseEntity } from "../topology/TopologyProps";
 
-export interface Gateway {
+export interface GatewayProps {
   id: string;
   name: string;
   assetId: string;

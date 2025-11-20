@@ -7,7 +7,7 @@ export function DeviceMap({ selectedDeviceId }: { selectedDeviceId?: string }) {
   return (
     <ReactFlowProvider>
 
-      <div className="w-full h-[80vh] border rounded-lg overflow-hidden">
+      <div className="w-full h-[100vh] border rounded-lg overflow-hidden">
         <Diagram selectedNodeId={selectedDeviceId} />
       </div>
     </ReactFlowProvider>

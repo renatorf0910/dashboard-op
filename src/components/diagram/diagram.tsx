@@ -24,7 +24,6 @@ export function Diagram({ selectedNodeId }: { selectedNodeId?: string }) {
 
   const [nodes, setNodes] = useState<Node<{ label: string; nodeType: NodeType }>[]>([]);
   const [edges, setEdges] = useState<Edge[]>([]);
-  const [selectedNode, setSelectedNode] = useState<Node<{ label: string; nodeType: NodeType }> | null>(null);
   const { fitView, setCenter } = useReactFlow();
 
   const nodeWidth = 180;
@@ -127,8 +126,8 @@ export function Diagram({ selectedNodeId }: { selectedNodeId?: string }) {
     if (selectedNodeId && nodes.length > 0) {
       const node = nodes.find((n) => n.id === selectedNodeId);
       if (node) {
-        setCenter(node.position.x + nodeWidth / 2, node.position.y + nodeHeight / 2, {
-          zoom: 2,
+        setCenter(node.position.x + nodeWidth / 2, node.position.y + nodeHeight / 2 + 80, {
+          zoom: 1.7,
           duration: 1000,
         });
       }

@@ -1,6 +1,6 @@
 import { AssetsProps, AssetsQueryParams, PaginatedAssetsResponse } from "@/domain/types/assets/AssetsProps";
 import { Device, DeviceProps } from "@/domain/types/device/DeviceProps";
-import { Gateway } from "@/domain/types/gateway/GatewayProps";
+import { GatewayProps } from "@/domain/types/gateway/GatewayProps";
 import { TopologyResponse } from "@/domain/types/topology/TopologyProps";
 import { VulnerabilityProps } from "@/domain/types/vulnerability/VulnerabilityProps";
 import axios from "axios";
@@ -58,6 +58,12 @@ export async function getAssets(params: AssetsQueryParams): Promise<PaginatedAss
   };
 }
 
+export async function getAllAssets(): Promise<AssetsProps[]> {
+    const response = await api.get(`/assets`);
+    return response.data;
+}
+
+
 export async function getVulnerabilitiesByAssetId(assetId: string): Promise<VulnerabilityProps[]> {
     const response = await api.get(`/vulnerabilities`, {
         params: { assetId },
@@ -72,7 +78,7 @@ export async function getTopology(): Promise<TopologyResponse> {
   return topology;
 }
 
-export async function getGateways(): Promise<Gateway[]> {
+export async function getGateways(): Promise<GatewayProps[]> {
   const response = await api.get("/gateways");
   const gateways = response.data;
 
@@ -87,11 +93,29 @@ export async function getDevice(): Promise<Device[]> {
   return devices;
 }
 
-export async function getDevices(): Promise<DeviceProps[]> {
-  const  response = await api.get("/devices");
-  const devices = response.data;
 
-  return devices;
+export async function getDevices(filters?: Partial<DeviceProps>) {
+  const response = await api.get<DeviceProps[]>("/devices");
+  let data = response.data;
+
+  if (filters) {
+    const filterKeys = Object.keys(filters) as (keyof DeviceProps)[];
+
+    data = data.filter((item) =>
+      filterKeys.every((key) => {
+        const filterValue = filters[key];
+        if (filterValue === undefined || filterValue === null || filterValue === "") {
+          return true;
+        }
+        const itemValue = item[key];
+        if (itemValue === undefined || itemValue === null) return false;
+
+        return String(itemValue).toLowerCase().includes(String(filterValue).toLowerCase());
+      })
+    );
+  }
+
+  return data;
 }
 
 

@@ -1,6 +1,8 @@
 "use client";
+
 import { SearchFormProps } from "@/domain/types/form/SearchFormProps";
-import { ErrorMessage, Field, Form, Formik, FormikHelpers } from "formik";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import clsx from "clsx";
 
 export function SearchForm<T extends object>({
   fields,
@@ -10,7 +12,7 @@ export function SearchForm<T extends object>({
   onClear,
 }: SearchFormProps<T>) {
   return (
-    <Formik<T>
+    <Formik<Partial<T>>
       initialValues={initialValues}
       validationSchema={validation}
       enableReinitialize
@@ -22,60 +24,60 @@ export function SearchForm<T extends object>({
       {({ handleSubmit, resetForm }) => (
         <Form
           onSubmit={handleSubmit}
-          className="flex flex-col gap-4 bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-md"
+          className="flex flex-col gap-6 bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-md"
         >
-          {fields.map((field) => (
-            <div key={String(field.name)} className="flex flex-col gap-2">
-              <label htmlFor={String(field.name)} className="font-medium">
-                {field.label}
-              </label>
+          {fields.map((field) => {
+            const name = String(field.name);
 
-              {field.type === "select" && field.options ? (
-                <Field
-                  as="select"
-                  id={String(field.name)}
-                  name={String(field.name)}
-                  disabled={field.disabled}
-                  className="border rounded-lg px-3 py-2 bg-transparent"
-                >
-                  <option value="">Choose...</option>
-                  {field.options.map((opt) => (
-                    <option key={opt.value} value={opt.value}>
-                      {opt.label}
-                    </option>
-                  ))}
-                </Field>
-              ) : field.type === "date" ? (
-                <Field
-                  id={String(field.name)}
-                  name={String(field.name)}
-                  type="date"
-                  disabled={field.disabled}
-                  className="border rounded-lg px-3 py-2 bg-transparent"
+            return (
+              <div key={name} className="flex flex-col gap-2">
+                <label htmlFor={name} className="font-medium">
+                  {field.label}
+                </label>
+                {field.type === "select" && field.options ? (
+                  <Field
+                    as="select"
+                    id={name}
+                    name={name}
+                    disabled={field.disabled}
+                    className={clsx(
+                      "border rounded-lg px-3 py-2 bg-transparent focus:ring-2",
+                      "focus:ring-blue-500 dark:border-zinc-700"
+                    )}
+                  >
+                    <option value="">Choose...</option>
+                    {field.options.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </Field>
+                ) : (
+                  <Field
+                    id={name}
+                    name={name}
+                    type={field.type}
+                    placeholder={field.placeholder}
+                    disabled={field.disabled}
+                    className={clsx(
+                      "border rounded-lg px-3 py-2 bg-transparent",
+                      "focus:ring-2 focus:ring-blue-500 dark:border-zinc-700"
+                    )}
+                  />
+                )}
+
+                <ErrorMessage
+                  name={name}
+                  component="div"
+                  className="text-red-500 text-sm"
                 />
-              ) : (
-                <Field
-                  id={String(field.name)}
-                  name={String(field.name)}
-                  type={field.type}
-                  placeholder={field.placeholder}
-                  disabled={field.disabled}
-                  className="border rounded-lg px-3 py-2 bg-transparent"
-                />
-              )}
-
-              <ErrorMessage
-                name={String(field.name)}
-                component="div"
-                className="text-red-500 text-sm"
-              />
-            </div>
-          ))}
-
-          <div className="flex justify-end gap-3 mt-4">
+              </div>
+            );
+          })}
+          <div className="flex justify-end gap-3 mt-2">
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-all duration-200"
+              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-all"
             >
               Filter
             </button>
@@ -86,7 +88,7 @@ export function SearchForm<T extends object>({
                 resetForm();
                 onClear?.();
               }}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-2 px-4 rounded-lg transition-all duration-200"
+              className="bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 text-gray-800 dark:text-white py-2 px-4 rounded-lg transition-all"
             >
               Reset Filters
             </button>

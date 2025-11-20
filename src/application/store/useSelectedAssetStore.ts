@@ -1,19 +1,27 @@
 import { create } from "zustand";
-import { AssetSelectedStore } from "@/domain/types/assets/AssetsProps";
+import { AssetsProps } from "@/domain/types/assets/AssetsProps";
 
-export const useSelectedAssetStore = create<AssetSelectedStore>((set) => ({
+interface SelectedAssetStore {
+  selectedId: string | null;
+  selectedAsset: AssetsProps | null;
+  assetButtonDevices: string | null;
+
+  setSelectedAsset: (a: AssetsProps) => void;
+  setSelectedId: (id: string | null) => void;
+  setAssetButtonDevices: (id: string | null) => void;
+}
+
+export const useSelectedAssetStore = create<SelectedAssetStore>((set) => ({
   selectedId: null,
   selectedAsset: null,
+  assetButtonDevices: null,
 
   setSelectedAsset: (asset) =>
-    set({
-      selectedAsset: asset,
-      selectedId: asset ? asset.id : null,
-    }),
+    set({ selectedAsset: asset, selectedId: asset.id }),
 
-  clear: () =>
-    set({
-      selectedAsset: null,
-      selectedId: null,
-    }),
+  setSelectedId: (id) =>
+    set({ selectedId: id }),
+
+  setAssetButtonDevices: (id) =>
+    set({ assetButtonDevices: id }),
 }));

@@ -4,6 +4,7 @@ export interface SideBarItemsProps {
     label: string;
     href: string;
     icon: LucideIcon; 
+    isOpen: boolean;
 }
 
 export type SidebarStore = {
@@ -11,4 +12,4 @@ export type SidebarStore = {
   toggle: () => void;
   close: () => void;
   open: () => void;
-};
+}

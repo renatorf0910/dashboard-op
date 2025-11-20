@@ -28,10 +28,7 @@ export function SearchFormDrawer<T extends object>({
             fields={fields}
             initialValues={initialValues}
             validation={validation}
-            onSubmit={async (values, helpers) => {
-              await onSubmit(values, helpers);
-              onOpenChange(false);
-            }}
+            onSubmit={onSubmit}
             onClear={onClear}
           />
         </div>

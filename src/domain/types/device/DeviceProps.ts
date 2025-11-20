@@ -1,3 +1,5 @@
+import { AssetsProps } from "../assets/AssetsProps";
+import { GatewayProps } from "../gateway/GatewayProps";
 import { BaseEntity } from "../topology/TopologyProps";
 
 export interface DeviceProps {
@@ -7,6 +9,11 @@ export interface DeviceProps {
   name: string;
   type: string;
 };
+
+export interface DeviceAllInfosProps extends DeviceProps {
+  asset: AssetsProps | null;
+  gateway: GatewayProps | null;
+}
 
 export interface Device extends BaseEntity {
   gatewayId: string;

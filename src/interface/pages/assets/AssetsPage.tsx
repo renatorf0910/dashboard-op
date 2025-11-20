@@ -4,45 +4,56 @@ import { useAssets } from "@/application/hooks/useAssets";
 import { useVulnerabilities } from "@/application/hooks/useVulnerabilities";
 import { useAssetDrawerStore } from "@/application/store/useAssetDrawerStore";
 import { useSelectedAssetStore } from "@/application/store/useSelectedAssetStore";
+import { useFilterStore } from "@/application/store/useFilterStore";
+
 import { DbApi } from "@/components/db-api/dbApi";
 import { ErrorBoundary } from "@/components/error/errorBoundary";
 import { SearchFormDrawer } from "@/components/forms/searchFormDrawer";
 import { AssetDetailsDrawer } from "@/components/ui/assets/assetDetailsDrawer";
 import AssetsDataTable from "@/components/ui/assets/assetsDataTable";
+import { Button } from "@/components/ui/button";
 import { TableSkeleton } from "@/components/ui/tableSkeleton";
-import { AssetsForm, AssetsProps, AssetsQueryParams } from "@/domain/types/assets/AssetsProps";
+
+import {
+  AssetsFilterForm,
+  AssetsProps,
+  AssetsQueryParams,
+} from "@/domain/types/assets/AssetsProps";
 import { SearchFormFields } from "@/domain/types/form/SearchFormProps";
+
 import { ListFilterPlus } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 function AssetsPage() {
-  const initialFilters: AssetsForm = {
-    name: null,
-    location: null,
-    risk: null,
-    supplier: null,
-  };
-  const pageSize = 20;
+  const { filters, setFilters, clearFilters } = useFilterStore();
+  const assetFilters = (filters["assets"] ?? {}) as AssetsFilterForm;
 
   const [openSearchDrawer, setOpenSearchDrawer] = useState(false);
-  const [filters, setFilters] = useState<AssetsForm>(initialFilters);
-  const [page, setPage] = useState<number>(1);
+  const [page, setPage] = useState(1);
+  const pageSize = 100;
 
   const queryParams: AssetsQueryParams = {
     page,
     pageSize,
     filters: {
-      name: filters.name ?? undefined,
-      risk: filters.risk ?? undefined,
-      location: filters.location ?? undefined,
-      supplier: filters.supplier ?? undefined,
+      name: assetFilters.name || "",
+      risk: assetFilters.risk || "",
+      location: assetFilters.location || "",
+      supplier: assetFilters.supplier || ""
     },
   };
+
   const { data, isLoading } = useAssets(queryParams);
-  const { selectedAsset, selectedId, setSelectedAsset } = useSelectedAssetStore();
+  const { assetButtonDevices, setAssetButtonDevices, selectedAsset, selectedId, setSelectedAsset } = useSelectedAssetStore();
   const { vulnerabilities, loadingVulnerabilities } = useVulnerabilities(selectedId);
-  const { asset, isOpen, openDrawer, closeDrawer, setVulnerabilities, setIsLoadingVulns } = 
-useAssetDrawerStore();
+  const {
+    asset,
+    isOpen,
+    openDrawer,
+    closeDrawer,
+    setVulnerabilities,
+    setIsLoadingVulns,
+  } = useAssetDrawerStore();
 
   const assets = data?.items ?? [];
   const total = data?.total ?? 0;
@@ -50,7 +61,7 @@ useAssetDrawerStore();
   const allAssetsRef = useRef<AssetsProps[] | null>(null);
   const sourceForOptions = allAssetsRef.current ?? assets;
 
-  const searchFields: SearchFormFields<AssetsForm>[] = useMemo(() => {
+  const searchFields: SearchFormFields<AssetsFilterForm>[] = useMemo(() => {
     const getUnique = (key: keyof AssetsProps) =>
       Array.from(new Set(sourceForOptions.map((a) => a[key] as string)))
         .filter(Boolean)
@@ -71,6 +82,17 @@ useAssetDrawerStore();
   }, [data]);
 
   useEffect(() => {
+    if (assetButtonDevices && assets.length > 0) {
+      const asset = assets.find((a) => a.id === assetButtonDevices);
+      if (asset) {
+        setSelectedAsset(asset);
+        openDrawer(asset);
+      }
+      setAssetButtonDevices(null);
+    }
+  }, [assetButtonDevices, assets]);
+
+  useEffect(() => {
     if (!asset) return;
     setIsLoadingVulns(true);
 
@@ -85,8 +107,8 @@ useAssetDrawerStore();
     openDrawer(asset);
   };
 
-  const clearFilters = () => {
-    setFilters(initialFilters);
+  const resetFilters = () => {
+    clearFilters("assets");
     setPage(1);
   };
 
@@ -94,15 +116,14 @@ useAssetDrawerStore();
 
   return (
     <div className="h-[calc(100vh-var(--header-height))] flex flex-col">
-
       <div className="flex mb-4">
-        <button
-          className="ml-auto"
+        <Button
+          className="ml-auto cursor-pointer"
           aria-label="open-filters"
           onClick={() => setOpenSearchDrawer(true)}
         >
           <ListFilterPlus />
-        </button>
+        </Button>
       </div>
 
       <ErrorBoundary fallback="Error loading Filter">
@@ -111,17 +132,17 @@ useAssetDrawerStore();
           open={openSearchDrawer}
           onOpenChange={setOpenSearchDrawer}
           fields={searchFields}
-          initialValues={filters}
+          initialValues={assetFilters}
           onSubmit={(values) => {
-            setFilters(values);
+            setFilters("assets", values);
             setPage(1);
             setOpenSearchDrawer(false);
           }}
-          onClear={clearFilters}
+          onClear={resetFilters}
         />
       </ErrorBoundary>
 
-      <ErrorBoundary fallback="Error loading Table">
+      <ErrorBoundary fallback="Error loading Table Assets">
         <div className="flex flex-col flex-1 min-h-0">
           <div className="flex-1 min-h-0 overflow-auto">
             <AssetsDataTable
@@ -134,6 +155,7 @@ useAssetDrawerStore();
           </div>
         </div>
       </ErrorBoundary>
+
       <ErrorBoundary fallback="Error loading Details">
         <AssetDetailsDrawer
           open={isOpen}

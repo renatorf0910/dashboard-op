@@ -47,7 +47,7 @@ export function AssetDetailsDrawer({ open, onOpenChange, asset, vulnerabilities 
   };
 
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
+    <Drawer open={open} onOpenChange={onOpenChange} direction="right">
       <DrawerContent>
         <ErrorBoundary fallback={"Error to render content"}>
           <div className="p-6 overflow-y-auto space-y-8 max-h-screen bg-linear-to-b from-gray-50 to-white">

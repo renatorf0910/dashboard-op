@@ -18,6 +18,8 @@
   --primary: #002177;
   --primary-side-bar: #f8f8f8;
   --primary-foreground: #3CF0FF;
+  --primary-foreground-table: #f2feff;
+  --primary-text: #030303;
 
   --secondary: #001a5c;
   --secondary-foreground: #e6e6e6;
@@ -64,10 +66,16 @@ h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-primary);
 }
 
-a, button {
+a {
   color: var(--primary-side-bar);
   font-family: var(--font-foreground);
 }
+
+button {
+  color: var(--primary-side-bar);
+  font-family: var(--font-foreground);
+}
+
 
 .pagination-link {
   @apply bg-primary text-white border border-primary;
@@ -104,13 +112,13 @@ a, button {
 @layer utilities {
   .table-wrapper {
     @apply rounded-xl bg-card shadow-sm overflow-hidden;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid var(--primary-text);
   }
 
   .table-premium thead tr {
     background: linear-gradient(to bottom,
-      rgba(0,0,0,0.03),
-      rgba(0,0,0,0.05)
+      var(--primary-text),
+      var(--primary-text)
     );
     border-bottom: 1px solid var(--border);
   }
@@ -124,7 +132,7 @@ a, button {
   }
 
   .table-premium tbody tr:nth-child(even) {
-    background-color: rgba(0, 0, 0, 0.015);
+    background-color: var(--primary-foreground-table);
   }
 
   .table-premium tbody tr {

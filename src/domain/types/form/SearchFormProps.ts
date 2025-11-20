@@ -25,16 +25,16 @@ export interface SearchFormDrawerProps<T extends object> {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   fields: SearchFormFields<T>[];
-  initialValues: T;
+  initialValues: Partial<T>;
   validation?: Yup.ObjectSchema<Partial<T>>;
-  onSubmit: (values: T, helpers: FormikHelpers<T>) => void | Promise<void>;
+  onSubmit: (values: Partial<T>, helpers: FormikHelpers<Partial<T>>) => void;
   onClear?: () => void;
 }
 
 export interface SearchFormProps<T extends object> {
   fields: SearchFormFields<T>[];
-  initialValues: T;
+  initialValues: Partial<T>;
   validation?: Yup.ObjectSchema<Partial<T>>;
-  onSubmit: (values: T, helpers: FormikHelpers<T>) => void | Promise<void>;
+  onSubmit: (values: Partial<T>, helpers: FormikHelpers<Partial<T>>) => void | Promise<void>;
   onClear?: () => void;
 }

@@ -18,12 +18,7 @@ export interface AssetsDataTableProps {
     selectedRow: (asset: AssetsProps) => void;
 }
 
-export interface AssetsForm {
-  name: string | null;
-  location: string | null;
-  risk: string | null;
-  supplier: string | null;
-}
+export type AssetsFilterForm = Partial<AssetsProps>;
 
 export interface AssetDetailsDrawerProps {
   open: boolean;
