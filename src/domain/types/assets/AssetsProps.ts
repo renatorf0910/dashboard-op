@@ -18,6 +18,11 @@ export interface AssetsDataTableProps {
     selectedRow: (asset: AssetsProps) => void;
 }
 
+export type AssetsDataTableMobileProps = {
+  assets: AssetsProps[];
+  onSelect: (asset: AssetsProps) => void;
+};
+
 export type AssetsFilterForm = Partial<AssetsProps>;
 
 export interface AssetDetailsDrawerProps {

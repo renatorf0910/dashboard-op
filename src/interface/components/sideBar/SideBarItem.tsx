@@ -24,10 +24,16 @@ export function SideBarItem({ label, href, icon: Icon, isOpen }: SideBarItemsPro
         {active && (
           <span className="absolute left-0 top-0 h-full w-1 bg-white rounded-r-md"></span>
         )}
-        <Icon size={15} />
-        {isOpen && (
-          <span className="hidden md:inline font-medium">{label}</span>
-        )}
+        {isOpen ? (
+          <>
+            <Icon size={15} />
+            <span className={clsx("font-medium", !isOpen && "hidden")}>
+              {label}
+            </span>
+
+          </>
+        ) :
+          <Icon className="ml-2" size={15} />}
       </motion.div>
     </Link>
   );

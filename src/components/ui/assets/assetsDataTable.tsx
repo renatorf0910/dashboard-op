@@ -4,7 +4,7 @@ import { useAssetDrawerStore } from "@/application/store/useAssetDrawerStore";
 import { useSelectedAssetStore } from "@/application/store/useSelectedAssetStore";
 import { AssetsDataTableProps, AssetsProps } from "@/domain/types/assets/AssetsProps";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowBigLeftDash } from "lucide-react";
+import { Info } from "lucide-react";
 import { RiskBadge } from "../badge-risk";
 import { Button } from "../button";
 import { DataTable } from "../data-table";
@@ -87,7 +87,7 @@ export const columns: ColumnDef<AssetsProps>[] = [
                         setSelectedAsset(asset);
                     }}
                 >
-                    <ArrowBigLeftDash />
+                    <Info />
                 </Button>
             );
         },

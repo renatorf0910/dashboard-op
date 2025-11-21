@@ -10,6 +10,7 @@ export function SearchForm<T extends object>({
   validation,
   onSubmit,
   onClear,
+  filtersApplied,
 }: SearchFormProps<T>) {
   return (
     <Formik<Partial<T>>
@@ -84,14 +85,19 @@ export function SearchForm<T extends object>({
 
             <button
               type="button"
+              disabled={!filtersApplied}
               onClick={() => {
                 resetForm();
                 onClear?.();
               }}
-              className="bg-primary hover:bg-primary-foreground text-primary-side-bar px-4 rounded-lg transition-all"
+              className={clsx(
+                "bg-primary hover:bg-primary-foreground text-primary-side-bar px-4 rounded-lg transition-all",
+                !filtersApplied && "opacity-50 cursor-not-allowed"
+              )}
             >
               Reset Filters
             </button>
+
           </div>
         </Form>
       )}

@@ -1,7 +1,15 @@
-type Filters = Record<string, unknown>;
+import { ReactNode } from "react";
 
-interface FilterProps {
-  filters: Record<string, Filters>;
+export type Filters = Record<string, string | number | null | undefined>;
+
+export interface FilterProps {
+  filters: Record<string, Filters>; 
   setFilters: (key: string, f: Filters) => void;
   clearFilters: (key: string) => void;
+  hasFilters: (key: string) => boolean;
+}
+
+export enum FilterGroup {
+  Assets = "assets",
+  Devices = "devices",
 }

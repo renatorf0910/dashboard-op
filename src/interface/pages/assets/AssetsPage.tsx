@@ -3,8 +3,8 @@
 import { useAssets } from "@/application/hooks/useAssets";
 import { useVulnerabilities } from "@/application/hooks/useVulnerabilities";
 import { useAssetDrawerStore } from "@/application/store/useAssetDrawerStore";
-import { useSelectedAssetStore } from "@/application/store/useSelectedAssetStore";
 import { useFilterStore } from "@/application/store/useFilterStore";
+import { useSelectedAssetStore } from "@/application/store/useSelectedAssetStore";
 
 import { DbApi } from "@/components/db-api/dbApi";
 import { ErrorBoundary } from "@/components/error/errorBoundary";
@@ -20,17 +20,29 @@ import { SearchFormFields } from "@/domain/types/form/SearchFormProps";
 import { ListFilterPlus } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-import { useParams, useRouter } from "next/navigation";
+import { getLocationLabel } from "@/components/ui/location-badge";
 import { TypographyTitle } from "@/components/ui/typograph-title";
+import { FilterGroup } from "@/domain/types/filters/FIlterProps";
+import { useParams, useRouter } from "next/navigation";
+
+const defaultAssetFilters: AssetsFilterForm = {
+  name: "",
+  risk: "",
+  location: "",
+  supplier: ""
+};
 
 function AssetsPage({ id }: AssetsPageProps) {
   const router = useRouter();
   const params = useParams();
-
   const urlAssetId = params?.id ? String(params.id) : null;
 
-  const { filters, setFilters, clearFilters } = useFilterStore();
-  const assetFilters = (filters["assets"] ?? {}) as AssetsFilterForm;
+  const filters = useFilterStore(s => s.filters);
+  const setFilters = useFilterStore(s => s.setFilters);
+  const clearFilters = useFilterStore(s => s.clearFilters);
+  const filtersApplied = useFilterStore(s => s.hasFilters(FilterGroup.Assets));
+
+  const assetFilters = (filters[FilterGroup.Assets] ?? {}) as AssetsFilterForm;
 
   const [openSearchDrawer, setOpenSearchDrawer] = useState(false);
   const [page, setPage] = useState(1);
@@ -47,6 +59,13 @@ function AssetsPage({ id }: AssetsPageProps) {
     },
   };
 
+  const normalizedInitialValues = useMemo(() => {
+    return Object.keys(assetFilters).length === 0
+      ? defaultAssetFilters
+      : assetFilters;
+  }, [assetFilters]);
+
+
   const { data, isLoading } = useAssets(queryParams);
   const { assetButtonDevices, setAssetButtonDevices, selectedAsset, selectedId, setSelectedAsset } = useSelectedAssetStore();
   const { vulnerabilities, loadingVulnerabilities } = useVulnerabilities(selectedId);
@@ -58,19 +77,35 @@ function AssetsPage({ id }: AssetsPageProps) {
   const allAssetsRef = useRef<AssetsProps[] | null>(null);
   const sourceForOptions = allAssetsRef.current ?? assets;
 
-  const searchFields: SearchFormFields<AssetsFilterForm>[] = useMemo(() => {
-    const getUnique = (key: keyof AssetsProps) =>
-      Array.from(new Set(sourceForOptions.map((a) => a[key] as string)))
-        .filter(Boolean)
-        .map((v) => ({ label: v, value: v }));
+  const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-    return [
-      { name: "name", label: "Name", type: "text" },
-      { name: "location", label: "Location", type: "select", options: getUnique("location") },
-      { name: "risk", label: "Risk", type: "select", options: getUnique("risk") },
-      { name: "supplier", label: "Supplier", type: "text" },
-    ];
+  const getRiskOptions = () =>
+    Array.from(new Set(sourceForOptions.map(a => a.risk)))
+      .filter(Boolean)
+      .map(v => ({ label: capitalize(v), value: v }));
+
+  const riskOptions = useMemo(() => {
+    return getRiskOptions();
   }, [sourceForOptions]);
+
+
+  const locationOptions = useMemo(() => {
+    const locs = Array.from(new Set(sourceForOptions.map(a => a.location)))
+      .filter(Boolean);
+
+    return locs.map(loc => ({
+      label: getLocationLabel(loc),
+      value: loc,
+    }));
+  }, [sourceForOptions]);
+
+  const searchFields: SearchFormFields<AssetsFilterForm>[] = useMemo(() => [
+    { name: "name", label: "Name", type: "text" },
+    { name: "location", label: "Location", type: "select", options: locationOptions },
+    { name: "risk", label: "Risk", type: "select", options: riskOptions },
+    { name: "supplier", label: "Supplier", type: "text" },
+  ], [sourceForOptions]);
+
 
   useEffect(() => {
     if (!allAssetsRef.current && data?.items) {
@@ -125,7 +160,7 @@ function AssetsPage({ id }: AssetsPageProps) {
   };
 
   const resetFilters = () => {
-    clearFilters("assets");
+    clearFilters(FilterGroup.Assets);
     setPage(1);
   };
 
@@ -150,9 +185,10 @@ function AssetsPage({ id }: AssetsPageProps) {
           open={openSearchDrawer}
           onOpenChange={setOpenSearchDrawer}
           fields={searchFields}
-          initialValues={assetFilters}
+          filtersApplied={filtersApplied}
+          initialValues={normalizedInitialValues}
           onSubmit={(values) => {
-            setFilters("assets", values);
+            setFilters(FilterGroup.Assets, values);
             setPage(1);
             setOpenSearchDrawer(false);
           }}

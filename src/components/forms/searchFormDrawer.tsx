@@ -13,6 +13,7 @@ export function SearchFormDrawer<T extends object>({
   validation,
   onSubmit,
   onClear,
+  filtersApplied,
 }: SearchFormDrawerProps<T>) {
   return (
     <Drawer open={open} onOpenChange={onOpenChange}>
@@ -28,6 +29,7 @@ export function SearchFormDrawer<T extends object>({
             fields={fields}
             initialValues={initialValues}
             validation={validation}
+            filtersApplied={filtersApplied}
             onSubmit={onSubmit}
             onClear={onClear}
           />

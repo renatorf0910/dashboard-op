@@ -5,7 +5,7 @@ import * as Yup from "yup";
 export type OptionsTypes = "text" | "number" | "select" | "date";
 
 export interface SearchOption {
-  label: string;
+  label: string | ReactNode;
   value: string | number;
 }
 
@@ -29,6 +29,7 @@ export interface SearchFormDrawerProps<T extends object> {
   validation?: Yup.ObjectSchema<Partial<T>>;
   onSubmit: (values: Partial<T>, helpers: FormikHelpers<Partial<T>>) => void;
   onClear?: () => void;
+  filtersApplied?: boolean;
 }
 
 export interface SearchFormProps<T extends object> {
@@ -37,4 +38,5 @@ export interface SearchFormProps<T extends object> {
   validation?: Yup.ObjectSchema<Partial<T>>;
   onSubmit: (values: Partial<T>, helpers: FormikHelpers<Partial<T>>) => void | Promise<void>;
   onClear?: () => void;
+  filtersApplied?: boolean;
 }

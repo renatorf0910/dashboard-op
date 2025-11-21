@@ -13,6 +13,8 @@ import { AssetDetailsDrawerProps } from "@/domain/types/assets/AssetsProps";
 import { motion } from "framer-motion";
 import { TypographyBlurred } from "../typography-blurred";
 import { SkeletonCard } from "../card-skeleton";
+import { LocationBadge } from "../location-badge";
+import { RiskBadge } from "../badge-risk";
 
 export function AssetDetailsDrawer({
   open,
@@ -22,34 +24,6 @@ export function AssetDetailsDrawer({
   isLoading = false,
   children,
 }: AssetDetailsDrawerProps) {
-
-  const getSeverityBadge = (severity: string) => {
-    switch (severity.toLowerCase()) {
-      case "critical":
-        return <Badge className="bg-red-700 text-white px-3 py-1 rounded-md shadow">Critical</Badge>;
-      case "high":
-        return <Badge className="bg-red-500 text-white px-3 py-1 rounded-md shadow">High</Badge>;
-      case "medium":
-        return <Badge className="bg-yellow-500 text-white px-3 py-1 rounded-md shadow">Medium</Badge>;
-      case "low":
-        return <Badge className="bg-green-500 text-white px-3 py-1 rounded-md shadow">Low</Badge>;
-      default:
-        return <Badge variant="outline">Unknown</Badge>;
-    }
-  };
-
-  const getRiskBadge = (risk: string) => {
-    switch (risk?.toLowerCase()) {
-      case "high":
-        return <Badge className="bg-red-200/20 text-red-400 font-semibold">High Risk</Badge>;
-      case "medium":
-        return <Badge className="bg-yellow-500/20 text-yellow-600 font-semibold">Medium Risk</Badge>;
-      case "low":
-        return <Badge className="bg-green-500/20 text-green-600 font-semibold">Low Risk</Badge>;
-      default:
-        return <Badge className="bg-red-900/20 text-red-900 font-semibold">Critical</Badge>;
-    }
-  };
 
   return (
     <Drawer open={open} onOpenChange={onOpenChange} direction="right">
@@ -69,16 +43,12 @@ export function AssetDetailsDrawer({
                 </div>
 
                 <div className="flex gap-2 flex-wrap text-sm">
-                  {getRiskBadge(asset.risk)}
-                  <Badge variant="outline">Supplier: {asset.supplier}</Badge>
-                  <Badge variant="outline">Location: {asset.location}</Badge>
+                  <RiskBadge risk={asset.risk} />
+                  <LocationBadge code={asset.location} />
+                  <Badge variant="outline">{asset.riskScore}</Badge>
+                  <Badge variant="outline">{asset.supplier}</Badge>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-sm">
-                  {Object.entries(asset).map(([key, value]) => (
-                    <TypographyKey key={key} field={`${key}: ${String(value)}`} />
-                  ))}
-                </div>
               </motion.div>
             ) : (
               <p className="text-muted-foreground text-sm text-center">
@@ -120,11 +90,12 @@ export function AssetDetailsDrawer({
                           <TypographyBlurred field={`Scope: ${vuln.scope}`} />
                           <TypographyBlurred field={`Ref ID: ${vuln.refId}`} />
                           <TypographyBlurred field={`CVSS: ${vuln.cvss}`} />
-                          <TypographyBlurred field={`Acknowledged: ${vuln.acknowledged ? "✅" : "❌"}`} />
+                          <RiskBadge risk={vuln.acknowledged} />
                         </div>
                       </div>
 
-                      <div>{getSeverityBadge(vuln.severity)}</div>
+                      
+                      <div><RiskBadge risk={vuln.severity} /></div>
                     </div>
                   ))}
                 </motion.div>

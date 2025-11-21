@@ -22,25 +22,25 @@ export function SideBar() {
       />
 
       <motion.aside
-        initial={{ x: -240 }}
-        animate={{ x: isOpen ? 0 : -240 }}
-        transition={{ type: "spring", stiffness: 200, damping: 22 }}
-        className="fixed z-30 h-full flex-col border-r border-border bg-primary text-primary-foreground shadow-sm flex w-60 md:hidden"
+        initial={{ x: "-100%" }}
+        animate={{ x: isOpen ? "0%" : "-100%" }}
+        transition={{ type: "spring", stiffness: 200, damping: 25 }}
+        className="fixed z-30 h-full flex flex-col border-r border-border bg-primary text-primary-foreground shadow-lg w-64 md:hidden"
       >
-        <div className="flex items-center justify-between px-4 h-16 transition-all duration-500">
+        <div className="relative flex items-center justify-between px-4 h-16">
           {isOpen && (
             <Image
               src="/images/logo.png"
               alt="logo"
-              width={175}
+              width={150}
               height={40}
-              className="transition-all duration-500"
+              className="transition-all duration-300"
             />
           )}
           <SidebarToggle />
         </div>
 
-        <nav className="flex-1 px-2 py-4 space-y-1">
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => (
             <SideBarItem
               key={item.href}
@@ -54,12 +54,12 @@ export function SideBar() {
       </motion.aside>
       <motion.aside
         initial={{ width: 72 }}
-        animate={{ width: isOpen ? 240 : 72 }}
+        animate={{ width: isOpen ? 210 : 72 }}
         transition={{ type: "spring", stiffness: 200, damping: 22 }}
         className="hidden md:flex h-full flex-col border-r border-border bg-primary text-primary-foreground shadow-sm"
       >
-        <div className="flex items-center justify-between px-2 mt-4 h-16 transition-all duration-500">
-          {isOpen && (
+        <div className="relative flex items-center justify-between px-2 mt-4 h-16 transition-all duration-500">
+          {isOpen ? (
             <Image
               src="/images/logo.png"
               alt="logo"
@@ -67,7 +67,16 @@ export function SideBar() {
               height={40}
               className="transition-all duration-500"
             />
-          )}
+          ) :
+            (
+              <Image
+                src="/images/favicon1.png"
+                alt="logo"
+                width={35}
+                height={20}
+                className="ml-2 transition-all duration-500"
+              />
+            )}
           <SidebarToggle />
         </div>
 

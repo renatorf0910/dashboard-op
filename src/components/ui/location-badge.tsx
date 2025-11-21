@@ -36,3 +36,13 @@ export function LocationBadge({ code }: { code: string }) {
         </div>
     );
 }
+
+export function getLocationLabel(code: string) {
+  const name = countries[code] || code;
+
+  const flag = code
+    ?.toUpperCase()
+    .replace(/./g, char => String.fromCodePoint(127397 + char.charCodeAt(0)));
+
+  return `${name} ${flag}`;
+}
