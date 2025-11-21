@@ -1,6 +1,14 @@
 import React from 'react';
 import { Metadata } from 'next';
 import { ClientProviders } from './clientProviders';
+import { Space_Grotesk } from 'next/font/google';
+import './globals.css';
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ['latin'],
+  display: 'swap',
+  variable: '--font-primary',
+});
 
 export const metadata: Metadata = {
   title: {
@@ -14,11 +22,10 @@ export const metadata: Metadata = {
   }
 };
 
-
-export default function RootLayout({ children }: RootLayoutProps) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
+    <html lang="en" suppressHydrationWarning className={spaceGrotesk.variable}>
+      <body className="min-h-screen">
         <ClientProviders>
           {children}
         </ClientProviders>

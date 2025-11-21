@@ -21,8 +21,10 @@ const buttonVariants = cva(
           "bg-primary text-primary-side-bar hover:bg-secondary/80",
         ghost:
           "hover:bg-accent hover:text-accent-foreground",
-        link: "text-primary underline-offset-4 hover:underline cursor-pointer",
+        link: "text-primary underline underline-offset-4 cursor-pointer transition-all hover:underline hover:-translate-y-0.5",
         flush: "p-0 bg-transparent shadow-none hover:bg-transparent cursor-pointer",
+        pagination:
+          "pagination-link inline-flex items-center justify-center h-8 min-w-8 px-3 rounded-md text-sm font-medium transition-all cursor-pointer bg-primary text-primary-side-bar border border-primary hover:bg-primary/90 data-[active=true]:bg-background data-[active=true]:text-primary data-[active=true]:border-primary data-[active=true]:font-semibold",
       },
       size: {
         default: "h-9 px-4 py-2 has-[>svg]:px-3",
@@ -77,6 +79,5 @@ export function AssetButton({ assetId }: { assetId: string }) {
     </Button>
   );
 }
-
 
 export { Button, buttonVariants }

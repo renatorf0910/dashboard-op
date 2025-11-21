@@ -96,6 +96,6 @@ export const columns: ColumnDef<AssetsProps>[] = [
 ]
 
 
-export default function AssetsDataTable({ assets, selectedRow }: AssetsDataTableProps) { 
-    return < DataTable columns = { columns } data = { assets } selectedRow = { selectedRow } />
+export default function AssetsDataTable({ assets, selectedRow }: AssetsDataTableProps) {
+    return <DataTable columns={columns} data={assets} selectedRow={selectedRow} />
 }

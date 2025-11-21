@@ -1,29 +1,54 @@
 "use client"
-import { flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable } from "@tanstack/react-table"
+
+import { flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, getFilteredRowModel, } from "@tanstack/react-table"
 import * as React from "react"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
 import { DataTableProps } from "@/domain/types/table/DataTableItemsProps"
 import { PaginationWithSize } from "./pagination-with-size"
+import { DataTableViewOptions } from "./data-table-view-options"
 
-export function DataTable<TData, TValue>({ columns, data, pageSize = 15, selectedRow, }: DataTableProps<TData, TValue>) {
+export function DataTable<TData, TValue>({
+  columns,
+  data,
+  pageSize = 15,
+  selectedRow,
+}: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
+  const [globalFilter, setGlobalFilter] = React.useState("")
+  const [columnVisibility, setColumnVisibility] = React.useState({})
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    onSortingChange: setSorting,
     getSortedRowModel: getSortedRowModel(),
-    state: { sorting },
+    getFilteredRowModel: getFilteredRowModel(),
+    state: {
+      sorting,
+      globalFilter,
+      columnVisibility,
+    },
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setGlobalFilter,
+    onColumnVisibilityChange: setColumnVisibility,
     initialState: { pagination: { pageSize } },
     meta: { onSelectRow: selectedRow },
   })
 
   return (
     <div className="space-y-4 h-full flex flex-col">
+      <div className="flex justify-between items-center">
+        <input
+          placeholder="Search..."
+          value={globalFilter ?? ""}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          className="px-3 py-2 border rounded-md w-64"
+        />
+        <DataTableViewOptions table={table} />
+      </div>
       <div className="flex-1 overflow-auto border rounded-md">
         <Table className="table-premium min-w-full">
-
           <TableHeader>
             {table.getHeaderGroups().map((group) => (
               <TableRow key={group.id}>
@@ -40,7 +65,6 @@ export function DataTable<TData, TValue>({ columns, data, pageSize = 15, selecte
               </TableRow>
             ))}
           </TableHeader>
-
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (

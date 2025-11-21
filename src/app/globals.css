@@ -1,14 +1,8 @@
 @import "tailwindcss";
 @config "../../tailwind.config.ts";
 
-@font-face {
-  font-family: "Geograph";
-  src: url("/fonts/Geograph-Regular.woff2") format("woff2");
-  font-weight: normal;
-  font-style: normal;
-}
-
 :root {
+  --font-primary: "Space Grotesk", sans-serif;
   --background: #ffffff;
   --foreground: #0b0e21;
 
@@ -17,6 +11,8 @@
 
   --primary: #002177;
   --primary-side-bar: #f8f8f8;
+  --primary-white: #f8f8f8;
+  --primary-black: #000000;
   --primary-foreground: #3CF0FF;
   --primary-foreground-table: #f2feff;
   --primary-text: #030303;
@@ -39,8 +35,6 @@
 
   --radius: 0.6rem;
   --header-height: 72px;
-
-  --font-primary: "Geograph", sans-serif;
 }
 
 @layer base {
@@ -61,7 +55,13 @@ body {
   font-family: var(--font-primary);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h4 {
+  color: var(--primary);
+  font-family: var(--font-primary);
+  font-weight: bold;
+}
+
+h1, h2, h3, h5, h6 {
   color: var(--foreground);
   font-family: var(--font-primary);
 }
@@ -78,7 +78,7 @@ button {
 
 
 .pagination-link {
-  @apply bg-primary text-white border border-primary;
+  @apply bg-primary text-primary-white border border-primary;
 }
 
 .pagination-link:hover {
@@ -86,6 +86,26 @@ button {
 }
 
 .pagination-link[data-active="true"] {
+  @apply bg-background text-primary border-primary font-semibold;
+}
+
+.dropdown-item {
+  @apply inline-flex items-center justify-start
+         h-8 min-w-32 px-3 rounded-md text-sm font-medium
+         bg-primary text-primary-white border border-primary
+         cursor-pointer transition-all
+         hover:bg-primary/90
+         data-[active=true]:bg-white
+         data-[active=true]:text-primary
+         data-[active=true]:border-primary
+         data-[active=true]:font-semibold;
+}
+
+.dropdown-item:hover {
+  @apply bg-primary/90;
+}
+
+.dropdown-item[data-active="true"] {
   @apply bg-background text-primary border-primary font-semibold;
 }
 

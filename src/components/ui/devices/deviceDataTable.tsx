@@ -10,74 +10,78 @@ import { Info } from "lucide-react";
 import Link from "next/link";
 import { Badge } from "../badge";
 import { HeaderDataTable } from "../header-data-table";
+import { AssetsProps } from "@/domain/types/assets/AssetsProps";
+import { GatewayProps } from "@/domain/types/gateway/GatewayProps";
 
-export const deviceColumns = (handleOpen: (device: DeviceAllInfosProps) => void): ColumnDef<DeviceAllInfosProps>[] => [
-    {
-        accessorKey: "name",
-        header: HeaderDataTable<DeviceAllInfosProps>("Name"),
-        cell: ({ row }) => <div className="px-3">{row.getValue("name")}</div>,
-    },
-    {
-        accessorKey: "assetId",
-        header: HeaderDataTable<DeviceAllInfosProps>("Asset Reference"),
-        cell: ({ row }) => {
-            const asset = row.original.asset;
-            if (!asset) return <div className="px-3 text-muted-foreground">—</div>;
 
-            return (
-                <Link
-                    href={`/assets/${asset.id}`}
-                    onClick={(e) => e.stopPropagation()}
-                >
-                    <Button variant='link' style={{ color: "#002177"}}>{asset.name}</Button>
-                </Link>
-            );
+export const deviceColumns = (
+    handleOpen: (device: DeviceAllInfosProps) => void
+): ColumnDef<DeviceAllInfosProps>[] => [
+        {
+            accessorKey: "name",
+            header: HeaderDataTable<DeviceAllInfosProps>("Name"),
+            cell: ({ row }) => <div className="px-3">{row.getValue("name")}</div>,
         },
-    },
-    {
-        accessorKey: "gatewayId",
-        header: HeaderDataTable<DeviceAllInfosProps>("Gateway Reference"),
-        cell: ({ row }) => <div className="px-3">{row.original.gateway?.name}</div>,
-    },
-    {
-        accessorKey: "type",
-        header: HeaderDataTable<DeviceAllInfosProps>("Type"),
-        cell: ({ row }) => <Badge variant="secondary">{row.getValue("type")}</Badge>,
-    },
-    {
-        id: "actions",
-        header: () => <Button variant="flush">Actions</Button>,
-        cell: ({ row }) => {
-            const device = row.original;
-            return (
-                <Button
-                    style={{ color: "#002177" }}
-                    size="default"
-                    variant="outline"
-                    className="ml-4"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                        handleOpen(device);
-                    }}
-                >
-                    <Info />
-                </Button>
-            );
-        },
-    },
-];
+        {
+            accessorKey: "assetId",
+            header: HeaderDataTable<DeviceAllInfosProps>("Asset Reference"),
+            cell: ({ row }) => {
+                const asset = row.original.asset;
+                if (!asset) return <div className="px-3 text-muted-foreground">—</div>;
 
-export default function DeviceDataTable({ devices, onRowClick, assets, gateways, }: {
-    devices: DeviceProps[];
-    onRowClick?: (device: DeviceAllInfosProps) => void;
-    assets: any[];
-    gateways: any[];
-}) {
+                return (
+                    <Link
+                        href={`/assets/${asset.id}`}
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <Button variant='link' style={{ color: "#002177" }}>{asset.name}</Button>
+                    </Link>
+                );
+            },
+        },
+        {
+            accessorKey: "gatewayId",
+            header: HeaderDataTable<DeviceAllInfosProps>("Gateway Reference"),
+            cell: ({ row }) => <div className="px-3">{row.original.gateway?.name}</div>,
+        },
+        {
+            accessorKey: "type",
+            header: HeaderDataTable<DeviceAllInfosProps>("Type"),
+            cell: ({ row }) => <Badge variant="secondary">{row.getValue("type")}</Badge>,
+        },
+        {
+            id: "actions",
+            header: () => <Button variant="flush">Actions</Button>,
+            cell: ({ row }) => {
+                const device = row.original;
+                return (
+                    <Button
+                        style={{ color: "#002177" }}
+                        size="default"
+                        variant="outline"
+                        className="ml-4"
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpen(device);
+                        }}
+                    >
+                        <Info />
+                    </Button>
+                );
+            },
+        },
+    ];
+
+
+export default function DeviceDataTable({ devices, onRowClick, assets, gateways, }:
+    { devices: DeviceProps[]; onRowClick?: (device: DeviceAllInfosProps) => void; assets: AssetsProps[]; gateways: GatewayProps[] }) {
+
     const allInfosDevices = getAllInfos(devices, assets, gateways);
-    const { openDrawer } = useDeviceStore();
-    const handleOpen = (device: DeviceAllInfosProps) => { openDrawer(device); onRowClick?.(device); };
+    const { setDevice } = useDeviceStore();
+    const handleOpen = (device: DeviceAllInfosProps) => {
+        setDevice(device);
+        onRowClick?.(device);
+    };
 
-    return (
-        <DataTable columns={deviceColumns(handleOpen)} data={allInfosDevices} selectedRow={handleOpen} />
-    );
+    return (<DataTable columns={deviceColumns(handleOpen)} data={allInfosDevices} selectedRow={handleOpen} />);
 }

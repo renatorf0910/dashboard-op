@@ -3,10 +3,10 @@ import React from "react";
 export function InfoItem({ label, value }: { label: string; value?: React.ReactNode;}) {
     return (
         <div className="flex flex-col">
-            <span className="text-sm text-muted-foreground mb-2">{label}</span>
-            <span className="text-base font-medium text-foreground">
+            <h4 className="text-sm text-muted-foreground mb-2">{label}</h4>
+            <h4 className="font-medium text-primary-white">
                 {value ?? "-"}
-            </span>
+            </h4>
         </div>
     );
 }

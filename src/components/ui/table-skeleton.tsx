@@ -1,6 +1,6 @@
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function TableSkeleton({ rows = 5 }: { rows?: number }) {
+export function SkeletonTable({ rows = 5 }: { rows?: number }) {
   return (
     <div className="space-y-2 p-4">
       {Array.from({ length: rows }).map((_, i) => (

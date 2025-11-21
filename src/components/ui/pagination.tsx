@@ -51,11 +51,11 @@ function PaginationLink({
         h-8 min-w-8 px-3 rounded-md text-sm font-medium
         transition-all cursor-pointer
         bg-primary 
-        text-primary-side-bar
+        text-primary-white
         border border-primary
         hover:bg-primary/90
         data-[active=true]:bg-white
-        data-[active=true]:text-primary
+        data-[active=true]:text-primary-white
         data-[active=true]:border-primary
         data-[active=true]:font-semibold
       `,

@@ -14,6 +14,8 @@ module.exports = {
         "card-foreground": "var(--card-foreground)",
 
         primary: "var(--primary)",
+        "primary-white": "var(--primary-white)",
+        "primary-black": "var(--primary-black)",
         "primary-foreground": "var(--primary-foreground)",
 
         secondary: "var(--secondary)",

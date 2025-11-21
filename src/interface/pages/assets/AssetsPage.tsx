@@ -12,7 +12,7 @@ import { SearchFormDrawer } from "@/components/forms/searchFormDrawer";
 import { AssetDetailsDrawer } from "@/components/ui/assets/assetDetailsDrawer";
 import AssetsDataTable from "@/components/ui/assets/assetsDataTable";
 import { Button } from "@/components/ui/button";
-import { TableSkeleton } from "@/components/ui/table-skeleton";
+import { SkeletonTable } from "@/components/ui/table-skeleton";
 
 import { AssetsFilterForm, AssetsPageProps, AssetsProps, AssetsQueryParams, } from "@/domain/types/assets/AssetsProps";
 import { SearchFormFields } from "@/domain/types/form/SearchFormProps";
@@ -164,7 +164,7 @@ function AssetsPage({ id }: AssetsPageProps) {
     setPage(1);
   };
 
-  if (isLoading) return <TableSkeleton />;
+  if (isLoading) return <SkeletonTable />;
 
   return (
     <div className="h-[calc(100vh-var(--header-height))] flex flex-col">

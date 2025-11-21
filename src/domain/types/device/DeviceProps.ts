@@ -20,20 +20,15 @@ export interface Device extends BaseEntity {
 }
 
 export interface DeviceStore {
-  selectedDeviceId?: string;
-  setSelectedDeviceId: (id?: string) => void;
-  clearSelectedDevice: () => void;
-};
-
-export interface DeviceDrawerStore {
   device: (DeviceProps & {
     asset?: AssetsProps | null;
     gateway?: GatewayProps | null;
   }) | null;
-  isOpen: boolean;
-  openDrawer: (device: DeviceProps & {
-    asset?: AssetsProps | null;
-    gateway?: GatewayProps | null;
-  }) => void;
-  closeDrawer: () => void;
+  setDevice: (
+    device: DeviceProps & {
+      asset?: AssetsProps | null;
+      gateway?: GatewayProps | null;
+    } | null
+  ) => void;
+  clearDevice: () => void;
 }

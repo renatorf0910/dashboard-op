@@ -5,9 +5,14 @@ import { getDevice, getDevices } from "../services/api";
 import { DeviceProps } from "@/domain/types/device/DeviceProps";
 
 export function useDevices(params?: { filters?: Record<string, unknown> }) {
-  return useQuery<DeviceProps[]>({
+  const query = useQuery<DeviceProps[]>({
     queryKey: ["devices", params?.filters],
     queryFn: () => getDevices(params?.filters),
     staleTime: 1000 * 60 * 5,
   });
+  return {
+    devices: query.data,
+    loadingVulnerabilities: query.isLoading,
+    errorVulnerabilities: query.isError,
+  };
 }
