@@ -3,21 +3,26 @@ import React from "react";
 import {
   Drawer,
   DrawerContent,
-  DrawerClose,
 } from "@/components/ui/drawer";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { AlertTriangle, Info, ShieldAlert } from "lucide-react";
-import { TypographyKey } from "@/components/ui/typographyKey";
+import { TypographyKey } from "@/components/ui/typography-key";
 import { ErrorBoundary } from "@/components/error/errorBoundary";
 import { AssetDetailsDrawerProps } from "@/domain/types/assets/AssetsProps";
 import { motion } from "framer-motion";
-import { TypographyBlurred } from "../typographyBlurred";
+import { TypographyBlurred } from "../typography-blurred";
+import { SkeletonCard } from "../card-skeleton";
 
-export function AssetDetailsDrawer({ open, onOpenChange, asset, vulnerabilities = [], isLoading = false, children }: AssetDetailsDrawerProps) {
-  
+export function AssetDetailsDrawer({
+  open,
+  onOpenChange,
+  asset,
+  vulnerabilities = [],
+  isLoading = false,
+  children,
+}: AssetDetailsDrawerProps) {
+
   const getSeverityBadge = (severity: string) => {
     switch (severity.toLowerCase()) {
       case "critical":
@@ -50,39 +55,30 @@ export function AssetDetailsDrawer({ open, onOpenChange, asset, vulnerabilities 
     <Drawer open={open} onOpenChange={onOpenChange} direction="right">
       <DrawerContent>
         <ErrorBoundary fallback={"Error to render content"}>
-          <div className="p-6 overflow-y-auto space-y-8 max-h-screen bg-linear-to-b from-gray-50 to-white">
+          <div className="p-6 overflow-y-auto space-y-10 max-h-screen bg-linear-to-b from-gray-50 to-white">
             {asset ? (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.4 }}
+                className="space-y-4"
               >
-                <Card className="shadow-md border border-gray-200 rounded-2xl hover:shadow-lg transition-all">
-                  <CardHeader className="pb-2">
-                    <CardTitle className="text-xl flex items-center gap-2 text-gray-800">
-                      <Info className="h-5 w-5 text-blue-500" />
-                      {asset.name}
-                    </CardTitle>
-                    <div className="mt-2 flex gap-2 flex-wrap">
-                      {getRiskBadge(asset.risk)}
-                      <Badge variant="outline" className="text-sm">
-                        Supplier: {asset.supplier}
-                      </Badge>
-                      <Badge variant="outline" className="text-sm">
-                        Location: {asset.location}
-                      </Badge>
-                    </div>
-                  </CardHeader>
+                <div className="flex items-center gap-2 text-gray-800">
+                  <Info className="h-5 w-5 text-blue-500" />
+                  <h2 className="text-xl font-semibold">{asset.name}</h2>
+                </div>
 
-                  <CardContent className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 text-sm text-gray-700">
-                    {Object.entries(asset).map(([key, value]) => (
-                      <TypographyKey
-                        key={key}
-                        field={`${key}: ${String(value)}`}
-                      />
-                    ))}
-                  </CardContent>
-                </Card>
+                <div className="flex gap-2 flex-wrap text-sm">
+                  {getRiskBadge(asset.risk)}
+                  <Badge variant="outline">Supplier: {asset.supplier}</Badge>
+                  <Badge variant="outline">Location: {asset.location}</Badge>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2 text-sm">
+                  {Object.entries(asset).map(([key, value]) => (
+                    <TypographyKey key={key} field={`${key}: ${String(value)}`} />
+                  ))}
+                </div>
               </motion.div>
             ) : (
               <p className="text-muted-foreground text-sm text-center">
@@ -96,61 +92,53 @@ export function AssetDetailsDrawer({ open, onOpenChange, asset, vulnerabilities 
                 Vulnerabilities
               </h4>
 
-              {isLoading && (
-                <p className="text-sm text-muted-foreground">Loading...</p>
-              )}
+              {isLoading && <SkeletonCard />}
 
               {!isLoading && vulnerabilities.length === 0 && (
-                <p className="text-sm text-muted-foreground">
-                  No vulnerabilities found for this asset.
-                </p>
+                <SkeletonCard />
               )}
 
               {!isLoading && vulnerabilities.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ duration: 0.4 }}
-                  className="grid gap-4"
+                  transition={{ duration: 2 }}
                 >
                   {vulnerabilities.map((vuln) => (
-                    <Card
+                    <div
                       key={vuln.id}
-                      className="border-l-4 rounded-xl transition-all hover:shadow-lg hover:scale-[1.01]"
-                      style={{
-                        borderColor:
-                          vuln.severity === "high"
-                            ? "#ef4444"
-                            : vuln.severity === "medium"
-                              ? "#facc15"
-                              : vuln.severity === "low"
-                                ? "#22c55e"
-                                : "#7f1d1d",
-                      }}
+                      className="p-4 flex justify-between items-start transition"
                     >
-                      <CardHeader className="flex flex-row items-center justify-between p-4">
-                        <CardTitle className="text-base font-semibold text-gray-800 flex items-center gap-2">
+                      <div className="flex flex-col gap-1">
+                        <div className="flex items-center gap-2">
                           <ShieldAlert className="h-4 w-4 text-gray-500" />
-                          {vuln.title}
-                        </CardTitle>
-                        {getSeverityBadge(vuln.severity)}
-                      </CardHeader>
+                          <span className="font-medium text-gray-800">
+                            {vuln.title}
+                          </span>
+                        </div>
+                        <div className="text-sm text-gray-600 flex flex-col gap-0.5">
+                          <TypographyBlurred field={`Scope: ${vuln.scope}`} />
+                          <TypographyBlurred field={`Ref ID: ${vuln.refId}`} />
+                          <TypographyBlurred field={`CVSS: ${vuln.cvss}`} />
+                          <TypographyBlurred field={`Acknowledged: ${vuln.acknowledged ? "✅" : "❌"}`} />
+                        </div>
+                      </div>
 
-                      <CardContent className="text-sm text-gray-600 grid gap-1">
-                        <TypographyBlurred field={`Scope: ${vuln.scope}`} />
-                        <TypographyBlurred field={`Ref ID: ${vuln.refId}`} />
-                        <TypographyBlurred field={`CVSS: ${vuln.cvss}`} />
-                        <TypographyBlurred field={`Acknowledged: ${vuln.acknowledged ? "✅" : "❌"}`} />
-
-                      </CardContent>
-                    </Card>
+                      <div>{getSeverityBadge(vuln.severity)}</div>
+                    </div>
                   ))}
                 </motion.div>
               )}
             </div>
-            <div className="mt-6">
-              {children}
-            </div>
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.4 }}
+              className="space-y-4"
+            >
+              <div>{children}</div>
+            </motion.div>
+
           </div>
         </ErrorBoundary>
       </DrawerContent>

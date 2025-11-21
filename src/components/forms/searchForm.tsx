@@ -77,7 +77,7 @@ export function SearchForm<T extends object>({
           <div className="flex justify-end gap-3 mt-2">
             <button
               type="submit"
-              className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-all"
+              className="bg-primary hover:bg-primary-foreground text-primary-side-bar py-2 px-4 rounded-lg transition-all"
             >
               Filter
             </button>
@@ -88,7 +88,7 @@ export function SearchForm<T extends object>({
                 resetForm();
                 onClear?.();
               }}
-              className="bg-gray-200 dark:bg-zinc-700 hover:bg-gray-300 dark:hover:bg-zinc-600 text-gray-800 dark:text-white py-2 px-4 rounded-lg transition-all"
+              className="bg-primary hover:bg-primary-foreground text-primary-side-bar px-4 rounded-lg transition-all"
             >
               Reset Filters
             </button>

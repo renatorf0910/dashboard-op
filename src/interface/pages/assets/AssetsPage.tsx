@@ -12,19 +12,23 @@ import { SearchFormDrawer } from "@/components/forms/searchFormDrawer";
 import { AssetDetailsDrawer } from "@/components/ui/assets/assetDetailsDrawer";
 import AssetsDataTable from "@/components/ui/assets/assetsDataTable";
 import { Button } from "@/components/ui/button";
-import { TableSkeleton } from "@/components/ui/tableSkeleton";
+import { TableSkeleton } from "@/components/ui/table-skeleton";
 
-import {
-  AssetsFilterForm,
-  AssetsProps,
-  AssetsQueryParams,
-} from "@/domain/types/assets/AssetsProps";
+import { AssetsFilterForm, AssetsPageProps, AssetsProps, AssetsQueryParams, } from "@/domain/types/assets/AssetsProps";
 import { SearchFormFields } from "@/domain/types/form/SearchFormProps";
 
 import { ListFilterPlus } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 
-function AssetsPage() {
+import { useParams, useRouter } from "next/navigation";
+import { TypographyTitle } from "@/components/ui/typograph-title";
+
+function AssetsPage({ id }: AssetsPageProps) {
+  const router = useRouter();
+  const params = useParams();
+
+  const urlAssetId = params?.id ? String(params.id) : null;
+
   const { filters, setFilters, clearFilters } = useFilterStore();
   const assetFilters = (filters["assets"] ?? {}) as AssetsFilterForm;
 
@@ -46,14 +50,7 @@ function AssetsPage() {
   const { data, isLoading } = useAssets(queryParams);
   const { assetButtonDevices, setAssetButtonDevices, selectedAsset, selectedId, setSelectedAsset } = useSelectedAssetStore();
   const { vulnerabilities, loadingVulnerabilities } = useVulnerabilities(selectedId);
-  const {
-    asset,
-    isOpen,
-    openDrawer,
-    closeDrawer,
-    setVulnerabilities,
-    setIsLoadingVulns,
-  } = useAssetDrawerStore();
+  const { asset, isOpen, openDrawer, closeDrawer, setVulnerabilities, setIsLoadingVulns, } = useAssetDrawerStore();
 
   const assets = data?.items ?? [];
   const total = data?.total ?? 0;
@@ -104,7 +101,27 @@ function AssetsPage() {
 
   const handleRowClick = (asset: AssetsProps) => {
     setSelectedAsset(asset);
-    openDrawer(asset);
+    router.push(`/assets/${asset.id}`);
+  };
+
+  useEffect(() => {
+    if (!urlAssetId || assets.length === 0) return;
+
+    const found = assets.find((a) => String(a.id) === urlAssetId);
+    if (found) {
+      setSelectedAsset(found);
+      openDrawer(found);
+    }
+  }, [urlAssetId, assets]);
+
+  const handleDrawerChange = (open: boolean) => {
+    if (open) {
+      if (asset) router.push(`/assets/${asset.id}`);
+      openDrawer(asset!);
+    } else {
+      router.push(`/assets`);
+      closeDrawer();
+    }
   };
 
   const resetFilters = () => {
@@ -116,9 +133,10 @@ function AssetsPage() {
 
   return (
     <div className="h-[calc(100vh-var(--header-height))] flex flex-col">
-      <div className="flex mb-4">
+      <div className="flex mb-4 items-center justify-between">
+        <TypographyTitle field="Assets" />
         <Button
-          className="ml-auto cursor-pointer"
+          className="cursor-pointer mt-1.5"
           aria-label="open-filters"
           onClick={() => setOpenSearchDrawer(true)}
         >
@@ -159,10 +177,11 @@ function AssetsPage() {
       <ErrorBoundary fallback="Error loading Details">
         <AssetDetailsDrawer
           open={isOpen}
-          onOpenChange={(o) => (o ? openDrawer(asset!) : closeDrawer())}
+          onOpenChange={handleDrawerChange}
           asset={asset}
           vulnerabilities={vulnerabilities}
-          isLoading={loadingVulnerabilities}>
+          isLoading={loadingVulnerabilities}
+        >
           {selectedAsset && <DbApi assetId={selectedAsset.id} />}
         </AssetDetailsDrawer>
       </ErrorBoundary>

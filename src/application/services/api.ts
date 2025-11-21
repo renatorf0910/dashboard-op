@@ -8,38 +8,38 @@ import axios from "axios";
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL || "";
 
 const api = axios.create({
-    baseURL: BASE_URL,
-    timeout: 10000,
-    headers: {
-        'Content-Type': 'application/json',
-    },
+  baseURL: BASE_URL,
+  timeout: 10000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
 });
 
 api.interceptors.request.use(
-    (config) => {
-        return config;
-    },
-    (error) => {
-        return Promise.reject(error);
-    }
+  (config) => {
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
 );
 
 api.interceptors.response.use(
-    (response) => {
-        return response;
-    },
-    (error) => {
-        if (error.response) {
-            console.log('Bagaço');
-        }
-        return Promise.reject(error);
+  (response) => {
+    return response;
+  },
+  (error) => {
+    if (error.response) {
+      console.log('Bagaço');
     }
+    return Promise.reject(error);
+  }
 );
 
 export async function getAssets(params: AssetsQueryParams): Promise<PaginatedAssetsResponse> {
   const { page, pageSize, filters } = params;
   const response = await api.get(`/assets`);
-  console.log('response: ', response.data)
+
   const data: AssetsProps[] = await response.data;
 
   const filtered = data.filter((asset: AssetsProps) =>
@@ -59,16 +59,16 @@ export async function getAssets(params: AssetsQueryParams): Promise<PaginatedAss
 }
 
 export async function getAllAssets(): Promise<AssetsProps[]> {
-    const response = await api.get(`/assets`);
-    return response.data;
+  const response = await api.get(`/assets`);
+  return response.data;
 }
 
 
 export async function getVulnerabilitiesByAssetId(assetId: string): Promise<VulnerabilityProps[]> {
-    const response = await api.get(`/vulnerabilities`, {
-        params: { assetId },
-    });
-    return response.data;
+  const response = await api.get(`/vulnerabilities`, {
+    params: { assetId },
+  });
+  return response.data;
 }
 
 export async function getTopology(): Promise<TopologyResponse> {
@@ -87,7 +87,7 @@ export async function getGateways(): Promise<GatewayProps[]> {
 
 
 export async function getDevice(): Promise<Device[]> {
-  const  response = await api.get("/devices");
+  const response = await api.get("/devices");
   const devices = response.data;
 
   return devices;
@@ -116,6 +116,20 @@ export async function getDevices(filters?: Partial<DeviceProps>) {
   }
 
   return data;
+}
+
+export async function getAssetById(id: string): Promise<AssetsProps | null> {
+  try {
+    console.log('id: ', id)
+    const response = await api.get<AssetsProps>(`/assets/${id}`);
+    return response.data;
+  } catch (error: any) {
+    if (error.response && error.response.status === 404) {
+      return null;
+    }
+    console.error("Err find asset:", error);
+    return null;
+  }
 }
 
 

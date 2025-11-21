@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { ArrowIcon } from "./arrowIcon";
+import { ArrowIcon } from "./arrow-icon";
 import { HeaderContext } from "@tanstack/react-table";
 
 export function HeaderDataTable<T>(label: string) {

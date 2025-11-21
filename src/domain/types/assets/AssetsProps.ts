@@ -52,3 +52,7 @@ export interface PaginatedAssetsResponse {
   items: AssetsProps[];
   total: number;
 }
+
+export interface AssetsPageProps {
+  id?: string;
+}

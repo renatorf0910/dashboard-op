@@ -1,14 +1,15 @@
 "use client"
 
 import { useAssetDrawerStore } from "@/application/store/useAssetDrawerStore";
+import { useSelectedAssetStore } from "@/application/store/useSelectedAssetStore";
 import { AssetsDataTableProps, AssetsProps } from "@/domain/types/assets/AssetsProps";
 import { ColumnDef } from "@tanstack/react-table";
-import { ArrowUpDown } from "lucide-react";
+import { ArrowBigLeftDash } from "lucide-react";
 import { RiskBadge } from "../badge-risk";
 import { Button } from "../button";
 import { DataTable } from "../data-table";
+import { HeaderDataTable } from "../header-data-table";
 import { LocationBadge } from "../location-badge";
-import { HeaderDataTable } from "../headerDataTable";
 
 export const columns: ColumnDef<AssetsProps>[] = [
     {
@@ -66,24 +67,27 @@ export const columns: ColumnDef<AssetsProps>[] = [
                 <Button
                     variant="flush"
                 >
-                    Details
+                    Actions
                 </Button>
             )
         },
         cell: ({ row }) => {
             const asset = row.original;
             const { openDrawer } = useAssetDrawerStore();
+            const { setSelectedAsset } = useSelectedAssetStore();
             return (
                 <Button
-                    style={{ color: "#002177"}}
+                    className="ml-4"
+                    style={{ color: "#002177" }}
                     size="default"
                     variant="outline"
                     onClick={(e) => {
                         e.stopPropagation();
                         openDrawer(asset);
+                        setSelectedAsset(asset);
                     }}
                 >
-                    Details
+                    <ArrowBigLeftDash />
                 </Button>
             );
         },
@@ -92,6 +96,6 @@ export const columns: ColumnDef<AssetsProps>[] = [
 ]
 
 
-export default function AssetsDataTable({ assets, selectedRow }: AssetsDataTableProps) {
-    return <DataTable columns={columns} data={assets} selectedRow={selectedRow} />
+export default function AssetsDataTable({ assets, selectedRow }: AssetsDataTableProps) { 
+    return < DataTable columns = { columns } data = { assets } selectedRow = { selectedRow } />
 }

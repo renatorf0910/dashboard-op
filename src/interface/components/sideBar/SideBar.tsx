@@ -27,7 +27,7 @@ export function SideBar() {
         transition={{ type: "spring", stiffness: 200, damping: 22 }}
         className="fixed z-30 h-full flex-col border-r border-border bg-primary text-primary-foreground shadow-sm flex w-60 md:hidden"
       >
-        <div className="flex items-center justify-between px-3 h-16 transition-all duration-500">
+        <div className="flex items-center justify-between px-4 h-16 transition-all duration-500">
           {isOpen && (
             <Image
               src="/images/logo.png"
@@ -58,7 +58,7 @@ export function SideBar() {
         transition={{ type: "spring", stiffness: 200, damping: 22 }}
         className="hidden md:flex h-full flex-col border-r border-border bg-primary text-primary-foreground shadow-sm"
       >
-        <div className="flex items-center justify-between px-3 h-16 transition-all duration-500">
+        <div className="flex items-center justify-between px-2 mt-4 h-16 transition-all duration-500">
           {isOpen && (
             <Image
               src="/images/logo.png"

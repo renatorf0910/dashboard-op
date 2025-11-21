@@ -11,7 +11,6 @@ export const useGatewaysStore = () => {
         staleTime: 10 * 1000,
         placeholderData: (prev) => prev,
     });
-    console.log(query.data);
 
     return {
         gateways: query.data,
