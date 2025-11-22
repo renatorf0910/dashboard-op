@@ -25,7 +25,7 @@ export function SideBar() {
         initial={{ x: "-100%" }}
         animate={{ x: isOpen ? "0%" : "-100%" }}
         transition={{ type: "spring", stiffness: 200, damping: 25 }}
-        className="fixed z-30 h-full flex flex-col border-r border-border bg-primary text-primary-foreground shadow-lg w-64 md:hidden"
+        className="fixed z-30 h-svh flex flex-col border-r border-border bg-primary text-primary-foreground shadow-lg w-64 md:hidden"
       >
         <div className="relative flex items-center justify-between px-4 h-16">
           {isOpen && (
@@ -37,7 +37,7 @@ export function SideBar() {
               className="transition-all duration-300"
             />
           )}
-          <SidebarToggle  />
+          <SidebarToggle />
         </div>
 
         <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
