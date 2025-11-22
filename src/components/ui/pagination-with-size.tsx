@@ -46,8 +46,7 @@ export function PaginationWithSize({ currentPage, totalPages, pageSize, pageSize
     };
 
     return (
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 py-4">
-
+        <div className="flex flex-row flex-wrap items-center justify-between gap-4 py-4">
             <Pagination>
                 <PaginationContent>
                     <PaginationItem>
