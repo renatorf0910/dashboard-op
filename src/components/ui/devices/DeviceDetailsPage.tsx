@@ -18,7 +18,7 @@ export default function DeviceDetailsPage() {
   if (!device) return <SkeletonCard />;
 
   return (
-    <div className="h-[calc(100vh-var(--header-height))] flex flex-col">
+    <div className="h-[calc(100svh-var(--header-height))] md:h-[calc(100vh-var(--header-height))] flex flex-col">
       <div className="flex-1 min-h-0 overflow-auto p-6 bg-primary-white">
         <div className="mb-4">
           <Button

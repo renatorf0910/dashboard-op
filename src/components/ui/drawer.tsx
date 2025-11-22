@@ -58,12 +58,12 @@ function DrawerContent({
         className={cn(
           "group/drawer-content bg-background fixed z-50 flex flex-col",
           "h-[100vh] overflow-hidden",
-          "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-full md:data-[vaul-drawer-direction=right]:w-[25%] data-[vaul-drawer-direction=right]:border-l",
+          "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-[35%] h-full md:data-[vaul-drawer-direction=right]:w-[30%] data-[vaul-drawer-direction=right]:border-l",
           className
         )}
         {...props}
       >
-        <div className="bg-muted mx-auto mt-4 hidden h-2 w-[100px] shrink-0 rounded-full group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
+        
 
         <DrawerPrimitive.Title className="text-lg font-semibold px-4 py-2">
         </DrawerPrimitive.Title>

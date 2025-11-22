@@ -67,7 +67,7 @@ export default function DevicesPage() {
   if (isLoading || !assets || !gateways) return <SkeletonTable />;
 
   return (
-    <div className="h-[calc(100vh-var(--header-height))] flex flex-col">
+    <div className="h-[calc(100svh-var(--header-height))] md:h-[calc(100vh-var(--header-height))] flex flex-col">
       <SearchFormDrawer
         title="Filter Devices"
         open={openDrawer}

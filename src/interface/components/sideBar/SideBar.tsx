@@ -20,12 +20,11 @@ export function SideBar() {
         )}
         onClick={toggle}
       />
-
       <motion.aside
         initial={{ x: "-100%" }}
         animate={{ x: isOpen ? "0%" : "-100%" }}
         transition={{ type: "spring", stiffness: 200, damping: 25 }}
-        className="fixed z-30 h-svh flex flex-col border-r border-border bg-primary text-primary-foreground shadow-lg w-64 md:hidden"
+        className="fixed z-30 h-full flex flex-col border-r border-border bg-primary text-primary-foreground shadow-lg w-64 md:hidden"
       >
         <div className="relative flex items-center justify-between px-4 h-16">
           {isOpen && (
@@ -58,29 +57,28 @@ export function SideBar() {
         transition={{ type: "spring", stiffness: 200, damping: 22 }}
         className="hidden md:flex h-full flex-col border-r border-border bg-primary text-primary-foreground shadow-sm"
       >
-        <div className="relative flex items-center justify-between px-2 mt-4 h-16 transition-all duration-500">
+        <div className="relative flex items-center justify-between px-2 mt-4 h-16 transition-all">
           {isOpen ? (
             <Image
               src="/images/logo.png"
               alt="logo"
               width={175}
               height={40}
-              className="transition-all duration-500"
+              className="transition-all"
             />
-          ) :
-            (
-              <Image
-                src="/images/favicon1.png"
-                alt="logo"
-                width={35}
-                height={20}
-                className="ml-2 transition-all duration-500"
-              />
-            )}
+          ) : (
+            <Image
+              src="/images/favicon1.png"
+              alt="logo"
+              width={35}
+              height={20}
+              className="ml-2 transition-all"
+            />
+          )}
           <SidebarToggle />
         </div>
 
-        <nav className="flex-1 px-2 py-4 space-y-1">
+        <nav className="flex-1 px-2 py-4 space-y-1 overflow-y-auto">
           {navItems.map((item) => (
             <SideBarItem
               key={item.href}
