@@ -27,7 +27,7 @@ export function AssetDetailsDrawer({
     <Drawer open={open} onOpenChange={onOpenChange} direction="right">
       <DrawerContent>
         <ErrorBoundary fallback={"Error to render content"}>
-          <div className="p-6 overflow-y-auto space-y-10 max-h-screen bg-linear-to-b from-gray-50 to-white">
+          <div className="p-4 md:p-6 overflow-y-auto space-y-10 h-full w-full bg-linear-to-b from-gray-50 to-white">
             {asset ? (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
