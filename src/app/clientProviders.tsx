@@ -11,7 +11,7 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <div className="flex h-screen overflow-hidden">
+      <div className="flex h-screen">
         <SideBar />
         <div className="flex flex-col flex-1">
           <header className="md:hidden p-4">
@@ -19,7 +19,6 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
               className="p-2 bg-primary text-white rounded"
               onClick={() => useSidebarStore.getState().toggle()}
             >
-              <SidebarToggle />
             </div>
           </header>
 

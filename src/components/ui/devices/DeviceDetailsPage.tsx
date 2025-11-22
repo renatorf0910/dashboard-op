@@ -18,7 +18,7 @@ export default function DeviceDetailsPage() {
   if (!device) return <SkeletonCard />;
 
   return (
-    <div className="w-full min-h-screen bg-[#f7f8fa] p-6">
+    <div className="w-full min-h-screen bg-primary-white p-6">
       <div className="mb-4">
         <Button
           className="cursor-pointer"
@@ -37,14 +37,13 @@ export default function DeviceDetailsPage() {
 
           <SectionBlock title=" ">
             <UniformGrid>
-              <InfoItem label="Name" value={device.name} badge />
-              <InfoItem label="ID" value={device.id} badge />
-              <InfoItem label="Type" value={device.type} badge />
-              <InfoItem label="Asset Reference" value={device.assetId} badge />
-              <InfoItem label="Gateway Reference" value={device.gatewayId} badge />
+              <InfoItem label="Name" value={device.name} />
+              <InfoItem label="ID" value={device.id} />
+              <InfoItem label="Type" value={device.type.toUpperCase()} badge badgeVariant="default" />
+              <InfoItem label="Asset Reference" value={device.assetId} />
+              <InfoItem label="Gateway Reference" value={device.gatewayId} />
             </UniformGrid>
           </SectionBlock>
-
           <SectionBlock title="">
             <UniformGrid>
               <InfoItem
@@ -57,7 +56,6 @@ export default function DeviceDetailsPage() {
                   </Link>
                 }
               />
-
               <InfoItem
                 label="Location"
                 value={<LocationBadge code={device.asset?.location ?? ""} />}
@@ -67,16 +65,15 @@ export default function DeviceDetailsPage() {
                 label="Risk Level"
                 value={<RiskBadge risk={device.asset?.risk ?? "-"} />}
               />
-              <InfoItem label="Supplier" value={device.asset?.supplier} badge />
+              <InfoItem label="Supplier" value={device.asset?.supplier} />
             </UniformGrid>
           </SectionBlock>
           <SectionBlock title="">
             <UniformGrid>
-              <InfoItem label="Gateway Name" value={device.gateway?.name} badge />
-              <InfoItem label="Gateway ID" value={device.gateway?.id} badge />
+              <InfoItem label="Gateway Name" value={device.gateway?.name} />
+              <InfoItem label="Gateway ID" value={device.gateway?.id} />
             </UniformGrid>
           </SectionBlock>
-
         </div>
         <div className="col-span-12 xl:col-span-8">
           <SectionBlock title="">
@@ -85,7 +82,6 @@ export default function DeviceDetailsPage() {
             </div>
           </SectionBlock>
         </div>
-
       </div>
     </div>
   );

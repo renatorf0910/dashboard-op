@@ -85,9 +85,9 @@ export function AssetDetailsDrawer({
                           </span>
                         </div>
                         <div className="text-sm text-gray-600 flex flex-col gap-0.5">
-                          <InfoItemInLine label="Scope" value={vuln.scope} badge />
-                          <InfoItemInLine label="Ref ID" value={vuln.refId} badge />
-                          <InfoItemInLine label="CVSS" value={vuln.cvss} badge />
+                          <InfoItemInLine label="Scope" value={vuln.scope} />
+                          <InfoItemInLine label="Ref ID" value={vuln.refId} />
+                          <InfoItemInLine label="CVSS" value={vuln.cvss} />
                           <RiskBadge risk={vuln.acknowledged} />
                           <Separator className="mt-4 flex justify-between items-center" />
                         </div>

@@ -61,7 +61,12 @@ h4 {
   font-weight: bold;
 }
 
-h1, h2, h3, h5, h6 {
+h5, h6 {
+  color: var(--primary-black);
+  font-family: var(--font-primary);
+}
+
+h1, h2, h3, h6 {
   color: var(--foreground);
   font-family: var(--font-primary);
 }

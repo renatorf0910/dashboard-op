@@ -16,9 +16,9 @@ export function InfoItem({
           {value ?? "-"}
         </Badge>
       ) : (
-        <h4 className="font-medium text-primary-white">
+        <h6 className="font-medium text-primary-white">
           {value ?? "-"}
-        </h4>
+        </h6>
       )}
     </div>
   );
@@ -45,8 +45,9 @@ export function InfoItemInLine({
         </>
       ) : (
 
-        <h4 className="text-sm text-muted-foreground mb-2">
-          {label}: {value ?? "-"}
+        <h4 className="text-sm mb-2">
+          <span className="text-primary">{label}:</span>{" "}
+          <span className="text-foreground font-medium">{value ?? "-"}</span>
         </h4>
       )}
     </div>

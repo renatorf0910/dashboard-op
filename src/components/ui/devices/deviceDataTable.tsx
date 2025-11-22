@@ -19,11 +19,7 @@ export const deviceColumns = (
         {
             accessorKey: "name",
             header: HeaderDataTable<DeviceAllInfosProps>("Name"),
-            cell: ({ row }) => (
-                <Badge variant="outline">
-                    {row.original.name}
-                </Badge>
-            ),
+            cell: ({ row }) => <div className="px-3">{row.getValue("name")}</div>,
         },
         {
             id: "assetName",
@@ -49,11 +45,7 @@ export const deviceColumns = (
             id: "gatewayName",
             accessorFn: (row) => row.gateway?.name ?? "",
             header: HeaderDataTable<DeviceAllInfosProps>("Gateway Reference"),
-            cell: ({ row }) => (
-                <Badge variant="outline">
-                    {row.original.gateway?.name}
-                </Badge>
-            ),
+            cell: ({ row }) => <div className="px-3">{row.original.gateway?.name}</div>,
         },
         {
             accessorKey: "type",
