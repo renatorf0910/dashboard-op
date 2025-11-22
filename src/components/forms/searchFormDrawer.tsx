@@ -1,13 +1,17 @@
 "use client";
 
+import { useFilterDrawerStore } from "@/application/store/useFilterDrawerStore";
 import { SearchForm } from "@/components/forms/searchForm";
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+} from "@/components/ui/drawer";
 import { SearchFormDrawerProps } from "@/domain/types/form/SearchFormProps";
 
 export function SearchFormDrawer<T extends object>({
   title = "Filters",
-  open,
-  onOpenChange,
   fields,
   initialValues,
   validation,
@@ -15,8 +19,10 @@ export function SearchFormDrawer<T extends object>({
   onClear,
   filtersApplied,
 }: SearchFormDrawerProps<T>) {
+  const { isOpen, close } = useFilterDrawerStore();
+
   return (
-    <Drawer open={open} onOpenChange={onOpenChange}>
+    <Drawer open={isOpen} onOpenChange={(o) => (!o ? close() : null)}>
       <DrawerContent className="p-6 sm:max-w-md">
         <DrawerHeader>
           <DrawerTitle className="text-lg font-semibold mb-2">
@@ -30,7 +36,10 @@ export function SearchFormDrawer<T extends object>({
             initialValues={initialValues}
             validation={validation}
             filtersApplied={filtersApplied}
-            onSubmit={onSubmit}
+            onSubmit={(values, helpers) => {
+              onSubmit(values, helpers);
+              close();
+            }}
             onClear={onClear}
           />
         </div>

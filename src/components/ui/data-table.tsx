@@ -1,11 +1,14 @@
 "use client"
 
-import { flexRender, getCoreRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, getFilteredRowModel, } from "@tanstack/react-table"
-import * as React from "react"
+import { useFilterDrawerStore } from "@/application/store/useFilterDrawerStore"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
 import { DataTableProps } from "@/domain/types/table/DataTableItemsProps"
-import { PaginationWithSize } from "./pagination-with-size"
+import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, } from "@tanstack/react-table"
+import { ListFilterPlus } from "lucide-react"
+import * as React from "react"
+import { Button } from "./button"
 import { DataTableViewOptions } from "./data-table-view-options"
+import { PaginationWithSize } from "./pagination-with-size"
 
 export function DataTable<TData, TValue>({
   columns,
@@ -16,6 +19,7 @@ export function DataTable<TData, TValue>({
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = React.useState("")
   const [columnVisibility, setColumnVisibility] = React.useState({})
+  const { open } = useFilterDrawerStore();
 
   const table = useReactTable({
     data,
@@ -38,14 +42,21 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4 h-full flex flex-col">
-      <div className="flex justify-between items-center">
+      <div className="flex justify-between mt-1 items-center">
         <input
           placeholder="Search..."
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
-          className="px-3 py-2 border rounded-md w-64"
+          className="px-3 py-2 border rounded-md w-64 w-full mr-2"
         />
         <DataTableViewOptions table={table} />
+        <Button
+          className="cursor-pointer ml-2"
+          aria-label="open-filters"
+          onClick={open}
+        >
+          <ListFilterPlus />
+        </Button>
       </div>
       <div className="flex-1 overflow-auto border rounded-md">
         <Table className="table-premium min-w-full">

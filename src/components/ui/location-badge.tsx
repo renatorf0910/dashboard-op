@@ -30,19 +30,19 @@ export function LocationBadge({ code }: { code: string }) {
         .replace(/./g, char => String.fromCodePoint(127397 + char.charCodeAt(0)));
 
     return (
-        <div className="flex items-center gap-2">
-            <span>{name}</span>
+        <div className="inline-flex items-center gap-2 rounded-full bg-gray-100 border px-3 py-1 text-sm font-medium text-gray-700">
             <span className="text-lg">{flag}</span>
+            <span>{name}</span>
         </div>
     );
 }
 
 export function getLocationLabel(code: string) {
-  const name = countries[code] || code;
+    const name = countries[code] || code;
 
-  const flag = code
-    ?.toUpperCase()
-    .replace(/./g, char => String.fromCodePoint(127397 + char.charCodeAt(0)));
+    const flag = code
+        ?.toUpperCase()
+        .replace(/./g, char => String.fromCodePoint(127397 + char.charCodeAt(0)));
 
-  return `${name} ${flag}`;
+    return `${flag} ${name}`;
 }

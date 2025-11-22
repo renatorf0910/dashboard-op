@@ -22,15 +22,22 @@ export interface SearchFormFields<T extends object> {
 
 export interface SearchFormDrawerProps<T extends object> {
   title?: string;
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
   fields: SearchFormFields<T>[];
   initialValues: Partial<T>;
-  validation?: Yup.ObjectSchema<Partial<T>>;
-  onSubmit: (values: Partial<T>, helpers: FormikHelpers<Partial<T>>) => void;
+  validation?: Yup.ObjectSchema<Partial<T>, Yup.AnyObject>;
+  onSubmit: (
+    values: Partial<T>,
+    helpers: { resetForm: () => void }
+  ) => void | Promise<void>;
+
   onClear?: () => void;
+
   filtersApplied?: boolean;
+
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
+
 
 export interface SearchFormProps<T extends object> {
   fields: SearchFormFields<T>[];

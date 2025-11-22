@@ -10,6 +10,7 @@ import { Button } from "../button";
 import { DataTable } from "../data-table";
 import { HeaderDataTable } from "../header-data-table";
 import { LocationBadge } from "../location-badge";
+import { Badge } from "../badge";
 
 export const columns: ColumnDef<AssetsProps>[] = [
     {
@@ -30,7 +31,6 @@ export const columns: ColumnDef<AssetsProps>[] = [
                 </div>
             );
         },
-
     },
     {
         accessorKey: "risk",
@@ -43,22 +43,26 @@ export const columns: ColumnDef<AssetsProps>[] = [
                 </div>
             );
         },
-
     },
     {
         accessorKey: "riskScore",
         header: HeaderDataTable<AssetsProps>("Risk Score"),
         cell: ({ row }) => {
             const value = row.getValue("riskScore") as number
-            return <div className="px-3">{value?.toFixed(2)}</div>;
+            return <Badge variant="default">
+                {value?.toFixed(2)}
+            </Badge>
+
         },
     },
     {
         accessorKey: "supplier",
         header: HeaderDataTable<AssetsProps>("Supplier"),
-        cell: ({ row }) => {
-            return <div className="px-3">{row.getValue("supplier")}</div>;
-        },
+        cell: ({ row }) => (
+            <Badge variant="outline">
+                {row.getValue("supplier")}
+            </Badge>
+        ),
     },
     {
         id: "actions",

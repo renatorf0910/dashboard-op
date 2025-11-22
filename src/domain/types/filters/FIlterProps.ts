@@ -13,3 +13,10 @@ export enum FilterGroup {
   Assets = "assets",
   Devices = "devices",
 }
+
+export interface FilterDrawerState {
+  isOpen: boolean;
+  open: () => void;
+  close: () => void;
+  toggle: () => void;
+}

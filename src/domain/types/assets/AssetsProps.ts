@@ -34,6 +34,16 @@ export interface AssetDetailsDrawerProps {
   children: ReactNode;
 }
 
+export interface SelectedAssetStore {
+  selectedId: string | null;
+  selectedAsset: AssetsProps | null;
+  assetButtonDevices: string | null;
+
+  setSelectedAsset: (a: AssetsProps) => void;
+  setSelectedId: (id: string | null) => void;
+  setAssetButtonDevices: (id: string | null) => void;
+}
+
 export interface AssetSelectedStore {
   selectedId: string | null
   selectedAsset: AssetsProps | null

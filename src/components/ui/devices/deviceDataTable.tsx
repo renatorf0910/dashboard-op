@@ -13,17 +13,21 @@ import { HeaderDataTable } from "../header-data-table";
 import { AssetsProps } from "@/domain/types/assets/AssetsProps";
 import { GatewayProps } from "@/domain/types/gateway/GatewayProps";
 
-
 export const deviceColumns = (
     handleOpen: (device: DeviceAllInfosProps) => void
 ): ColumnDef<DeviceAllInfosProps>[] => [
         {
             accessorKey: "name",
             header: HeaderDataTable<DeviceAllInfosProps>("Name"),
-            cell: ({ row }) => <div className="px-3">{row.getValue("name")}</div>,
+            cell: ({ row }) => (
+                <Badge variant="outline">
+                    {row.original.name}
+                </Badge>
+            ),
         },
         {
-            accessorKey: "assetId",
+            id: "assetName",
+            accessorFn: (row) => row.asset?.name ?? "",
             header: HeaderDataTable<DeviceAllInfosProps>("Asset Reference"),
             cell: ({ row }) => {
                 const asset = row.original.asset;
@@ -34,20 +38,31 @@ export const deviceColumns = (
                         href={`/assets/${asset.id}`}
                         onClick={(e) => e.stopPropagation()}
                     >
-                        <Button variant='link' style={{ color: "#002177" }}>{asset.name}</Button>
+                        <Button variant="link" style={{ color: "#002177" }}>
+                            {asset.name}
+                        </Button>
                     </Link>
                 );
             },
         },
         {
-            accessorKey: "gatewayId",
+            id: "gatewayName",
+            accessorFn: (row) => row.gateway?.name ?? "",
             header: HeaderDataTable<DeviceAllInfosProps>("Gateway Reference"),
-            cell: ({ row }) => <div className="px-3">{row.original.gateway?.name}</div>,
+            cell: ({ row }) => (
+                <Badge variant="outline">
+                    {row.original.gateway?.name}
+                </Badge>
+            ),
         },
         {
             accessorKey: "type",
             header: HeaderDataTable<DeviceAllInfosProps>("Type"),
-            cell: ({ row }) => <Badge variant="secondary">{row.getValue("type")}</Badge>,
+            cell: ({ row }) => (
+                <Badge variant="secondary">
+                    {String(row.getValue("type")).toUpperCase()}
+                </Badge>
+            ),
         },
         {
             id: "actions",
@@ -71,7 +86,6 @@ export const deviceColumns = (
             },
         },
     ];
-
 
 export default function DeviceDataTable({ devices, onRowClick, assets, gateways, }:
     { devices: DeviceProps[]; onRowClick?: (device: DeviceAllInfosProps) => void; assets: AssetsProps[]; gateways: GatewayProps[] }) {

@@ -1,20 +1,18 @@
 "use client";
-import React from "react";
+import { ErrorBoundary } from "@/components/error/errorBoundary";
+import { Badge } from "@/components/ui/badge";
 import {
   Drawer,
   DrawerContent,
 } from "@/components/ui/drawer";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
-import { AlertTriangle, Info, ShieldAlert } from "lucide-react";
-import { TypographyKey } from "@/components/ui/typography-key";
-import { ErrorBoundary } from "@/components/error/errorBoundary";
 import { AssetDetailsDrawerProps } from "@/domain/types/assets/AssetsProps";
 import { motion } from "framer-motion";
-import { TypographyBlurred } from "../typography-blurred";
-import { SkeletonCard } from "../card-skeleton";
-import { LocationBadge } from "../location-badge";
+import { AlertTriangle, Info, ShieldAlert } from "lucide-react";
 import { RiskBadge } from "../badge-risk";
+import { SkeletonCard } from "../card-skeleton";
+import { InfoItemInLine } from "../info-item";
+import { LocationBadge } from "../location-badge";
 
 export function AssetDetailsDrawer({
   open,
@@ -43,10 +41,10 @@ export function AssetDetailsDrawer({
                 </div>
 
                 <div className="flex gap-2 flex-wrap text-sm">
-                  <RiskBadge risk={asset.risk} />
                   <LocationBadge code={asset.location} />
                   <Badge variant="outline">{asset.riskScore}</Badge>
                   <Badge variant="outline">{asset.supplier}</Badge>
+                  <RiskBadge risk={asset.risk} />
                 </div>
 
               </motion.div>
@@ -87,14 +85,13 @@ export function AssetDetailsDrawer({
                           </span>
                         </div>
                         <div className="text-sm text-gray-600 flex flex-col gap-0.5">
-                          <TypographyBlurred field={`Scope: ${vuln.scope}`} />
-                          <TypographyBlurred field={`Ref ID: ${vuln.refId}`} />
-                          <TypographyBlurred field={`CVSS: ${vuln.cvss}`} />
+                          <InfoItemInLine label="Scope" value={vuln.scope} badge />
+                          <InfoItemInLine label="Ref ID" value={vuln.refId} badge />
+                          <InfoItemInLine label="CVSS" value={vuln.cvss} badge />
                           <RiskBadge risk={vuln.acknowledged} />
+                          <Separator className="mt-4 flex justify-between items-center" />
                         </div>
                       </div>
-
-                      
                       <div><RiskBadge risk={vuln.severity} /></div>
                     </div>
                   ))}

@@ -1,15 +1,5 @@
 import { create } from "zustand";
-import { AssetsProps } from "@/domain/types/assets/AssetsProps";
-
-interface SelectedAssetStore {
-  selectedId: string | null;
-  selectedAsset: AssetsProps | null;
-  assetButtonDevices: string | null;
-
-  setSelectedAsset: (a: AssetsProps) => void;
-  setSelectedId: (id: string | null) => void;
-  setAssetButtonDevices: (id: string | null) => void;
-}
+import { SelectedAssetStore } from "@/domain/types/assets/AssetsProps";
 
 export const useSelectedAssetStore = create<SelectedAssetStore>((set) => ({
   selectedId: null,
