@@ -47,7 +47,7 @@ export function DataTable<TData, TValue>({
           placeholder="Search..."
           value={globalFilter ?? ""}
           onChange={(e) => setGlobalFilter(e.target.value)}
-          className="px-3 py-2 border rounded-md w-64 w-full mr-2"
+          className="px-3 py-2 border rounded-md w-full mr-2"
         />
         <DataTableViewOptions table={table} />
         <Button
@@ -58,8 +58,8 @@ export function DataTable<TData, TValue>({
           <ListFilterPlus />
         </Button>
       </div>
-      <div className="flex-1 overflow-auto border rounded-md">
-        <Table className="table-premium min-w-full">
+      <div className="flex-1 overflow-auto border rounded-md max-w-full">
+        <Table className="table-premium w-full">
           <TableHeader>
             {table.getHeaderGroups().map((group) => (
               <TableRow key={group.id}>
