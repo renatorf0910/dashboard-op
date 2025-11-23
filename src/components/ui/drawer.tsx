@@ -58,7 +58,7 @@ function DrawerContent({
         className={cn(
           "group/drawer-content bg-background fixed z-50 flex flex-col",
           "h-[100vh] overflow-hidden",
-          "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-[35%] h-full md:data-[vaul-drawer-direction=right]:w-[30%] data-[vaul-drawer-direction=right]:border-l",
+          "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-[40%] h-full md:data-[vaul-drawer-direction=right]:w-[30%] data-[vaul-drawer-direction=right]:border-l",
           className
         )}
         {...props}

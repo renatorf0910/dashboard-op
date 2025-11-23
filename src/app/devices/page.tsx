@@ -1,3 +1,4 @@
+import { ErrorBoundary } from "@/components/error/errorBoundary";
 import DevicesPage from "@/interface/pages/devices/DevicesPage";
 import "@xyflow/react/dist/style.css";
 
@@ -7,5 +8,11 @@ export const metadata = {
 
 
 export default function Page() {
-  return <DevicesPage />
+  return (
+    <>
+      <ErrorBoundary>
+        <DevicesPage />
+      </ErrorBoundary>
+    </>
+  )
 }

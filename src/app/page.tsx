@@ -1,5 +1,5 @@
-import AssetsPage from "@/interface/pages/assets/AssetsPage";
+import { redirect } from "next/navigation";
 
-export default function Page() {
-    return <AssetsPage />
+export default function Home() {
+  redirect("/assets");
 }

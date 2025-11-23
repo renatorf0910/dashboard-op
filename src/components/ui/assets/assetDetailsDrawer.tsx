@@ -13,16 +13,36 @@ import { RiskBadge } from "../badge-risk";
 import { SkeletonCard } from "../card-skeleton";
 import { InfoItemInLine } from "../info-item";
 import { LocationBadge } from "../location-badge";
+import { ErrorState } from "../errorState";
+import { useRouter } from "next/navigation";
+import { useVulnerabilities } from "@/application/hooks/useVulnerabilities";
 
 export function AssetDetailsDrawer({
   open,
   onOpenChange,
   asset,
-  vulnerabilities = [],
   isLoading = false,
   children,
 }: AssetDetailsDrawerProps) {
+  const router = useRouter();
 
+  const {
+    vulnerabilities,
+    isLoadingVulnerabilities,
+    isErrorVulnerabilities,
+    errorVulnerabilities,
+  } = useVulnerabilities(asset?.id || "");
+
+  if (isErrorVulnerabilities) {
+    return (
+      <ErrorState
+        message="Error to loading Vulnerabilities."
+        onRetry={() => router.refresh()}
+        details={errorVulnerabilities?.message}
+      />
+    );
+  }
+  
   return (
     <Drawer open={open} onOpenChange={onOpenChange} direction="right">
       <DrawerContent>
@@ -31,8 +51,8 @@ export function AssetDetailsDrawer({
             {asset ? (
               <motion.div
                 initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.4 }}
+                animate={{ opacity: 10, x: 0 }}
+                transition={{ duration: 1 }}
                 className="space-y-4"
               >
                 <div className="flex items-center gap-2 text-gray-800">
@@ -62,11 +82,7 @@ export function AssetDetailsDrawer({
 
               {isLoading && <SkeletonCard />}
 
-              {!isLoading && vulnerabilities.length === 0 && (
-                <SkeletonCard />
-              )}
-
-              {!isLoading && vulnerabilities.length > 0 && (
+              {!isLoadingVulnerabilities && vulnerabilities && vulnerabilities.length > 0 && (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}

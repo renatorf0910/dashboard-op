@@ -24,7 +24,7 @@ export function SideBar() {
         initial={{ x: "-100%" }}
         animate={{ x: isOpen ? "0%" : "-100%" }}
         transition={{ type: "spring", stiffness: 200, damping: 25 }}
-        className="fixed z-30 h-full flex flex-col border-r border-border bg-primary text-primary-foreground shadow-lg w-64 md:hidden"
+        className="fixed z-30 h-full flex flex-col bg-primary text-primary-foreground shadow-lg w-64 md:hidden"
       >
         <div className="relative flex items-center justify-between px-4 h-16">
           {isOpen && (
@@ -55,7 +55,7 @@ export function SideBar() {
         initial={{ width: 72 }}
         animate={{ width: isOpen ? 210 : 72 }}
         transition={{ type: "spring", stiffness: 200, damping: 22 }}
-        className="hidden md:flex h-full flex-col border-r border-border bg-primary text-primary-foreground shadow-sm"
+        className="hidden md:flex h-full flex-col bg-primary text-primary-foreground shadow-sm"
       >
         <div className="relative flex items-center justify-between px-2 mt-4 h-16 transition-all">
           <motion.div

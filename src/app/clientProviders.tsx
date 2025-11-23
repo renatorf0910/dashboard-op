@@ -1,6 +1,7 @@
 "use client";
-import "@/app/globals.css";
+
 import { useSidebarStore } from "@/application/store/useSidebarStore";
+import { ErrorBoundary } from "@/components/error/errorBoundary";
 import { SideBar } from "@/interface/components/sideBar/SideBar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
@@ -20,8 +21,8 @@ export function ClientProviders({ children }: { children: React.ReactNode }) {
             >
             </div>
           </header>
-          
-          <main className="flex-1 p-4 md:p-6 w-full">{children}</main>
+
+            <main className="flex-1 p-4 md:p-6 w-full">{children}</main>
         </div>
       </div>
     </QueryClientProvider>

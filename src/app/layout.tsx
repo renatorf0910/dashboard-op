@@ -29,11 +29,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={spaceGrotesk.variable}>
       <body className="min-h-screen">
         <ClientProviders>
-          <ErrorBoundary>
             <Toaster richColors />
             {children}
-          </ErrorBoundary>
-        </ClientProviders>-
+        </ClientProviders>
       </body>
     </html>
   )

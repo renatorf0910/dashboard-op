@@ -1,15 +1,14 @@
 "use client"
 
 import { useFilterDrawerStore } from "@/application/store/useFilterDrawerStore"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow, } from "@/components/ui/table"
 import { DataTableProps } from "@/domain/types/table/DataTableItemsProps"
-import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable } from "@tanstack/react-table"
+import { flexRender, getCoreRowModel, getFilteredRowModel, getPaginationRowModel, getSortedRowModel, SortingState, useReactTable, } from "@tanstack/react-table"
 import { ListFilterPlus } from "lucide-react"
 import * as React from "react"
 import { Button } from "./button"
 import { DataTableViewOptions } from "./data-table-view-options"
 import { PaginationWithSize } from "./pagination-with-size"
-import { SkeletonTable } from "./table-skeleton"
 
 export function DataTable<TData, TValue>({
   columns,
@@ -21,8 +20,6 @@ export function DataTable<TData, TValue>({
   const [globalFilter, setGlobalFilter] = React.useState("")
   const [columnVisibility, setColumnVisibility] = React.useState({})
   const [searchValue, setSearchValue] = React.useState("")
-  const [loading, setLoading] = React.useState(false)
-
   const { open } = useFilterDrawerStore();
 
   const table = useReactTable({
@@ -45,16 +42,11 @@ export function DataTable<TData, TValue>({
   })
 
   React.useEffect(() => {
-    setLoading(true)
-
     const timeout = setTimeout(() => {
       setGlobalFilter(searchValue)
-      setLoading(false)
     }, 600)
 
-    return () => {
-      clearTimeout(timeout)
-    }
+    return () => clearTimeout(timeout)
   }, [searchValue])
 
   return (
@@ -85,18 +77,16 @@ export function DataTable<TData, TValue>({
                     {header.isPlaceholder
                       ? null
                       : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
                   </TableHead>
                 ))}
               </TableRow>
             ))}
           </TableHeader>
           <TableBody>
-            {loading ? (
-              <SkeletonTable />
-            ) : table.getRowModel().rows?.length ? (
+            {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}

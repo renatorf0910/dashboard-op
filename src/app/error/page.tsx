@@ -6,5 +6,11 @@ export const metadata = {
 };
 
 export default function Page() {
-  return <ErrorPage />
+  return (
+    <>
+      <ErrorBoundary>
+        <ErrorPage />
+      </ErrorBoundary>
+    </>
+  )
 }

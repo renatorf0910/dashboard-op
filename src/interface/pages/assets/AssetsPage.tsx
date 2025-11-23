@@ -71,14 +71,7 @@ function AssetsPage() {
 
   const { assetButtonDevices, setAssetButtonDevices, selectedAsset, selectedId, setSelectedAsset } = useSelectedAssetStore();
 
-  const {
-    vulnerabilities,
-    isLoadingVulnerabilities,
-    isErrorVulnerabilities,
-    errorVulnerabilities,
-  } = useVulnerabilities(selectedId);
-
-  const { asset, isOpen, openDrawer, closeDrawer, setVulnerabilities, setIsLoadingVulns } = useAssetDrawerStore();
+  const { asset, isOpen, openDrawer, closeDrawer } = useAssetDrawerStore();
 
   const assets = assetsData?.items ?? [];
   const total = assetsData?.total ?? 0;
@@ -137,17 +130,6 @@ function AssetsPage() {
     );
   }
 
-  if (isErrorVulnerabilities) {
-    return (
-      <ErrorState
-        message="Error to loading Vulnerabilities."
-        onRetry={() => router.refresh()}
-        details={errorVulnerabilities?.message}
-      />
-    );
-  }
-
-
   useEffect(() => {
     if (assetButtonDevices && assets.length > 0) {
       const asset = assets.find((a) => a.id === assetButtonDevices);
@@ -159,15 +141,6 @@ function AssetsPage() {
     }
   }, [assetButtonDevices, assets]);
 
-  useEffect(() => {
-    if (!asset) return;
-    setIsLoadingVulns(true);
-
-    if (selectedId) {
-      setIsLoadingVulns(isLoadingVulnerabilities);
-      setVulnerabilities(vulnerabilities ?? []);
-    }
-  }, [asset, selectedId, vulnerabilities, isLoadingVulnerabilities]);
 
   const handleRowClick = (asset: AssetsProps) => {
     setSelectedAsset(asset);
@@ -200,7 +173,6 @@ function AssetsPage() {
   };
 
   if (isLoadingAssets) return <SkeletonTable />;
-  if (isLoadingVulnerabilities) return <SkeletonCard />
 
   return (
     <div className="h-[calc(100svh-var(--header-height))] md:h-[calc(100vh-var(--header-height))] flex flex-col">
@@ -242,8 +214,6 @@ function AssetsPage() {
           open={isOpen}
           onOpenChange={handleDrawerChange}
           asset={asset}
-          vulnerabilities={vulnerabilities}
-          isLoading={isLoadingVulnerabilities}
         >
           {selectedAsset && <Notes assetId={selectedAsset.id} />}
         </AssetDetailsDrawer>

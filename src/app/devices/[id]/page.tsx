@@ -8,6 +8,7 @@ import { useDevices } from "@/application/hooks/useDevices";
 import { useAllAssets } from "@/application/hooks/useAllAssets";
 import { useGatewaysStore } from "@/application/store/useGatewayStore";
 import DeviceDetailsPage from "@/components/ui/devices/DeviceDetailsPage";
+import { ErrorBoundary } from "@/components/error/errorBoundary";
 
 export default function DevicePageWrapper() {
   const { id } = useParams();
@@ -26,5 +27,11 @@ export default function DevicePageWrapper() {
     setDevice(selected || null);
   }, [devices, assets, gateways, id]);
 
-  return <DeviceDetailsPage />;
+  return (
+    <>
+      <ErrorBoundary>
+        <DeviceDetailsPage />;
+      </ErrorBoundary>
+    </>
+  )
 }
