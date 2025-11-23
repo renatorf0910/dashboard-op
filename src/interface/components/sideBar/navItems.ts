@@ -1,4 +1,4 @@
-import { TabletSmartphone, Server, X } from "lucide-react";
+import { TabletSmartphone, Server, X, ShieldAlert } from "lucide-react";
 
 export const navItems = [
     {
@@ -15,5 +15,10 @@ export const navItems = [
         label: "Error",
         href: "/error",
         icon: X
+    },
+    {
+        label: "Not found",
+        href: "/not-found",
+        icon: ShieldAlert
     },
 ];
