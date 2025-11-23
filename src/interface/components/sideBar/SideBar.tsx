@@ -73,7 +73,7 @@ export function SideBar() {
           <motion.div
             initial={false}
             animate={{ opacity: isOpen ? 0 : 1 }}
-            className="absolute left-2"
+            className="flex items-center gap-3 px-3 py-2 relative"
           >
             <Image
               src="/images/favicon1.png"
