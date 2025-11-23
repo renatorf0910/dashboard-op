@@ -1,10 +1,10 @@
-import React from 'react';
-import { Metadata } from 'next';
-import { ClientProviders } from './clientProviders';
-import { Space_Grotesk } from 'next/font/google';
-import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
-import { ErrorBoundary } from '@/components/error/errorBoundary';
+import { Metadata } from 'next';
+import { Space_Grotesk } from 'next/font/google';
+import React from 'react';
+import { ClientProviders } from './clientProviders';
+import './globals.css';
+import DetectIOSWrapper from './DetectIOSWrapper';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -30,6 +30,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen">
         <ClientProviders>
             <Toaster richColors />
+            <DetectIOSWrapper />
             {children}
         </ClientProviders>
       </body>

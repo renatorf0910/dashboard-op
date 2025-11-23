@@ -1,7 +1,6 @@
 "use client";
 
 import { useSidebarStore } from "@/application/store/useSidebarStore";
-import { ErrorBoundary } from "@/components/error/errorBoundary";
 import { SideBar } from "@/interface/components/sideBar/SideBar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useState } from "react";
