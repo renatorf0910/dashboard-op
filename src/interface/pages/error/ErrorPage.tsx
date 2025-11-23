@@ -6,77 +6,73 @@ import { Card, CardHeader, CardContent, CardTitle } from "@/components/ui/card";
 import { Section } from "@/components/ui/section";
 
 export default function ErrorPage() {
-  const [counter, setCounter] = useState(0);
+  const [mode, setMode] = useState<null | "sync" | "async" | "undef">(null);
 
-  const throwSyncError = () => {
-    throw new Error("Manually triggered");
+  if (mode === "sync") {
+    throw new Error("Crash: synchronous error!");
   }
 
-  const throwUndefinedAccess = () => {
-    Promise.resolve().then(() => {
-      const x: any = undefined;
-      throw new Error("undefined crash");
-    });
-  };
+  if (mode === "undef") {
+    const x: any = undefined;
+    x.crash;
+  }
 
-  const throwAsyncError = async () => {
-    await new Promise((res) => setTimeout(res, 250));
-    throw new Error("Manually triggered asynchronous error.");
-  };
+  if (mode === "async") {
+    throw new Error("Crash: asynchronous failure (converted to render)!");
+  }
 
   return (
     <div className="h-[calc(100svh-var(--header-height))] md:h-[calc(100vh-var(--header-height))] flex flex-col justify-center p-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto w-full">      
         <Card className="shadow-sm border">
           <CardHeader>
             <CardTitle className="text-xl font-semibold">
-              About this module
+              Error Testing Module
             </CardTitle>
           </CardHeader>
 
           <CardContent className="space-y-6 text-sm text-muted-foreground leading-relaxed">
             <p>
-              This module demonstrates the error-handling strategy implemented in this project.
-              It includes a custom React Error Boundary.
+              This page allows you to intentionally trigger errors to validate that the Error Boundary is working correctly.
             </p>
             <p>
-              The purpose of this page is to help how the user see that error.
+              Each button below will throw a different type of error inside the render cycle, ensuring the Error Boundary catches it.
             </p>
-
           </CardContent>
         </Card>
         <Card className="shadow-sm border">
           <CardContent className="space-y-10">
 
-            <Section title="Synchronous Errors">
+            <Section title="Render Errors">
               <div className="flex flex-col gap-3">
-                <Button variant="destructive" onClick={throwSyncError}>
-                  Trigger synchronous error
+
+                <Button
+                  variant="destructive"
+                  onClick={() => setMode("sync")}
+                >
+                  Trigger render synchronous crash
                 </Button>
 
-                <Button variant="destructive" onClick={throwUndefinedAccess}>
-                  Trigger undefined access crash
+                <Button
+                  variant="destructive"
+                  onClick={() => setMode("undef")}
+                >
+                  Trigger undefined crash
+                </Button>
+
+                <Button
+                  variant="destructive"
+                  onClick={async () => {
+                    await new Promise(r => setTimeout(r, 300));
+                    setMode("async");
+                  }}
+                >
+                  Trigger async crash
                 </Button>
               </div>
             </Section>
-
-            <Section title="Asynchronous Errors">
-              <div className="flex flex-col gap-3">
-                <Button variant="destructive" onClick={throwAsyncError}>
-                  Trigger asynchronous error
-                </Button>
-              </div>
-            </Section>
-
-            <Section title="Normal Interaction">
-              <Button onClick={() => setCounter(counter + 1)} className="w-full">
-                Increment counter: {counter}
-              </Button>
-            </Section>
-
           </CardContent>
         </Card>
-
       </div>
     </div>
   );

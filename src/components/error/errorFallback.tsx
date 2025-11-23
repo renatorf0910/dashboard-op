@@ -1,52 +1,45 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ErrorFallbackProps } from "@/domain/types/error/ErrorBoundaryProps";
-import { AlertCircle } from "lucide-react";
+import { X } from "lucide-react";
 
 export function ErrorFallback({
   title = "Something went wrong",
-  message = "An unexpected error occurred while processing your request.",
+  message = "An unexpected error has occurred. Please try again",
   error,
   onRetry,
 }: ErrorFallbackProps) {
   return (
-    <div className="w-full flex items-center justify-center p-6 min-h-[70vh]">
-      <Card className="max-w-lg w-full shadow-lg border-red-200">
-        <CardHeader className="text-center space-y-3">
-          <AlertCircle className="mx-auto h-12 w-12 text-red-600" />
-          <CardTitle className="text-2xl font-semibold">{title}</CardTitle>
-        </CardHeader>
-
-        <CardContent className="space-y-6 text-center">
-          <p className="text-muted-foreground text-base leading-relaxed">
-            {message}
-          </p>
-
-          {error && (
-            <pre className="bg-red-50 border border-red-200 text-left p-3 rounded text-red-700 text-sm overflow-x-auto max-h-40 whitespace-pre-wrap">
-              {error.message}
-            </pre>
-          )}
-
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mt-4">
-            {onRetry && (
-              <Button size="lg" onClick={onRetry}>
-                Try again
-              </Button>
-            )}
-
-            <Button
-              variant="outline"
-              size="lg"
-              onClick={() => window.location.href = "/"}
-            >
-              Go to Home
+    <div className="h-[calc(100svh-var(--header-height))] md:h-[calc(100vh-var(--header-height))] w-full flex flex-col items-center justify-center px-6 py-10 bg-neutral-50">
+      <div className="flex flex-col items-center text-center max-w-2xl gap-6">
+        <X className="h-20 w-20 text-red-600" />
+        <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
+          {title}
+        </h1>
+        <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl">
+          {message}
+        </p>
+        {error && (
+          <pre className="bg-red-50 border border-red-200 p-4 rounded text-red-800 text-sm w-full max-w-xl overflow-auto whitespace-pre-wrap">
+            {error.message}
+          </pre>
+        )}
+        <div className="flex flex-col sm:flex-row gap-4 pt-4">
+          {onRetry && (
+            <Button size="sm" onClick={onRetry}>
+              Try again
             </Button>
-          </div>
-        </CardContent>
-      </Card>
+          )}
+          <Button
+            variant="default"
+            size="sm"
+            onClick={() => window.location.href = "/assets"}
+          >
+            Back to assets
+          </Button>
+        </div>
+      </div>
     </div>
   );
 }

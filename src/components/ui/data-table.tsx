@@ -95,7 +95,7 @@ export function DataTable<TData, TValue>({
           </TableHeader>
           <TableBody>
             {loading ? (
-              <SkeletonTable rows={10}/>
+              <SkeletonTable />
             ) : table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
