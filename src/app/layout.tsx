@@ -4,6 +4,7 @@ import { ClientProviders } from './clientProviders';
 import { Space_Grotesk } from 'next/font/google';
 import './globals.css';
 import { Toaster } from '@/components/ui/sonner';
+import { ErrorBoundary } from '@/components/error/errorBoundary';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -28,9 +29,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" suppressHydrationWarning className={spaceGrotesk.variable}>
       <body className="min-h-screen">
         <ClientProviders>
-          <Toaster richColors />
-          {children}
-        </ClientProviders>
+          <ErrorBoundary>
+            <Toaster richColors />
+            {children}
+          </ErrorBoundary>
+        </ClientProviders>-
       </body>
     </html>
   )

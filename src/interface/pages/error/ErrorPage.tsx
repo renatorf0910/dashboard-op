@@ -9,12 +9,14 @@ export default function ErrorPage() {
   const [counter, setCounter] = useState(0);
 
   const throwSyncError = () => {
-    throw new Error("Manually triggered synchronous error.");
-  };
+    throw new Error("Manually triggered");
+  }
 
   const throwUndefinedAccess = () => {
-    const x: any = undefined;
-    console.log(x.foo.bar.baz);
+    Promise.resolve().then(() => {
+      const x: any = undefined;
+      throw new Error("undefined crash");
+    });
   };
 
   const throwAsyncError = async () => {
@@ -24,7 +26,7 @@ export default function ErrorPage() {
 
   return (
     <div className="h-[calc(100svh-var(--header-height))] md:h-[calc(100vh-var(--header-height))] flex flex-col justify-center p-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto w-full"> 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-6xl mx-auto w-full">
         <Card className="shadow-sm border">
           <CardHeader>
             <CardTitle className="text-xl font-semibold">
@@ -34,13 +36,13 @@ export default function ErrorPage() {
 
           <CardContent className="space-y-6 text-sm text-muted-foreground leading-relaxed">
             <p>
-              This module demonstrates the error-handling strategy implemented in this project. 
+              This module demonstrates the error-handling strategy implemented in this project.
               It includes a custom React Error Boundary.
             </p>
             <p>
               The purpose of this page is to help how the user see that error.
             </p>
-            
+
           </CardContent>
         </Card>
         <Card className="shadow-sm border">
