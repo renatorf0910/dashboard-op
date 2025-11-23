@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { InfoItemProps } from "@/domain/types/infoItem/InfoItemProps";
+import clsx from "clsx";
 
 export function InfoItem({
   label,
@@ -29,22 +30,18 @@ export function InfoItemInLine({
   value,
   badge = false,
   badgeVariant = "outline",
+  className
 }: InfoItemProps) {
   return (
-    <div className="flex flex-col">
-
-
+    <div className={clsx("flex flex-col", className)}>
       {badge ? (
-        <>
-          <h4 className="text-sm text-muted-foreground mb-2">
-            {label}: <Badge className="ml-2 mt-1 mb-1" variant={badgeVariant}>
-              {value ?? "-"}
-            </Badge>
-          </h4>
-
-        </>
+        <h4 className="text-sm text-muted-foreground mb-2">
+          {label}:{" "}
+          <Badge className="ml-2 mt-1 mb-1" variant={badgeVariant}>
+            {value ?? "-"}
+          </Badge>
+        </h4>
       ) : (
-
         <h4 className="text-sm mb-2">
           <span className="text-primary">{label}:</span>{" "}
           <span className="text-foreground font-medium">{value ?? "-"}</span>

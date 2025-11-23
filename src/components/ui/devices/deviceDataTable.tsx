@@ -18,11 +18,13 @@ export const deviceColumns = (
 ): ColumnDef<DeviceAllInfosProps>[] => [
         {
             accessorKey: "name",
+            meta: {label: "Name"},
             header: HeaderDataTable<DeviceAllInfosProps>("Name"),
             cell: ({ row }) => <div className="px-3">{row.getValue("name")}</div>,
         },
         {
             id: "assetName",
+            meta: {label: "Asset Reference"},
             accessorFn: (row) => row.asset?.name ?? "",
             header: HeaderDataTable<DeviceAllInfosProps>("Asset Reference"),
             cell: ({ row }) => {
@@ -43,12 +45,14 @@ export const deviceColumns = (
         },
         {
             id: "gatewayName",
+            meta: {label: "Gateway Reference"},
             accessorFn: (row) => row.gateway?.name ?? "",
             header: HeaderDataTable<DeviceAllInfosProps>("Gateway Reference"),
             cell: ({ row }) => <div className="px-3">{row.original.gateway?.name}</div>,
         },
         {
             accessorKey: "type",
+            meta: {label: "Type"},
             header: HeaderDataTable<DeviceAllInfosProps>("Type"),
             cell: ({ row }) => (
                 <Badge variant="secondary">
@@ -58,6 +62,7 @@ export const deviceColumns = (
         },
         {
             id: "actions",
+            meta: {label: "Actions"},
             header: () => <Button variant="flush">Actions</Button>,
             cell: ({ row }) => {
                 const device = row.original;

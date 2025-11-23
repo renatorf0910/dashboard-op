@@ -9,4 +9,5 @@ export interface InfoItemProps {
   value?: React.ReactNode;
   badge?: boolean;
   badgeVariant?: BadgeVariant;
+  className?: string;
 }

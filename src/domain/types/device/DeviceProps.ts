@@ -32,3 +32,10 @@ export interface DeviceStore {
   ) => void;
   clearDevice: () => void;
 }
+
+export interface DeviceFilterForm {
+  name?: string | null;
+  type?: string | null;
+  assetId?: string | null;
+  gatewayId?: string | null;
+}

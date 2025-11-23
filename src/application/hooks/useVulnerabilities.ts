@@ -13,7 +13,8 @@ export function useVulnerabilities(assetId: string | null): VulnerabilitiesStore
   });
   return {
     vulnerabilities: query.data,
-    loadingVulnerabilities: query.isLoading,
-    errorVulnerabilities: query.isError,
+    isLoadingVulnerabilities: query.isLoading,
+    errorVulnerabilities: query.error,
+    isErrorVulnerabilities: query.isError,
   };
 }

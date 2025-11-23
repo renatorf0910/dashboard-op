@@ -12,7 +12,7 @@ export function useDevices(params?: { filters?: Record<string, unknown> }) {
   });
   return {
     devices: query.data,
-    loadingVulnerabilities: query.isLoading,
+    isLoadingVulnerabilities: query.isLoading,
     errorVulnerabilities: query.isError,
   };
 }

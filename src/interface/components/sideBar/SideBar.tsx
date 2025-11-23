@@ -58,23 +58,30 @@ export function SideBar() {
         className="hidden md:flex h-full flex-col border-r border-border bg-primary text-primary-foreground shadow-sm"
       >
         <div className="relative flex items-center justify-between px-2 mt-4 h-16 transition-all">
-          {isOpen ? (
+          <motion.div
+            initial={false}
+            animate={{ opacity: isOpen ? 1 : 0 }}
+            className="absolute left-2"
+          >
             <Image
               src="/images/logo.png"
               alt="logo"
               width={175}
               height={40}
-              className="transition-all"
             />
-          ) : (
+          </motion.div>
+          <motion.div
+            initial={false}
+            animate={{ opacity: isOpen ? 0 : 1 }}
+            className="absolute left-2"
+          >
             <Image
               src="/images/favicon1.png"
               alt="logo"
               width={35}
               height={20}
-              className="ml-2 transition-all"
             />
-          )}
+          </motion.div>
           <SidebarToggle />
         </div>
 

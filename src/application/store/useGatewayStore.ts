@@ -14,7 +14,7 @@ export const useGatewaysStore = () => {
 
     return {
         gateways: query.data,
-        loadingVulnerabilities: query.isLoading,
+        isLoadingVulnerabilities: query.isLoading,
         errorVulnerabilities: query.isError,
     }
 };

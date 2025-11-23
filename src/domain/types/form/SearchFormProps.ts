@@ -24,7 +24,7 @@ export interface SearchFormDrawerProps<T extends object> {
   title?: string;
   fields: SearchFormFields<T>[];
   initialValues: Partial<T>;
-  validation?: Yup.ObjectSchema<Partial<T>, Yup.AnyObject>;
+  validation?: Yup.Schema<Partial<T>>;
   onSubmit: (
     values: Partial<T>,
     helpers: { resetForm: () => void }
@@ -42,7 +42,7 @@ export interface SearchFormDrawerProps<T extends object> {
 export interface SearchFormProps<T extends object> {
   fields: SearchFormFields<T>[];
   initialValues: Partial<T>;
-  validation?: Yup.ObjectSchema<Partial<T>>;
+  validation?: Yup.Schema<Partial<T>>;
   onSubmit: (values: Partial<T>, helpers: FormikHelpers<Partial<T>>) => void | Promise<void>;
   onClear?: () => void;
   filtersApplied?: boolean;

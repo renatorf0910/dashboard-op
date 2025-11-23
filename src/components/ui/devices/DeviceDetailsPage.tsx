@@ -39,7 +39,7 @@ export default function DeviceDetailsPage() {
               <UniformGrid>
                 <InfoItem label="Name" value={device.name} />
                 <InfoItem label="ID" value={device.id} />
-                <InfoItem label="Type" value={device.type.toUpperCase()} badge badgeVariant="default" />
+                <InfoItem label="Type" value={device.type.toUpperCase()} badge badgeVariant="secondary" />
                 <InfoItem label="Asset Reference" value={device.assetId} />
                 <InfoItem label="Gateway Reference" value={device.gatewayId} />
               </UniformGrid>

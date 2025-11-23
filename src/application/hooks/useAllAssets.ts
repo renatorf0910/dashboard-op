@@ -11,7 +11,7 @@ export function useAllAssets() {
   });
   return {
     assets: query.data,
-    loadingVulnerabilities: query.isLoading,
+    isLoadingVulnerabilities: query.isLoading,
     errorVulnerabilities: query.isError,
   } 
 }

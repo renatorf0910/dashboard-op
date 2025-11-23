@@ -9,3 +9,10 @@ export interface ErrorBoundaryState {
   hasError: boolean;
   error?: Error;
 }
+
+export interface ErrorFallbackProps {
+  title?: string;
+  message?: string;
+  error?: Error;
+  onRetry?: () => void;
+}

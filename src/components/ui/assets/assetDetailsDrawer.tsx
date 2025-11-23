@@ -41,10 +41,10 @@ export function AssetDetailsDrawer({
                 </div>
 
                 <div className="flex gap-2 flex-wrap text-sm">
-                  <LocationBadge code={asset.location} />
-                  <Badge variant="outline">{asset.riskScore}</Badge>
-                  <Badge variant="outline">{asset.supplier}</Badge>
-                  <RiskBadge risk={asset.risk} />
+                  <InfoItemInLine label="Location" value={<LocationBadge code={asset.location} />} />
+                  <InfoItemInLine className="mt-3" label="Risk" value={<RiskBadge risk={asset.risk} />} />
+                  <InfoItemInLine label="Risk Score" value={<Badge variant="outline">{asset.riskScore}</Badge>} />
+                  <InfoItemInLine label="Supplier" value={<Badge variant="outline">{asset.supplier}</Badge>} />
                 </div>
 
               </motion.div>

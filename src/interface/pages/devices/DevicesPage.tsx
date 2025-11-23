@@ -11,12 +11,13 @@ import { SearchFormDrawer } from "@/components/forms/searchFormDrawer";
 import DeviceDataTable from "@/components/ui/devices/deviceDataTable";
 import { SkeletonTable } from "@/components/ui/table-skeleton";
 
-import { DeviceAllInfosProps, DeviceProps } from "@/domain/types/device/DeviceProps";
+import { DeviceAllInfosProps, DeviceFilterForm } from "@/domain/types/device/DeviceProps";
 import { SearchFormFields } from "@/domain/types/form/SearchFormProps";
 
 import { useAllAssets } from "@/application/hooks/useAllAssets";
 import { useGatewaysStore } from "@/application/store/useGatewayStore";
 import { FilterGroup } from "@/domain/types/filters/FIlterProps";
+import * as Yup from "yup";
 
 export default function DevicesPage() {
   const router = useRouter();
@@ -31,15 +32,15 @@ export default function DevicesPage() {
   const normalizedInitialValues = useMemo(() => {
     return Object.keys(deviceFilters).length === 0
       ? {
-          name: "",
-          assetId: "",
-          gatewayId: "",
-          type: "",
-        }
+        name: "",
+        assetId: "",
+        gatewayId: "",
+        type: "",
+      }
       : deviceFilters;
   }, [deviceFilters]);
 
-  const { devices, loadingVulnerabilities: isLoading } = useDevices({
+  const { devices, isLoadingVulnerabilities: isLoading } = useDevices({
     filters: deviceFilters,
   });
 
@@ -48,9 +49,10 @@ export default function DevicesPage() {
 
   const { setDevice } = useDeviceStore();
 
-  const deviceFields: SearchFormFields<DeviceProps>[] = [
+  const deviceFields: SearchFormFields<DeviceFilterForm>[] = [
     { name: "name", label: "Name", type: "text" },
-    { name: "type", label: "Type", type: "select",
+    {
+      name: "type", label: "Type", type: "select",
       options: [
         { label: "PLC", value: "plc" },
         { label: "Sensor", value: "sensor" },
@@ -58,6 +60,13 @@ export default function DevicesPage() {
       ],
     },
   ];
+
+  const deviceFilterSchema: Yup.ObjectSchema<DeviceFilterForm> = Yup.object({
+    name: Yup.string().nullable(),
+    type: Yup.string().nullable(),
+    assetId: Yup.string().nullable(),
+    gatewayId: Yup.string().nullable(),
+  });
 
   const handleRowClick = (device: DeviceAllInfosProps) => {
     setDevice(device);
@@ -68,12 +77,13 @@ export default function DevicesPage() {
 
   return (
     <div className="h-[calc(100svh-var(--header-height))] md:h-[calc(100vh-var(--header-height))] flex flex-col">
-      <SearchFormDrawer
+      <SearchFormDrawer<DeviceFilterForm>
         title="Filter Devices"
         open={openDrawer}
         onOpenChange={setOpenDrawer}
         fields={deviceFields}
         initialValues={normalizedInitialValues}
+        validation={deviceFilterSchema}
         filtersApplied={filtersApplied}
         onSubmit={(values) => {
           setFilters(FilterGroup.Devices, values);

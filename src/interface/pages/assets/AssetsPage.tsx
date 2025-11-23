@@ -6,49 +6,37 @@ import { useAssetDrawerStore } from "@/application/store/useAssetDrawerStore";
 import { useFilterStore } from "@/application/store/useFilterStore";
 import { useSelectedAssetStore } from "@/application/store/useSelectedAssetStore";
 
-import { DbApi } from "@/components/db-api/dbApi";
+import { Notes } from "@/components/notes/notes";
 import { ErrorBoundary } from "@/components/error/errorBoundary";
 import { SearchFormDrawer } from "@/components/forms/searchFormDrawer";
 import { AssetDetailsDrawer } from "@/components/ui/assets/assetDetailsDrawer";
 import AssetsDataTable from "@/components/ui/assets/assetsDataTable";
 import { SkeletonTable } from "@/components/ui/table-skeleton";
 
-import { AssetsFilterForm, AssetsPageProps, AssetsProps, AssetsQueryParams, } from "@/domain/types/assets/AssetsProps";
+import { AssetsFilterForm, AssetsProps, AssetsQueryParams } from "@/domain/types/assets/AssetsProps";
 import { SearchFormFields } from "@/domain/types/form/SearchFormProps";
 
 import { useEffect, useMemo, useRef, useState } from "react";
 
 import { useFilterDrawerStore } from "@/application/store/useFilterDrawerStore";
+import { SkeletonCard } from "@/components/ui/card-skeleton";
+import { ErrorState } from "@/components/ui/errorState";
 import { getLocationLabel } from "@/components/ui/location-badge";
 import { FilterGroup } from "@/domain/types/filters/FIlterProps";
 import { useParams, useRouter } from "next/navigation";
-import * as yup from "yup";
+import * as Yup from "yup";
 
-const defaultAssetFilters: AssetsFilterForm = {
-  name: "",
-  risk: "",
-  location: "",
-  supplier: ""
-};
+const defaultAssetFilters: AssetsFilterForm = { name: "", risk: "", location: "", supplier: "" };
 
-
-// TODO: ARRUMAR AQUI NATO
-// const assetsFilterValidation: yup.ObjectSchema<AssetsFilterForm> = yup.object({
-//   name: yup.string().optional(),
-//   risk: yup.string().optional(),
-//   location: yup.string().optional(),
-//   supplier: yup.string().optional(),
-// });
-
-function AssetsPage({ id }: AssetsPageProps) {
+function AssetsPage() {
   const router = useRouter();
   const params = useParams();
   const urlAssetId = params?.id ? String(params.id) : null;
 
-  const filters = useFilterStore(s => s.filters);
-  const setFilters = useFilterStore(s => s.setFilters);
-  const clearFilters = useFilterStore(s => s.clearFilters);
-  const filtersApplied = useFilterStore(s => s.hasFilters(FilterGroup.Assets));
+  const filters = useFilterStore((s) => s.filters);
+  const setFilters = useFilterStore((s) => s.setFilters);
+  const clearFilters = useFilterStore((s) => s.clearFilters);
+  const filtersApplied = useFilterStore((s) => s.hasFilters(FilterGroup.Assets));
 
   const assetFilters = (filters[FilterGroup.Assets] ?? {}) as AssetsFilterForm;
 
@@ -64,7 +52,7 @@ function AssetsPage({ id }: AssetsPageProps) {
       name: assetFilters.name || "",
       risk: assetFilters.risk || "",
       location: assetFilters.location || "",
-      supplier: assetFilters.supplier || ""
+      supplier: assetFilters.supplier || "",
     },
   };
 
@@ -74,53 +62,91 @@ function AssetsPage({ id }: AssetsPageProps) {
       : assetFilters;
   }, [assetFilters]);
 
+  const {
+    assets: assetsData,
+    isLoadingAssets,
+    isErrorAssets,
+    errorAssets,
+  } = useAssets(queryParams);
 
-  const { data, isLoading } = useAssets(queryParams);
   const { assetButtonDevices, setAssetButtonDevices, selectedAsset, selectedId, setSelectedAsset } = useSelectedAssetStore();
-  const { vulnerabilities, loadingVulnerabilities } = useVulnerabilities(selectedId);
-  const { asset, isOpen, openDrawer, closeDrawer, setVulnerabilities, setIsLoadingVulns, } = useAssetDrawerStore();
 
-  const assets = data?.items ?? [];
-  const total = data?.total ?? 0;
+  const {
+    vulnerabilities,
+    isLoadingVulnerabilities,
+    isErrorVulnerabilities,
+    errorVulnerabilities,
+  } = useVulnerabilities(selectedId);
+
+  const { asset, isOpen, openDrawer, closeDrawer, setVulnerabilities, setIsLoadingVulns } = useAssetDrawerStore();
+
+  const assets = assetsData?.items ?? [];
+  const total = assetsData?.total ?? 0;
 
   const allAssetsRef = useRef<AssetsProps[] | null>(null);
   const sourceForOptions = allAssetsRef.current ?? assets;
 
   const capitalize = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
-  const getRiskOptions = () =>
-    Array.from(new Set(sourceForOptions.map(a => a.risk)))
-      .filter(Boolean)
-      .map(v => ({ label: capitalize(v), value: v }));
-
   const riskOptions = useMemo(() => {
-    return getRiskOptions();
+    return Array.from(new Set(sourceForOptions.map((a) => a.risk)))
+      .filter(Boolean)
+      .map((v) => ({ label: capitalize(v), value: v }));
   }, [sourceForOptions]);
-
 
   const locationOptions = useMemo(() => {
-    const locs = Array.from(new Set(sourceForOptions.map(a => a.location)))
-      .filter(Boolean);
-
-    return locs.map(loc => ({
-      label: getLocationLabel(loc),
-      value: loc,
-    }));
+    return Array.from(new Set(sourceForOptions.map((a) => a.location)))
+      .filter(Boolean)
+      .map((loc) => ({
+        label: getLocationLabel(loc),
+        value: loc,
+      }));
   }, [sourceForOptions]);
 
-  const searchFields: SearchFormFields<AssetsFilterForm>[] = useMemo(() => [
-    { name: "name", label: "Name", type: "text" },
-    { name: "location", label: "Location", type: "select", options: locationOptions },
-    { name: "risk", label: "Risk", type: "select", options: riskOptions },
-    { name: "supplier", label: "Supplier", type: "text" },
-  ], [sourceForOptions]);
+  const searchFields: SearchFormFields<AssetsFilterForm>[] = useMemo(
+    () => [
+      { name: "name", label: "Name", type: "text" },
+      { name: "location", label: "Location", type: "select", options: locationOptions },
+      { name: "risk", label: "Risk", type: "select", options: riskOptions },
+      { name: "supplier", label: "Supplier", type: "text" },
+    ],
+    [sourceForOptions]
+  );
+
+  const assetsFilterSchema = Yup.object({
+    name: Yup.string().optional().max(50),
+    risk: Yup.string().optional(),
+    location: Yup.string().optional(),
+    supplier: Yup.string().optional().max(50)
+  });
 
 
   useEffect(() => {
-    if (!allAssetsRef.current && data?.items) {
-      allAssetsRef.current = data.items;
+    if (!allAssetsRef.current && assetsData?.items) {
+      allAssetsRef.current = assetsData.items;
     }
-  }, [data]);
+  }, [assetsData]);
+
+  if (isErrorAssets) {
+    return (
+      <ErrorState
+        message="Error to loading Assets."
+        onRetry={() => router.refresh()}
+        details={errorAssets?.message}
+      />
+    );
+  }
+
+  if (isErrorVulnerabilities) {
+    return (
+      <ErrorState
+        message="Error to loading Vulnerabilities."
+        onRetry={() => router.refresh()}
+        details={errorVulnerabilities?.message}
+      />
+    );
+  }
+
 
   useEffect(() => {
     if (assetButtonDevices && assets.length > 0) {
@@ -138,10 +164,10 @@ function AssetsPage({ id }: AssetsPageProps) {
     setIsLoadingVulns(true);
 
     if (selectedId) {
-      setIsLoadingVulns(loadingVulnerabilities);
+      setIsLoadingVulns(isLoadingVulnerabilities);
       setVulnerabilities(vulnerabilities ?? []);
     }
-  }, [asset, selectedId, vulnerabilities, loadingVulnerabilities]);
+  }, [asset, selectedId, vulnerabilities, isLoadingVulnerabilities]);
 
   const handleRowClick = (asset: AssetsProps) => {
     setSelectedAsset(asset);
@@ -173,18 +199,19 @@ function AssetsPage({ id }: AssetsPageProps) {
     setPage(1);
   };
 
-  if (isLoading) return <SkeletonTable />;
+  if (isLoadingAssets) return <SkeletonTable />;
+  if (isLoadingVulnerabilities) return <SkeletonCard />
 
   return (
     <div className="h-[calc(100svh-var(--header-height))] md:h-[calc(100vh-var(--header-height))] flex flex-col">
       <ErrorBoundary fallback="Error loading Filter">
-        <SearchFormDrawer
+        <SearchFormDrawer<AssetsFilterForm>
           open={isFilterOpen}
           onOpenChange={(o) => (o ? open() : close())}
           title="Filter Assets"
           fields={searchFields}
           initialValues={normalizedInitialValues}
-          // validation={assetsFilterValidation}
+          validation={assetsFilterSchema}
           filtersApplied={filtersApplied}
           onSubmit={(values) => {
             setFilters(FilterGroup.Assets, values);
@@ -216,9 +243,9 @@ function AssetsPage({ id }: AssetsPageProps) {
           onOpenChange={handleDrawerChange}
           asset={asset}
           vulnerabilities={vulnerabilities}
-          isLoading={loadingVulnerabilities}
+          isLoading={isLoadingVulnerabilities}
         >
-          {selectedAsset && <DbApi assetId={selectedAsset.id} />}
+          {selectedAsset && <Notes assetId={selectedAsset.id} />}
         </AssetDetailsDrawer>
       </ErrorBoundary>
     </div>
