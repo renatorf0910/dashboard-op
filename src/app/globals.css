@@ -13,6 +13,7 @@
   --primary-side-bar: #f8f8f8;
   --primary-white: #f8f8f8;
   --primary-black: #000000;
+  --primary-gray: #9c9c9c;
   --primary-foreground: #3CF0FF;
   --primary-foreground-table: #f2feff;
   --primary-text: #030303;
@@ -61,12 +62,24 @@ h4 {
   font-weight: bold;
 }
 
+p {
+  color: var(--primary-gray);
+  font-family: var(--font-primary);
+  font-weight: bold;
+}
+
 h5, h6 {
   color: var(--primary-black);
   font-family: var(--font-primary);
 }
 
-h1, h2, h3, h6 {
+h1 {
+  color: var(--primary);
+  font-family: var(--font-primary);
+  font-weight: bold;
+}
+
+h2, h3, h6 {
   color: var(--foreground);
   font-family: var(--font-primary);
 }

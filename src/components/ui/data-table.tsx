@@ -13,7 +13,7 @@ import { PaginationWithSize } from "./pagination-with-size"
 export function DataTable<TData, TValue>({
   columns,
   data,
-  pageSize = 15,
+  pageSize = 10,
   selectedRow,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])

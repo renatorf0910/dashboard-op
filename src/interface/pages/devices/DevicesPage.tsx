@@ -77,6 +77,12 @@ export default function DevicesPage() {
 
   return (
     <div className="h-[calc(100svh-var(--header-height))] md:h-[calc(100vh-var(--header-height))] flex flex-col">
+      <div className="px-6 py-6 ">
+        <h1 className="text-3xl font-bold tracking-tight">Devices Overview</h1>
+        <p className="text-muted-foreground text-sm mt-1">
+          View available devices, click for more information about each device.
+        </p>
+      </div>
       <SearchFormDrawer<DeviceFilterForm>
         title="Filter Devices"
         open={openDrawer}

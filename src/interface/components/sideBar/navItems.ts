@@ -18,7 +18,7 @@ export const navItems = [
     },
     {
         label: "Not found",
-        href: "/not-found",
+        href: "/notfound",
         icon: ShieldAlert
     },
 ];

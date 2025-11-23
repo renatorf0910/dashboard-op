@@ -176,6 +176,12 @@ function AssetsPage() {
 
   return (
     <div className="h-[calc(100svh-var(--header-height))] md:h-[calc(100vh-var(--header-height))] flex flex-col">
+      <div className="px-6 py-6 ">
+        <h1 className="text-3xl font-bold tracking-tight">Assets Overview</h1>
+        <p className="text-muted-foreground text-sm mt-1">
+          View available assets, click for more information about each asset.
+        </p>
+      </div>
       <ErrorBoundary fallback="Error loading Filter">
         <SearchFormDrawer<AssetsFilterForm>
           open={isFilterOpen}
