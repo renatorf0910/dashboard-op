@@ -1,6 +1,7 @@
 import { AssetsProps, AssetsQueryParams, PaginatedAssetsResponse } from "@/domain/types/assets/AssetsProps";
 import { Device, DeviceProps } from "@/domain/types/device/DeviceProps";
-import { GatewayProps } from "@/domain/types/gateway/GatewayProps";
+import { DiagramData, DiagramEdge, DiagramNode } from "@/domain/types/diagram/DiagramProps";
+import { Gateway, GatewayProps } from "@/domain/types/gateway/GatewayProps";
 import { TopologyResponse } from "@/domain/types/topology/TopologyProps";
 import { VulnerabilityProps } from "@/domain/types/vulnerability/VulnerabilityProps";
 import axios from "axios";
@@ -130,6 +131,79 @@ export async function getAssetById(id: string): Promise<AssetsProps | null> {
     console.error("Err find asset:", error);
     return null;
   }
+}
+
+export async function getDiagram(): Promise<DiagramData> {
+  const [topology, gateways, devices]: [
+    TopologyResponse,
+    Gateway[],
+    Device[]
+  ] = await Promise.all([getTopology(), getGateways(), getDevice()]);
+
+  const sites = topology.nodes ?? [];
+  const topologyEdges = topology.edges ?? [];
+
+  const nodes: DiagramNode[] = [];
+  const edges: DiagramEdge[] = [];
+
+  for (const edge of topologyEdges) {
+    const site = sites.find((s) => s.id === edge.source);
+    const gateway = gateways.find((g) => g.id === edge.target);
+
+    if (!site || !gateway) continue;
+
+    if (!nodes.find((n) => n.id === site.id)) {
+      nodes.push({
+        id: String(site.id),
+        label: site.name ?? site.label ?? `Site ${site.id}`,
+        nodeType: "site",
+        position: { x: 0, y: 0 },
+        entity: site
+      });
+    }
+
+    if (!nodes.find((n) => n.id === gateway.id)) {
+      nodes.push({
+        id: String(gateway.id),
+        label: gateway.name ?? gateway.label ?? `Gateway ${gateway.id}`,
+        nodeType: "gateway",
+        position: { x: 0, y: 0 },
+        entity: gateway
+      });
+    }
+
+    edges.push({
+      id: `e-${site.id}-${gateway.id}`,
+      source: String(site.id),
+      target: String(gateway.id),
+    });
+
+    const gatewayDevices = devices.filter((d) => d.gatewayId === gateway.id);
+
+    for (const device of gatewayDevices) {
+      if (!nodes.find((n) => n.id === device.id)) {
+        nodes.push({
+          id: String(device.id),
+          label: device.name ?? `Device ${device.id}`,
+          nodeType: "device",
+          position: { x: 0, y: 0 },
+          entity: device
+
+        });
+      }
+
+      edges.push({
+        id: `e-${gateway.id}-${device.id}`,
+        source: String(gateway.id),
+        target: String(device.id),
+      });
+    }
+  }
+
+  return {
+    nodes,
+    topologyEdges: edges,
+  };
 }
 
 

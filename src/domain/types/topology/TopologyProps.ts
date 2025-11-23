@@ -17,21 +17,13 @@ export interface TopologyData {
   topologyEdges: TopologyEdge[];
 }
 
-export interface UseTopologyResult {
-  data: TopologyData | null;
-  isLoading: boolean;
-  isError: boolean;
-}
-
 export interface BaseEntity {
   id: string;
-  name?: string;
   label?: string;
+  name?: string;
 }
 
 export interface TopologyResponse {
   nodes: BaseEntity[];
   edges: { id: string; source: string; target: string }[];
 }
-
-

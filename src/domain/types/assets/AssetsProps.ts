@@ -44,13 +44,6 @@ export interface SelectedAssetStore {
   setAssetButtonDevices: (id: string | null) => void;
 }
 
-export interface AssetSelectedStore {
-  selectedId: string | null
-  selectedAsset: AssetsProps | null
-
-  setSelectedAsset: (asset: AssetsProps | null) => void
-  clear: () => void
-}
 
 export interface AssetsQueryParams {
   page: number;

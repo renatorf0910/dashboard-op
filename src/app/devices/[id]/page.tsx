@@ -30,7 +30,7 @@ export default function DevicePageWrapper() {
   return (
     <>
       <ErrorBoundary>
-        <DeviceDetailsPage />;
+        <DeviceDetailsPage />
       </ErrorBoundary>
     </>
   )

@@ -77,7 +77,7 @@ export default function DeviceDetailsPage() {
           </div>
           <div className="col-span-12 xl:col-span-8">
             <SectionBlock title="">
-              <div className="w-full h-[75vh] border rounded-xl bg-white shadow-sm overflow-hidden">
+              <div className="w-full h-[75vh] border rounded-xl bg-white shadow-sm">
                 <DeviceMap selectedDeviceId={device.gatewayId} />
               </div>
             </SectionBlock>

@@ -60,7 +60,7 @@ function DrawerContent({
           "data-[state=open]:animate-in data-[state=closed]:animate-out",
           "data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right",
           "h-[100vh] data-[vaul-drawer-direction=right]:w-[40%] md:data-[vaul-drawer-direction=right]:w-[30%]",
-          "is-ios:h-svh is-ios:data-[vaul-drawer-direction=right]:w-[85%]",
+          "is-ios:h-dvh is-ios:data-[vaul-drawer-direction=right]:w-[85%]",
           "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:border-l",
           className
         )}
