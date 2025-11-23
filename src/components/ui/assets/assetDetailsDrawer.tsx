@@ -42,7 +42,7 @@ export function AssetDetailsDrawer({
       />
     );
   }
-  
+
   return (
     <Drawer open={open} onOpenChange={onOpenChange} direction="right">
       <DrawerContent>
@@ -60,9 +60,9 @@ export function AssetDetailsDrawer({
                   <h2 className="text-xl font-semibold">{asset.name}</h2>
                 </div>
 
-                <div className="flex gap-2 flex-wrap text-sm">
+                <div className="grid grid-cols-2 gap-4 text-sm">
                   <InfoItemInLine label="Location" value={<LocationBadge code={asset.location} />} />
-                  <InfoItemInLine className="mt-3" label="Risk" value={<RiskBadge risk={asset.risk} />} />
+                  <InfoItemInLine className="mt-1" label="Risk" value={<RiskBadge risk={asset.risk} />} />
                   <InfoItemInLine label="Risk Score" value={<Badge variant="outline">{asset.riskScore}</Badge>} />
                   <InfoItemInLine label="Supplier" value={<Badge variant="outline">{asset.supplier}</Badge>} />
                 </div>

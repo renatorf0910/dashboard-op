@@ -31,7 +31,7 @@ export function LocationBadge({ code }: { code: string }) {
 
     return (
         <div className="inline-flex items-center gap-2 rounded-full bg-gray-100 border px-3 py-1 text-sm font-medium text-gray-700">
-            <span className="text-lg">{flag}</span>
+            <span className="text-sm">{flag}</span>
             <span>{name}</span>
         </div>
     );
