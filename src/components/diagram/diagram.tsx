@@ -1,8 +1,8 @@
 "use client";
 
 import { useTopology } from "@/application/hooks/useTopology";
+import { useAssetDrawerStore } from "@/application/store/useAssetDrawerStore";
 import { useSelectedAssetStore } from "@/application/store/useSelectedAssetStore";
-import { DiagramNodeData, NodeType } from "@/domain/types/topology/TopologyProps";
 import {
   Background,
   Controls,
@@ -16,12 +16,14 @@ import {
   type Node,
   type NodeChange,
 } from "@xyflow/react";
+import { DiagramNodeData, NodeType } from "@/domain/types/topology/TopologyProps";
 import "@xyflow/react/dist/style.css";
 import dagre from "dagre";
+import { getAssetById } from "@/application/services/api";
 import { X } from "lucide-react";
-import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { Button } from "../ui/button";
+import { ErrorBoundary } from "../error/errorBoundary";
 
 export function Diagram({ selectedNodeId }: { selectedNodeId?: string }) {
   const { data, isLoading, isError, refetch } = useTopology();
@@ -29,10 +31,9 @@ export function Diagram({ selectedNodeId }: { selectedNodeId?: string }) {
 
   const [nodes, setNodes] = useState<Node<DiagramNodeData>[]>([]);
   const [selectedNode, setSelectedNode] = useState<Node<DiagramNodeData> | null>(null);
-
   const [edges, setEdges] = useState<Edge[]>([]);
   const { selectedId, setSelectedId } = useSelectedAssetStore();
-
+  const { openDrawer } = useAssetDrawerStore();
 
   const nodeWidth = 180;
   const nodeHeight = 60;
@@ -46,7 +47,9 @@ export function Diagram({ selectedNodeId }: { selectedNodeId?: string }) {
     dagreGraph.setDefaultEdgeLabel(() => ({}));
     dagreGraph.setGraph({ rankdir: direction });
 
-    nodes.forEach((n) => dagreGraph.setNode(String(n.id), { width: nodeWidth, height: nodeHeight }));
+    nodes.forEach((n) =>
+      dagreGraph.setNode(String(n.id), { width: nodeWidth, height: nodeHeight })
+    );
     edges.forEach((e) => dagreGraph.setEdge(String(e.source), String(e.target)));
 
     dagre.layout(dagreGraph);
@@ -54,7 +57,10 @@ export function Diagram({ selectedNodeId }: { selectedNodeId?: string }) {
     return {
       nodes: nodes.map((node) => {
         const pos = dagreGraph.node(String(node.id));
-        return { ...node, position: { x: pos.x - nodeWidth / 2, y: pos.y - nodeHeight / 2 } };
+        return {
+          ...node,
+          position: { x: pos.x - nodeWidth / 2, y: pos.y - nodeHeight / 2 },
+        };
       }),
       edges,
     };
@@ -113,19 +119,21 @@ export function Diagram({ selectedNodeId }: { selectedNodeId?: string }) {
     }
   }, [selectedNodeId, nodes, setCenter]);
 
-  const handleNodeClick = (
-    _evt: unknown,
-    node: Node<DiagramNodeData>
-  ) => {
+  const handleNodeClick = async (_evt: unknown, node: Node<DiagramNodeData>) => {
     if (node.data.nodeType === "device" && node.data.entity) {
-      setSelectedId(node.data.entity.assetId);
+      const assetId = node.data.entity.assetId;
+      setSelectedId(assetId);
     }
 
     setSelectedNode(node);
   };
 
-
-  if (isLoading) return <div className="flex items-center justify-center h-full text-gray-500">Loading topology...</div>;
+  if (isLoading)
+    return (
+      <div className="flex items-center justify-center h-full text-gray-500">
+        Loading topology...
+      </div>
+    );
 
   if (isError)
     return (
@@ -141,71 +149,86 @@ export function Diagram({ selectedNodeId }: { selectedNodeId?: string }) {
     );
 
   if (!data?.nodes?.length)
-    return <div className="flex items-center justify-center h-full text-gray-400">No topology available</div>;
+    return (
+      <div className="flex items-center justify-center h-full text-gray-400">
+        No topology available
+      </div>
+    );
 
   return (
-    <div className="w-full h-full flex relative">
-      <div className="flex-1 relative">
-        <ReactFlow
-          nodes={nodes}
-          edges={edges}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onNodeClick={handleNodeClick}
-          fitView
-          nodesDraggable={false}
-          nodesConnectable={false}
-        >
-          <Controls />
-          <Background />
+    <ErrorBoundary fallback="Error to render the diagram.">
+      <div className="w-full h-full flex relative">
+        <div className="flex-1 relative">
+          <ReactFlow
+            nodes={nodes}
+            edges={edges}
+            onNodesChange={onNodesChange}
+            onEdgesChange={onEdgesChange}
+            onNodeClick={handleNodeClick}
+            fitView
+            nodesDraggable={false}
+            nodesConnectable={false}
+          >
+            <Controls />
+            <Background />
 
-          <MiniMap
-            className="!absolute !bottom-6 !right-6 bg-white/30 backdrop-blur-sm border rounded-md shadow-md"
-            style={{ width: 150, height: 120, zIndex: 999 }}
-            nodeColor={(n) => (n.data.nodeType === "gateway" ? "#3CF0FF" : "#002177")}
-            nodeStrokeWidth={2}
-          />
-
-        </ReactFlow>
-      </div>
-
-      {selectedNode && (
-        <div className=" absolute right-6 top-6 w-72 bg-white rounded-xl shadow-2xl border z-50 animate-in fade-in zoom-in-95 duration-200">
-          <div className="px-4 py-3 border-b flex items-center justify-between">
-            <div className="flex flex-col">
-              <span className="text-sm font-semibold leading-none mb-1">
-                {selectedNode.data.label}
-              </span>
-              <span className="text-xs text-muted-foreground">
-                {selectedNode.data.nodeType}
-              </span>
-            </div>
-            <Button
-              style={{ width: "3vh", height: "3vh" }}
-              variant="default"
-              size="icon"
-              className="rounded-full mb-4 cursor-pointer"
-              onClick={() => setSelectedNode(null)}
-            >
-              <X className="h-4 w-4" />
-            </Button>
-          </div>
-          <div className="px-4 py-4 flex flex-col gap-4">
-            {selectedNode.data.nodeType === "device" && (
-              <Link href={`/assets/${selectedId}`}>
-                <Button className="w-full h-9 text-sm cursor-pointer">
-                  Open asset details
-                </Button>
-              </Link>
-            )}
-
-            <div className="text-[10px] text-muted-foreground border-t pt-3 flex justify-between">
-              <span>Node ID</span>
-              <span className="font-mono">{selectedNode.id}</span>
-            </div>
-          </div>
+            <MiniMap
+              className="absolute bottom-6 right-6 bg-white/30 backdrop-blur-sm border rounded-md shadow-md"
+              style={{ width: 150, height: 120, zIndex: 999 }}
+              nodeColor={(n) =>
+                n.data.nodeType === "gateway" ? "#3CF0FF" : "#002177"
+              }
+              nodeStrokeWidth={2}
+            />
+          </ReactFlow>
         </div>
-      )}
-    </div>
+
+        {selectedNode && (
+          <div className=" absolute right-6 top-6 w-72 bg-white rounded-xl shadow-2xl border z-50 animate-in fade-in zoom-in-95 duration-200">
+            <div className="px-4 py-3 border-b flex items-center justify-between">
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold leading-none mb-1">
+                  {selectedNode.data.label}
+                </span>
+                <span className="text-xs text-muted-foreground">
+                  {selectedNode.data.nodeType}
+                </span>
+              </div>
+
+              <Button
+                style={{ width: "3vh", height: "3vh" }}
+                variant="default"
+                size="icon"
+                className="rounded-full mb-4 cursor-pointer"
+                onClick={() => setSelectedNode(null)}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+
+            <div className="px-4 py-4 flex flex-col gap-4">
+              {selectedNode.data.nodeType === "device" &&
+                selectedNode?.data?.entity && (
+                  <Button
+                    className="w-full h-9 text-sm cursor-pointer"
+                    onClick={async () => {
+                      if (!selectedId) return;
+                      const asset = await getAssetById(selectedId);
+                      if (asset) openDrawer(asset);
+                    }}
+                  >
+                    Open asset details
+                  </Button>
+                )}
+
+              <div className="text-[10px] text-muted-foreground border-t pt-3 flex justify-between">
+                <span>Node ID</span>
+                <span className="font-mono">{selectedNode.id}</span>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </ErrorBoundary>
   );
 }

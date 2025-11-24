@@ -1,16 +1,13 @@
 "use client"
 
-import { useAssetDrawerStore } from "@/application/store/useAssetDrawerStore";
-import { useSelectedAssetStore } from "@/application/store/useSelectedAssetStore";
 import { AssetsDataTableProps, AssetsProps } from "@/domain/types/assets/AssetsProps";
 import { ColumnDef } from "@tanstack/react-table";
-import { Info } from "lucide-react";
+import { ActionsCell } from "../actions-cell";
 import { RiskBadge } from "../badge-risk";
 import { Button } from "../button";
 import { DataTable } from "../data-table";
 import { HeaderDataTable } from "../header-data-table";
 import { LocationBadge } from "../location-badge";
-import { ActionsCell } from "../actions-cell";
 
 export const columns: ColumnDef<AssetsProps>[] = [
     {

@@ -59,7 +59,7 @@ function DrawerContent({
           "group/drawer-content bg-background fixed z-50 flex flex-col will-change-[transform]",
           "data-[state=open]:animate-in data-[state=closed]:animate-out",
           "data-[state=open]:slide-in-from-right data-[state=closed]:slide-out-to-right",
-          "h-[100vh] data-[vaul-drawer-direction=right]:w-[40%] md:data-[vaul-drawer-direction=right]:w-[25%]",
+          "h-[100vh] data-[vaul-drawer-direction=right] md:data-[vaul-drawer-direction=right]:w-[25%]",
           "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]",
           className
         )}
