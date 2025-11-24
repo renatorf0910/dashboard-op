@@ -24,7 +24,12 @@ export type AssetsDataTableMobileProps = {
   onSelect: (asset: AssetsProps) => void;
 };
 
-export type AssetsFilterForm = Partial<AssetsProps>;
+export interface AssetsFilterForm {
+  name?: string;
+  risk?: string;
+  location?: string;
+  supplier?: string;
+}
 
 export interface AssetDetailsDrawerProps {
   open: boolean;
