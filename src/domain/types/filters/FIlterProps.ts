@@ -20,3 +20,10 @@ export interface FilterDrawerState {
   close: () => void;
   toggle: () => void;
 }
+
+export interface SavedFilter<T = unknown> {
+  id?: number;
+  name: string;
+  values: T;
+  page: string;
+}

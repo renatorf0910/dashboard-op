@@ -82,7 +82,7 @@ export function AssetDetailsDrawer({
 
               {isLoading && <SkeletonCard />}
 
-              {!isLoadingVulnerabilities && vulnerabilities && vulnerabilities.length > 0 && (
+              {!isLoadingVulnerabilities && vulnerabilities && vulnerabilities.length > 0 ? (
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
@@ -112,7 +112,7 @@ export function AssetDetailsDrawer({
                     </div>
                   ))}
                 </motion.div>
-              )}
+              ): <SkeletonCard />}
             </div>
             <motion.div
               initial={{ opacity: 0, x: 20 }}

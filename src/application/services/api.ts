@@ -31,7 +31,7 @@ api.interceptors.response.use(
   },
   (error) => {
     if (error.response) {
-      console.log('Bagaço');
+      console.error('Error in request');
     }
     return Promise.reject(error);
   }
@@ -121,7 +121,6 @@ export async function getDevices(filters?: Partial<DeviceProps>) {
 
 export async function getAssetById(id: string): Promise<AssetsProps | null> {
   try {
-    console.log('id: ', id)
     const response = await api.get<AssetsProps>(`/assets/${id}`);
     return response.data;
   } catch (error: any) {

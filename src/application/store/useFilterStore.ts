@@ -1,5 +1,5 @@
+import { FilterProps } from "@/domain/types/filters/FIlterProps";
 import { create } from "zustand";
-import { Filters, FilterProps } from "@/domain/types/filters/FIlterProps";
 
 export const useFilterStore = create<FilterProps>()((set, get) => ({
   filters: {},
