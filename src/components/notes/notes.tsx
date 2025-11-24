@@ -124,7 +124,7 @@ export function Notes({ assetId }: { assetId: string }) {
 
           {errorMsg && <p className="text-red-500 text-sm">{errorMsg}</p>}
 
-          <Button className="w-full" onClick={handleAddNote}>
+          <Button className="w-full cursor-pointer" onClick={handleAddNote}>
             Save Note
           </Button>
         </div>

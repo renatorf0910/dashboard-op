@@ -62,12 +62,7 @@ export function SearchForm<T extends object>({
   const toFilters = (values: Partial<T>): Filters => {
     const result: Filters = {};
     Object.entries(values).forEach(([k, v]) => {
-      if (
-        v === undefined ||
-        v === null ||
-        typeof v === "string" ||
-        typeof v === "number"
-      ) {
+      if (v === undefined || v === null || typeof v === "string" || typeof v === "number") {
         result[k] = v;
       } else {
         result[k] = JSON.stringify(v);
@@ -136,7 +131,7 @@ export function SearchForm<T extends object>({
             <select
               className={clsx(
                 "border rounded-lg px-3 py-2 dark:border-zinc-700",
-                !savedFilters.length ? "border-red-500" : ""
+                selectedFilterId === null && savedFilters.length > 0
               )}
               value={selectedFilterId || ""}
               onChange={(e) => {
@@ -153,14 +148,11 @@ export function SearchForm<T extends object>({
                   <option key={f.id} value={f.id}>{f.name}</option>
                 ))}
             </select>
-
-            {filterError && <p className="text-red-500 text-sm">{filterError}</p>}
           </div>
           <div className="flex gap-2 mt-2">
             <Button className="cursor-pointer" type="button" onClick={() => setOpenDialog(true)}>
               Save this filter bellow
             </Button>
-
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button className="cursor-pointer" type="button" variant="destructive">
@@ -224,7 +216,7 @@ export function SearchForm<T extends object>({
                     )}
                   />
                 )}
-                <ErrorMessage name={name} component="div" className="text-red-500 text-sm" />
+                <ErrorMessage name={name} component="div" className="text-red-500 text-sm mt-1" />
               </div>
             );
           })}
@@ -260,10 +252,15 @@ export function SearchForm<T extends object>({
               <Textarea
                 placeholder="Filter name"
                 value={filterName}
-                onChange={(e) => setFilterName(e.target.value)}
-                className="w-full"
+                onChange={(e) => {
+                  setFilterName(e.target.value);
+                  if (filterError) setFilterError(null);
+                }}
+                className={clsx(
+                  "w-full border rounded-lg focus:ring-2 focus:ring-blue-500",
+                  filterError ? "border-red-500" : "border-zinc-700"
+                )}
               />
-              {filterError && <p className="text-red-500 text-sm">{filterError}</p>}
               <DialogFooter>
                 <Button className="w-full cursor-pointer" onClick={() => handleSaveFilter(values)}>
                   Save Filter
@@ -271,11 +268,6 @@ export function SearchForm<T extends object>({
               </DialogFooter>
             </DialogContent>
           </Dialog>
-          {submitError && (
-            <div className="bg-red-100 text-red-700 border border-red-300 p-2 rounded-lg mt-2">
-              {submitError}
-            </div>
-          )}
         </Form>
       )}
     </Formik>
