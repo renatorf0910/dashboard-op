@@ -15,4 +15,5 @@ export interface DataTableProps<TData, TValue> {
   data: TData[];
   pageSize?: number;
   selectedRow?: (rowData: TData) => void;
+  onClearFilters?: () => void
 }

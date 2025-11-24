@@ -8,6 +8,7 @@ export function useDevices(params?: { filters?: Record<string, unknown> }) {
   const query = useQuery<DeviceProps[]>({
     queryKey: ["devices", params?.filters],
     queryFn: () => getDevices(params?.filters),
+    enabled: true,
     staleTime: 1000 * 60 * 5,
   });
   return {

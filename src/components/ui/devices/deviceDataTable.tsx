@@ -84,8 +84,8 @@ export const deviceColumns = (
         },
     ];
 
-export default function DeviceDataTable({ devices, onRowClick, assets, gateways, }:
-    { devices: DeviceProps[]; onRowClick?: (device: DeviceAllInfosProps) => void; assets: AssetsProps[]; gateways: GatewayProps[] }) {
+export default function DeviceDataTable({ devices, onRowClick, assets, gateways, onClearFilters }:
+    { devices: DeviceProps[]; onRowClick?: (device: DeviceAllInfosProps) => void; assets: AssetsProps[]; gateways: GatewayProps[]; onClearFilters?: () => void; }) {
 
     const allInfosDevices = getAllInfos(devices, assets, gateways);
     const { setDevice } = useDeviceStore();
@@ -94,5 +94,5 @@ export default function DeviceDataTable({ devices, onRowClick, assets, gateways,
         onRowClick?.(device);
     };
 
-    return (<DataTable columns={deviceColumns(handleOpen)} data={allInfosDevices} selectedRow={handleOpen} />);
+    return (<DataTable columns={deviceColumns(handleOpen)} data={allInfosDevices} selectedRow={handleOpen} onClearFilters={onClearFilters}/>);
 }

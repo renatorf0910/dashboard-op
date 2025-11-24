@@ -13,6 +13,7 @@ export interface DeviceProps {
 export interface DeviceAllInfosProps extends DeviceProps {
   asset: AssetsProps | null;
   gateway: GatewayProps | null;
+  onClearFilters?: () => void
 }
 
 export interface Device extends BaseEntity {
@@ -33,9 +34,9 @@ export interface DeviceStore {
   clearDevice: () => void;
 }
 
-export interface DeviceFilterForm {
-  name?: string | null;
-  type?: string | null;
-  assetId?: string | null;
-  gatewayId?: string | null;
+export interface DeviceFilterForm extends Record<string, string | undefined> {
+  name?: string;
+  type?: string;
+  assetId?: string;
+  gatewayId?: string;
 }

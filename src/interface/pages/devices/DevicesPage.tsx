@@ -3,8 +3,8 @@
 import { useDevices } from "@/application/hooks/useDevices";
 import { useDeviceStore } from "@/application/store/useDeviceStore";
 import { useFilterStore } from "@/application/store/useFilterStore";
-import { useRouter } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 
 import { ErrorBoundary } from "@/components/error/errorBoundary";
 import { SearchFormDrawer } from "@/components/forms/searchFormDrawer";
@@ -20,25 +20,25 @@ import { FilterGroup } from "@/domain/types/filters/FIlterProps";
 import * as Yup from "yup";
 
 export default function DevicesPage() {
+  const searchParams = useSearchParams();
   const router = useRouter();
+
   const [openDrawer, setOpenDrawer] = useState(false);
+
   const filters = useFilterStore(s => s.filters);
   const setFilters = useFilterStore(s => s.setFilters);
   const clearFilters = useFilterStore(s => s.clearFilters);
   const filtersApplied = useFilterStore(s => s.hasFilters(FilterGroup.Devices));
 
-  const deviceFilters = (filters[FilterGroup.Devices] ?? {}) as Record<string, any>;
+  useEffect(() => {
+    const obj = Object.fromEntries(searchParams.entries());
 
-  const normalizedInitialValues = useMemo(() => {
-    return Object.keys(deviceFilters).length === 0
-      ? {
-        name: "",
-        assetId: "",
-        gatewayId: "",
-        type: "",
-      }
-      : deviceFilters;
-  }, [deviceFilters]);
+    if (Object.keys(obj).length > 0) {
+      setFilters(FilterGroup.Devices, obj);
+    }
+  }, []);
+
+  const deviceFilters = (filters[FilterGroup.Devices] ?? {}) as DeviceFilterForm;
 
   const { devices, isLoadingVulnerabilities: isLoading } = useDevices({
     filters: deviceFilters,
@@ -48,6 +48,13 @@ export default function DevicesPage() {
   const { gateways } = useGatewaysStore();
 
   const { setDevice } = useDeviceStore();
+
+  const normalizedInitialValues = useMemo(() => {
+    return {
+      name: deviceFilters.name ?? "",
+      type: deviceFilters.type ?? "",
+    };
+  }, [deviceFilters]);
 
   const deviceFields: SearchFormFields<DeviceFilterForm>[] = [
     { name: "name", label: "Name", type: "text" },
@@ -61,16 +68,19 @@ export default function DevicesPage() {
     },
   ];
 
-  const deviceFilterSchema: Yup.ObjectSchema<DeviceFilterForm> = Yup.object({
-    name: Yup.string().nullable(),
-    type: Yup.string().nullable(),
-    assetId: Yup.string().nullable(),
-    gatewayId: Yup.string().nullable(),
+  const deviceFilterSchema = Yup.object({
+    name: Yup.string().optional(),
+    type: Yup.string().optional(),
   });
 
   const handleRowClick = (device: DeviceAllInfosProps) => {
     setDevice(device);
-    router.push(`/devices/${device.id}`);
+    router.push(`/devices/${device.id}?${searchParams.toString()}`);
+  };
+
+  const resetFilters = () => {
+    clearFilters(FilterGroup.Devices);
+    router.replace(`/devices`);
   };
 
   if (isLoading || !assets || !gateways) return <SkeletonTable />;
@@ -93,21 +103,26 @@ export default function DevicesPage() {
         filtersApplied={filtersApplied}
         onSubmit={(values) => {
           setFilters(FilterGroup.Devices, values);
+          const params = new URLSearchParams();
+          Object.entries(values).forEach(([k, v]) => {
+            if (v) params.set(k, String(v));
+          });
+          router.replace(`/devices?${params.toString()}`);
           setOpenDrawer(false);
         }}
-        onClear={() => clearFilters(FilterGroup.Devices)}
+        onClear={() => {
+          resetFilters();
+          setOpenDrawer(false);
+        }}
       />
       <ErrorBoundary fallback="Error loading Table Devices">
-        <div className="flex flex-col flex-1 min-h-0">
-          <div className="flex-1 min-h-0 overflow-auto">
-            <DeviceDataTable
-              devices={devices ?? []}
-              assets={assets}
-              gateways={gateways}
-              onRowClick={handleRowClick}
-            />
-          </div>
-        </div>
+        <DeviceDataTable
+          devices={devices ?? []}
+          assets={assets}
+          gateways={gateways}
+          onRowClick={handleRowClick}
+          onClearFilters={resetFilters}
+        />
       </ErrorBoundary>
     </div>
   );

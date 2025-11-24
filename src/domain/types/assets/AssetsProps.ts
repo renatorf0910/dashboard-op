@@ -2,20 +2,21 @@ import { ReactNode } from "react";
 import { VulnerabilityProps } from "../vulnerability/VulnerabilityProps";
 
 export interface AssetsProps {
-    id: string,
-    name: string,
-    location: string,
-    risk: string,
-    riskScore: number,
-    supplier: string,
+  id: string,
+  name: string,
+  location: string,
+  risk: string,
+  riskScore: number,
+  supplier: string,
 }
 
 export interface AssetsDataTableProps {
-    assets: AssetsProps[];
-    total: number;
-    page: number;
-    onPageChange: (page: number) => void;
-    selectedRow: (asset: AssetsProps) => void;
+  assets: AssetsProps[];
+  total: number;
+  page: number;
+  onPageChange: (page: number) => void;
+  selectedRow: (asset: AssetsProps) => void;
+  onClearFilters?: () => void
 }
 
 export type AssetsDataTableMobileProps = {

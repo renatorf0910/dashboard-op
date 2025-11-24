@@ -8,6 +8,7 @@ import { ListFilterPlus } from "lucide-react"
 import * as React from "react"
 import { Button } from "./button"
 import { DataTableViewOptions } from "./data-table-view-options"
+import { EmptyState } from "./empty-state"
 import { PaginationWithSize } from "./pagination-with-size"
 
 export function DataTable<TData, TValue>({
@@ -15,6 +16,7 @@ export function DataTable<TData, TValue>({
   data,
   pageSize = 10,
   selectedRow,
+  onClearFilters
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [globalFilter, setGlobalFilter] = React.useState("")
@@ -48,6 +50,17 @@ export function DataTable<TData, TValue>({
 
     return () => clearTimeout(timeout)
   }, [searchValue])
+
+  const handleClearAll = () => {
+    setSearchValue("");
+    setGlobalFilter("");
+    setSorting([]);
+    setColumnVisibility({});
+    table.setPageIndex(0);
+
+    onClearFilters?.();
+  };
+
 
   return (
     <div className="space-y-4 h-full flex flex-col ml-1">
@@ -106,11 +119,13 @@ export function DataTable<TData, TValue>({
               ))
             ) : (
               <TableRow>
-                <TableCell
-                  colSpan={columns.length}
-                  className="h-24 text-center text-muted-foreground"
-                >
-                  No results.
+                <TableCell colSpan={columns.length} className="h-40 p-0">
+                  <EmptyState
+                    title="No results found"
+                    description="Try adjusting or clearing your filters."
+                    actionLabel="Clear filters"
+                    onAction={handleClearAll}
+                  />
                 </TableCell>
               </TableRow>
             )}
