@@ -6,7 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "json-server": "json-server --watch db.json --port 8000",
+    "json-server": "json-server --watch db.json --port 8000 --host 127.0.0.1",
     "lint": "eslint"
   },
   "dependencies": {

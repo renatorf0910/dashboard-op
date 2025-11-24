@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Dashboard-Op
 
-## Getting Started
+This project is a dashboard to view assets and devices, with filters, loading/empty/error states, and note persistence via IndexedDB.
 
-First, run the development server:
+---
+
+## Prerequisites
+
+* **Git** and **Node.js / npm** installed
+* Ports **3000** and **8000** available
+
+---
+
+## Installation and Running
+
+Clone the repository:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/renatorf0910/dashboard-op.git
+cd dashboard-op
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Create a `.env` file with the following variable:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```env
+NEXT_PUBLIC_API_URL=http://localhost:8000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Install dependencies:
 
-## Learn More
+```bash
+npm install
+```
 
-To learn more about Next.js, take a look at the following resources:
+### Running on Different Environments
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+#### Mac
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run dev          # runs the app at http://localhost:3000
+npm run json-server  # runs the mock API at http://localhost:8000
+```
 
-## Deploy on Vercel
+#### Ubuntu
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run dev          # runs the app at http://localhost:3000
+npm run json-server  # runs the mock API at http://localhost:8000
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+> Make sure ports 3000 and 8000 are open in the firewall.
+
+#### Windows (PowerShell)
+
+```powershell
+npm run dev          # runs the app at http://localhost:3000
+npm run json-server  # runs the mock API at http://localhost:8000
+```
+
+> If you have permission issues, run PowerShell as administrator.
+
+---
+
+## Optional Modules Used
+
+* **Dexie**: for working with IndexedDB, storing notes linked to assets without needing an extra database.
+* **Dagre + React Flow**: to render graphs and flows visually.
+* **Lucide React**: free icon library with good support.
+* **Framer Motion**: for smooth animations and interactions.
+
+---
+
+## Loading / Empty / Error States
+
+* **Loading**: skeletons appear when entering **Assets** and **Devices** pages.
+* **Empty**: perform a search that returns no results to see the empty state.
+* **Error**: the **Side Bar** has an error page showing handled error types.
+
+---
+
+## Quick Notes
+
+* **Query keys**: used for caching and data revalidation.
+* **Filter ↔ URL sync**: filters update the URL, allowing shareable links.
+* **IndexedDB**: stores notes linked to assets, avoiding the need for a separate database.
+
+> This setup improves security and local data persistence.
+

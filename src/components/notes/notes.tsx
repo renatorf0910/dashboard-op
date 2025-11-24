@@ -118,7 +118,7 @@ export function Notes({ assetId }: { assetId: string }) {
           <Textarea
             value={description}
             placeholder="Write a note (max 200 chars)"
-            className="resize-none min-h-[80px]"
+            className="resize-none min-h-20"
             onChange={(ev) => setDescription(ev.target.value)}
           />
 
