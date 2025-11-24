@@ -63,8 +63,8 @@ export function AssetDetailsDrawer({
                 <div className="grid grid-cols-2 gap-4 text-sm">
                   <InfoItemInLine label="Location" value={<LocationBadge code={asset.location} />} />
                   <InfoItemInLine className="mt-1" label="Risk" value={<RiskBadge risk={asset.risk} />} />
-                  <InfoItemInLine label="Risk Score" value={<Badge variant="outline">{asset.riskScore}</Badge>} />
-                  <InfoItemInLine label="Supplier" value={<Badge variant="outline">{asset.supplier}</Badge>} />
+                  <InfoItemInLine label="Risk Score" value={asset.riskScore} />
+                  <InfoItemInLine label="Supplier" value={asset.supplier} />
                 </div>
 
               </motion.div>
@@ -96,9 +96,10 @@ export function AssetDetailsDrawer({
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-2">
                           <ShieldAlert className="h-4 w-4 text-gray-500" />
-                          <span className="font-medium text-gray-800">
+                          <span className="font-medium text-gray-800 mr-2">
                             {vuln.title}
                           </span>
+                          <RiskBadge risk={vuln.severity} />
                         </div>
                         <div className="text-sm text-gray-600 flex flex-col gap-0.5">
                           <InfoItemInLine label="Scope" value={vuln.scope} />
@@ -108,7 +109,6 @@ export function AssetDetailsDrawer({
                           <Separator className="mt-4 flex justify-between items-center" />
                         </div>
                       </div>
-                      <div><RiskBadge risk={vuln.severity} /></div>
                     </div>
                   ))}
                 </motion.div>

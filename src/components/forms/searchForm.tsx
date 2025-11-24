@@ -107,7 +107,7 @@ export function SearchForm<T extends object>({
           <div className="flex justify-end gap-3 mt-2">
             <button
               type="submit"
-              className="bg-primary hover:bg-primary-foreground text-primary-side-bar py-2 px-4 rounded-lg transition-all"
+              className="bg-primary hover:bg-primary-foreground text-primary-side-bar py-2 px-4 rounded-lg transition-all cursor-pointer"
             >
               Filter
             </button>
@@ -120,7 +120,7 @@ export function SearchForm<T extends object>({
                 onClear?.();
               }}
               className={clsx(
-                "bg-primary hover:bg-primary-foreground text-primary-side-bar px-4 rounded-lg transition-all",
+                "bg-primary hover:bg-primary-foreground text-primary-side-bar px-4 rounded-lg transition-all cursor-pointer",
                 !filtersApplied && "opacity-50 cursor-not-allowed"
               )}
             >

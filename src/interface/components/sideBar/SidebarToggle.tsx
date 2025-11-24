@@ -15,7 +15,7 @@ export function SidebarToggle() {
         absolute top-1/2 -right-5 transform -translate-y-1/2
         w-9 h-9 rounded-full bg-primary opacity-100
         flex items-center justify-center
-        transition-all duration-300 z-50
+        transition-all duration-300 z-50 cursor-pointer
       "
       >
       {isOpen ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}

@@ -2,7 +2,7 @@
 
 import { useTopology } from "@/application/hooks/useTopology";
 import { useSelectedAssetStore } from "@/application/store/useSelectedAssetStore";
-import { NodeType } from "@/domain/types/topology/TopologyProps";
+import { DiagramNodeData, NodeType } from "@/domain/types/topology/TopologyProps";
 import {
   Background,
   Controls,
@@ -27,9 +27,10 @@ export function Diagram({ selectedNodeId }: { selectedNodeId?: string }) {
   const { data, isLoading, isError, refetch } = useTopology();
   const { setCenter } = useReactFlow();
 
-  const [nodes, setNodes] = useState<Node<{ label: string; nodeType: NodeType }>[]>([]);
+  const [nodes, setNodes] = useState<Node<DiagramNodeData>[]>([]);
+  const [selectedNode, setSelectedNode] = useState<Node<DiagramNodeData> | null>(null);
+
   const [edges, setEdges] = useState<Edge[]>([]);
-  const [selectedNode, setSelectedNode] = useState<Node<{ label: string; nodeType: NodeType }> | null>(null);
   const { selectedId, setSelectedId } = useSelectedAssetStore();
 
 
@@ -112,11 +113,12 @@ export function Diagram({ selectedNodeId }: { selectedNodeId?: string }) {
     }
   }, [selectedNodeId, nodes, setCenter]);
 
-  const handleNodeClick = (_evt: unknown, node: any) => {
-    if (node.data.nodeType === "device") {
-      console.log('node', node)
+  const handleNodeClick = (
+    _evt: unknown,
+    node: Node<DiagramNodeData>
+  ) => {
+    if (node.data.nodeType === "device" && node.data.entity) {
       setSelectedId(node.data.entity.assetId);
-      setSelectedNode(node);
     }
 
     setSelectedNode(node);
@@ -168,8 +170,7 @@ export function Diagram({ selectedNodeId }: { selectedNodeId?: string }) {
       </div>
 
       {selectedNode && (
-        <div
-          className=" absolute right-6 top-6 w-72 bg-white rounded-xl shadow-2xl border z-50 animate-in fade-in zoom-in-95 duration-200">
+        <div className=" absolute right-6 top-6 w-72 bg-white rounded-xl shadow-2xl border z-50 animate-in fade-in zoom-in-95 duration-200">
           <div className="px-4 py-3 border-b flex items-center justify-between">
             <div className="flex flex-col">
               <span className="text-sm font-semibold leading-none mb-1">

@@ -20,11 +20,6 @@ export function ErrorFallback({
         <p className="text-base md:text-lg text-muted-foreground leading-relaxed max-w-xl">
           {message}
         </p>
-        {error && (
-          <pre className="bg-red-50 border border-red-200 p-4 rounded text-red-800 text-sm w-full max-w-xl overflow-auto whitespace-pre-wrap">
-            {error.message}
-          </pre>
-        )}
         <div className="flex flex-col sm:flex-row gap-4 pt-4">
           {onRetry && (
             <Button size="sm" onClick={onRetry}>

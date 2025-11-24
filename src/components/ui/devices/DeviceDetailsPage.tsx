@@ -60,7 +60,7 @@ export default function DeviceDetailsPage() {
                   label="Location"
                   value={<LocationBadge code={device.asset?.location ?? ""} />}
                 />
-                <InfoItem label="Risk Score" value={device.asset?.riskScore} badge />
+                <InfoItem label="Risk Score" value={device.asset?.riskScore} />
                 <InfoItem
                   label="Risk Level"
                   value={<RiskBadge risk={device.asset?.risk ?? "-"} />}

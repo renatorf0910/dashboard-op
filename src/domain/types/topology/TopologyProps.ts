@@ -27,3 +27,10 @@ export interface TopologyResponse {
   nodes: BaseEntity[];
   edges: { id: string; source: string; target: string }[];
 }
+
+export type DiagramNodeData = {
+  label: string;
+  nodeType: NodeType;
+  entity?: { assetId: string };
+};
+
